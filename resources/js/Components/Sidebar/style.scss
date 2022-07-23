@@ -1,0 +1,38 @@
+.sidebar {
+    //padding-top: 100px;
+    .sidebar-wrap {
+        width: 460px;
+    }
+    img {
+        padding: 20px;
+    }
+    h4 {
+        margin-left: 40px;
+        color: #dc3545;
+    }
+    .sidebar-select {
+        margin: 20px 80px 0 40px;
+    }
+    .list-group {
+        border-radius: 0;
+    }
+    .list-group-item {
+        padding-left: 24px;
+        font-size: 22px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        margin: 1px 0;
+        height: 60px;
+        border: none;
+        background: #ececec;
+    }
+    .list-group-item:hover {
+        //margin: 1px;
+        background: #dedede;
+    }
+    .list-group-item.active {
+        margin: 1px;
+        background-color: #dc3545;
+    }
+}

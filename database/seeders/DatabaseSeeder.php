@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
 class DatabaseSeeder extends Seeder
 {
     /**
