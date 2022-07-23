@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
-import axios from "axios";
+import axios from "../../Services/base.service";
 import "./style.css";
 import nashtechlogo from "../../../assets/nashtech_logo.svg";
 // import { useHistory } from "react-router-dom";
@@ -13,7 +13,7 @@ const SignIn = () => {
   React.useEffect(() => {
     console.log("SignIn");
   }, []);
-  
+
   const checkForm = () => {
     if (username === "" || password === "") {
       // setMess("Please enter username and password");
@@ -30,14 +30,12 @@ const SignIn = () => {
         password: password,
       };
 
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/login",
-        data
-      );
+      const response = await axios.post("/login", data);
+
       console.log(response.data.message);
       localStorage.setItem("token", response.data.token);
 
-  
+
       window.location.href = "/HomePage";
     } catch (err) {
       console.log(err.response.data.message);
@@ -49,7 +47,7 @@ const SignIn = () => {
     <>
       <Container>
         <Row>
-        
+
           <Col xs={12} md={2}></Col>
           <Col xs={12} md={8}>
             <div className="bg"></div>
