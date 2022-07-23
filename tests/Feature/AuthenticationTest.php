@@ -13,20 +13,6 @@ class AuthenticationTest extends TestCase
         $this->seed(UserSeeder::class);
     }
 
-    public function test_example()
-    {
-        $response = $this->get('/');
-        $response->assertStatus(200);
-    }
-
-
-    public function test_login()
-    {
-        $response = $this->get('/login');
-        $response->assertStatus(200);
-    }
-
-
     public function test_user_can_login()
     {
         $body = [
