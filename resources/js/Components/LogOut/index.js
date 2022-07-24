@@ -15,10 +15,9 @@ export default function LogOut(props) {
 
     const handleLogout = async (e) => {
         try {
-            const basePath = "http://localhost:8000/api/"
             const token = localStorage.getItem('token')
             const headers = { headers: { Authorization: `Bearer ${token}` } };
-            axios.get(basePath + 'logout', headers)
+            axios.get('api/logout', headers)
                 .then(resp => {
                     localStorage.clear()
                     window.location.reload()
