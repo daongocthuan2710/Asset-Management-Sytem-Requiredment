@@ -1,0 +1,67 @@
+.container{
+    width: 1000px !important;
+    margin-left: 100px !important;
+}
+table {
+    border-collapse: separate !important;
+    border-spacing: 12px 0 !important;
+    font-size: 16px !important;
+
+}
+table > :not(caption) > * > *{
+    padding: 0px !important;
+}
+.table-content tr{
+    border-collapse: separate !important;
+    border-spacing: 12px 0 !important;
+
+}
+.table-content thead tr th {
+    border-bottom: 1px solid black;
+    
+}
+
+.table-content td {
+    border-bottom: 1px solid #c9bebe;
+
+}
+.delete-icon{
+    color: rgb(220 53 69);
+}
+
+ .td-without_border{
+    border-bottom: none !important;
+    border-bottom-width: 0px;
+}
+a .page-link{
+    display: none !important;
+}
+
+.page-link{
+    color: rgb(220 53 69) !important;
+}
+.pagination-active{
+    color: rgb(255, 255, 255) !important;
+    background-color: rgb(220 53 69) !important;
+}
+
+.pagination{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0px;
+}
+.btn-filter .dropdown-toggle::after {
+    display: none !important; 
+  }
+.btn-createnewuser{
+    background-color: rgb(220 53 69) !important;
+    color: rgb(255, 255, 255) !important;
+    border: none;
+}
+.btn-primary{
+    background-color: rgb(220 53 69) !important;
+    color: rgb(255, 255, 255) !important;
+    border: none;
+}
+
+
