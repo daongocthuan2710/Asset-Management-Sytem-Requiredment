@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('user', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id', true, true);
             $table->string('first_name', 128);
             $table->string('last_name', 128);
             $table->date('date_of_birth');
@@ -25,6 +25,9 @@ class CreateUsersTable extends Migration
             $table->boolean('admin')->default(false);
             $table->string('location');
             $table->integer('state')->default(0); // check validate 0 = new , 1 = active , -1 = disabled`
+
+            //Time stamp
+            $table->nullableTimestamps();
         });
     }
 
