@@ -38,4 +38,8 @@ class ManageUserController extends Controller
     {
         return $this->ManageUserService->disable($id);
     }
+    public function canDisable($id)
+    {
+        return $this->ManageUserService->canDisable($id);
+    }
 }
