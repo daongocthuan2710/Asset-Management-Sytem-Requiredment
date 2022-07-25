@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "../Sidebar";
 import './style.scss'
-import { HomeTable } from "../Table";
+import { ManageUser } from "../TableManageUser";
 // no khong hieu o khuc nay`
 
 export default function BodySection() {
@@ -11,8 +11,8 @@ export default function BodySection() {
                 <Sidebar />
             </div>
             <div className='body-content col-lg-9 col-md-6 col-sm-12'>
-                <h3>My Assignment</h3>
-                <HomeTable />
+             
+                <ManageUser />
             </div>
         </div>
     )

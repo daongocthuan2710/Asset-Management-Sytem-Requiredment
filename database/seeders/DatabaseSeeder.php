@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,7 +15,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            CategorySeeder::class,
+            AssetSeeder::class,
             UserSeeder::class,
+            AssignmentSeeder::class
         ]);
     }
 }
