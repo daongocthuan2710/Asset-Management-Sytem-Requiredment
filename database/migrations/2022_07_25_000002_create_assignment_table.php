@@ -24,9 +24,9 @@ return new class extends Migration
             //-1 : decline, 0 : waiting for acceptance, 1: accepted
 
             // Foreign Key
-            // $table->foreign('asset_id')->references('id')->on('asset');
-            // $table->foreign('admin_id')->references('id')->on('user');
-            // $table->foreign('staff_id')->references('id')->on('user');
+            $table->foreign('asset_id')->references('id')->on('asset');
+            $table->foreign('admin_id')->references('id')->on('user');
+            $table->foreign('staff_id')->references('id')->on('user');
 
             //Time stamp
             $table->timestamps();

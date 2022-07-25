@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('location');
 
             // Foreign Key
-            // $table->foreign('category_id')->references('id')->on('category');
+            $table->foreign('category_id')->references('id')->on('category');
 
             //Time stamp
             $table->timestamps();
