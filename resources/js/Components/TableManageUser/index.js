@@ -12,9 +12,7 @@ import {
 import Pagination from "react-js-pagination";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
@@ -22,7 +20,7 @@ import { Button } from "react-bootstrap";
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("");
   return (
-    <Container>
+    <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
       
@@ -80,7 +78,7 @@ export const ManageUser = () => {
               </div>
       </div>
       <Row>
-        <Col xl={12}>
+        
           <Table responsive="md">
             <thead>
               <tr>
@@ -195,8 +193,10 @@ export const ManageUser = () => {
             activeLinkClass="pagination-active"
             hideFirstLastPages={true}
           />
-        </Col>
+       
       </Row>
-    </Container>
+    </div>
   );
+  
 };
+
