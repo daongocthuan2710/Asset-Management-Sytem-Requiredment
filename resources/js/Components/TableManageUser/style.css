@@ -1,5 +1,5 @@
 .container{
-    width: 1000px !important;
+    width: 1200px !important;
     margin-left: 100px !important;
 }
 table {
@@ -53,15 +53,58 @@ a .page-link{
 .btn-filter .dropdown-toggle::after {
     display: none !important; 
   }
-.btn-createnewuser{
+/* .btn-createnewuser{
     background-color: rgb(220 53 69) !important;
     color: rgb(255, 255, 255) !important;
     border: none;
-}
+} */
 .btn-primary{
     background-color: rgb(220 53 69) !important;
     color: rgb(255, 255, 255) !important;
     border: none;
 }
 
+.filter-button {
+    width: 126px;
+    height: 40px;
+    color: black !important;
+    background-color: rgb(255, 255, 255) !important;
+    border: rgb(206 212 218) 1px solid !important;
+  }
+  
+  .filter-button,
+  .filter-button:hover,
+  .filter-button.btn-check:focus + .btn,
+  .btn:focus {
+    border: var(--2px) solid rgb(255, 255, 255) ;
+    background-color: var(--bs-white);
+    color: var(--bs-black);
+  }
+  
+  .filter-button .fb-icon {
+    border-left: 2px solid #ced4da;
+    padding-left: 5px;
+  }
+  
+  button.filter-button.dropdown-toggle::after {
+    content: none;
+    align-items: center;
+  }
 
+  .search-create{
+    height: 40px;
+
+    margin-right: 40px;
+  }
+  #btn-createnewuser{
+    width: 300px;
+  }
+  .search-bar{
+    margin-right: 40px;
+  }
+
+.form-check-input:checked{
+    background-color: rgb(220 53 69) !important;
+    color: rgb(255, 255, 255) !important;
+    border-color: rgb(220 53 69) !important;
+}
