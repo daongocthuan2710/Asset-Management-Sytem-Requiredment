@@ -29,7 +29,7 @@ return new class extends Migration
             // $table->foreign('staff_id')->references('id')->on('user');
 
             //Time stamp
-            $table->nullableTimestamps();
+            $table->timestamps();
         });
     }
 

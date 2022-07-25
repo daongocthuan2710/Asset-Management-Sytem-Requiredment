@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->integer('state')->default(0); // check validate 0 = new , 1 = active , -1 = disabled`
 
             //Time stamp
-            $table->nullableTimestamps();
+            $table->timestamps();
         });
     }
 

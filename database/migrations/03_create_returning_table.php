@@ -27,7 +27,7 @@ return new class extends Migration
             // $table->foreign('assignment_id')->references('id')->on('assignment');
 
             //Time stamp
-            $table->nullableTimestamps();
+            $table->timestamps();
         });
     }
 
