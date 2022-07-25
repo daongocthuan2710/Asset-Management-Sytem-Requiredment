@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('/user', ManageUserController::class);
+Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 // Route::resource('/login', AuthenticationController::class);
 Route::post('/login', [AuthenticationController::class, 'index']);
 Route::group(['middleware' => ['auth:sanctum']], function () {

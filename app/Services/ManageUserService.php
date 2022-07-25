@@ -17,4 +17,8 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->getAll();
     }
+    public function disable($id)
+    {
+        return $this->manageUserRepository->disable($id);
+    }
 }
