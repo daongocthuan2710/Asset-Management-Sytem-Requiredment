@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class ManageUserTest extends TestCase
+class EditUserTest extends TestCase
 {
     public function setUp(): void
     {
