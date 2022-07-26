@@ -4,6 +4,11 @@ namespace App\Repositories;
 
 use App\Repositories\BaseRepository;
 use App\Models\User;
+use http\Env\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use JetBrains\PhpStorm\NoReturn;
+use phpDocumentor\Reflection\Types\Integer;
 
 class ManageUserRepository extends BaseRepository
 {
@@ -15,5 +20,81 @@ class ManageUserRepository extends BaseRepository
     public function getAll()
     {
         return $this->query->get();
+    }
+
+    public function update($request, $id): \Illuminate\Http\JsonResponse
+    {
+        //check admin
+        try {
+            $bearerArr = explode(" ", $request->header('Authorization'));
+            $token = explode("|", $bearerArr[1]);
+            $bearer = DB::table('personal_access_tokens')->where('id', $token[0])->first();
+            $admin = DB::table('user')->where('id', $bearer->tokenable_id)->first();
+            if (!$admin || !$admin->admin || $admin->state == -1) {
+                throw new \Exception('You are not admin');
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'You are not admin'
+            ], 404);
+        }
+        //check validate
+        $validator = Validator::make($request->all(), [
+            'date_of_birth' => 'date|required',
+            'gender' => 'boolean|required',
+            'joined_date' => 'date|required',
+            'admin' => 'boolean|required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validations fails',
+                'error' => $validator->errors()
+            ], 422);
+        }
+        //check user exist and user location
+        $user = $this->query->find($id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'user is not exist'
+            ], 404);
+        } elseif ($user->location != $admin->location) {
+            return response()->json([
+                'message' => 'You cannot edit user in other location'
+            ], 404);
+        } else {
+            //user must be >18 years old
+            if ($this->diffYear($request->date_of_birth, date('Y-m-d H:i:s')) < 18) {
+                return response()->json([
+                    'message' => 'user age must be larger than 18'
+                ], 422);
+            }
+            //date of birth must be before join date
+            if ($this->diffYear($request->date_of_birth, $request->joined_date) < 0) {
+                return response()->json([
+                    'message' => 'date of birth must be before join date'
+                ], 422);
+            }
+            //join date must be workday
+            if ($this->isWeekend($request->joined_date)) {
+                return response()->json([
+                    'message' => 'join date must be a workday'
+                ], 422);
+            }
+            //success response
+            $user->update($request->all());
+            return response()->json([
+                'message' => 'user has been updated successfully'
+            ], 200);
+        }
+    }
+    public function diffYear($date1, $date2): float
+    {
+        $diff = (strtotime($date2) - strtotime($date1));
+        return floor($diff / (365 * 60 * 60 * 24));
+    }
+    public function isWeekend($date): bool
+    {
+        $weekDay = date('w', strtotime($date));
+        return ($weekDay == 0 || $weekDay == 6);
     }
 }
