@@ -112,7 +112,7 @@ class EditUserTest extends TestCase
             'staff_code' => 'SD2001',
         ]));
         $this->json('PUT', "api/user/$id", $body)
-            ->assertStatus(404);
+            ->assertStatus(401);
     }
 
     public function test_under_18_user()

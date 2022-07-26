@@ -22,6 +22,40 @@ class ManageUserRepository extends BaseRepository
         return $this->query->get();
     }
 
+    public function edit($id)
+    {
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        //check user
+        $user = $this->query->find($id);
+        //check user exist
+        if (!$user) {
+            return response()->json([
+                'message' => 'user is not exist'
+            ], 404);
+        }
+        //check user location
+        if ($user->location != $sanctumUser->location) {
+            return response()->json([
+                'message' => 'you do not have permission to edit this in other location'
+            ], 401);
+        }
+        //return data for display
+        else {
+            return response()->json([
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'date_of_birth' => $user->date_of_birth,
+            'joined_date' => $user->joined_date,
+            'gender' => $user->gender,
+            'type' => $user->admin,
+            ], 200);
+        }
+    }
+
     public function update($request, $id): \Illuminate\Http\JsonResponse
     {
         //check admin
@@ -52,8 +86,8 @@ class ManageUserRepository extends BaseRepository
         //check user location
         if ($user->location != $sanctumUser->location) {
             return response()->json([
-                'message' => 'user is not in your location'
-            ], 404);
+                'message' => 'you do not have permission to edit this in other location'
+            ], 401);
         }
         //user must be >18 years old
         if ($this->diffYear($request->date_of_birth, date('Y-m-d H:i:s')) < 18) {

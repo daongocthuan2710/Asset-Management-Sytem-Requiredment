@@ -23,4 +23,8 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->update($request, $id);
     }
+    public function edit($id): \Illuminate\Http\JsonResponse
+    {
+        return $this->manageUserRepository->edit($id);
+    }
 }
