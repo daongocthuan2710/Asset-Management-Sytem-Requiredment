@@ -24,20 +24,6 @@ class ManageUserRepository extends BaseRepository
 
     public function update($request, $id): \Illuminate\Http\JsonResponse
     {
-        //check admin
-        try {
-            $bearerArr = explode(" ", $request->header('Authorization'));
-            $token = explode("|", $bearerArr[1]);
-            $bearer = DB::table('personal_access_tokens')->where('id', $token[0])->first();
-            $admin = DB::table('user')->where('id', $bearer->tokenable_id)->first();
-            if (!$admin || !$admin->admin || $admin->state == -1) {
-                throw new \Exception('You are not admin');
-            }
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'You are not admin'
-            ], 404);
-        }
         //check validate
         $validator = Validator::make($request->all(), [
             'date_of_birth' => 'date|required',
@@ -56,10 +42,6 @@ class ManageUserRepository extends BaseRepository
         if (!$user) {
             return response()->json([
                 'message' => 'user is not exist'
-            ], 404);
-        } elseif ($user->location != $admin->location) {
-            return response()->json([
-                'message' => 'You cannot edit user in other location'
             ], 404);
         } else {
             //user must be >18 years old
@@ -97,4 +79,5 @@ class ManageUserRepository extends BaseRepository
         $weekDay = date('w', strtotime($date));
         return ($weekDay == 0 || $weekDay == 6);
     }
+
 }
