@@ -17,4 +17,8 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->getAll();
     }
+    public function manageUser($request)
+    {
+        return $this->manageUserRepository->manageUser($request);
+    }
 }

@@ -10,15 +10,29 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import Pagination from "react-js-pagination";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
+import axios from "axios";
 
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("");
+  const [data, setData] = React.useState([]);
+  const [filterType, setFilterType] = React.useState("");
+  
+
+  React.useEffect(() => {
+  getAll();
+  } , []);
+
+  const getAll = async () => {
+    const response = await axios.get("/api/manageUser");
+    console.log(response.data);
+    setData(response.data.data);
+    return response.data;
+  }
   return (
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
@@ -89,7 +103,7 @@ export const ManageUser = () => {
                   Fullname <FaAngleDown />
                 </th>
                 <th>
-                  Username <FaAngleDown />
+                  Username
                 </th>
                 <th>
                   Joined Date <FaAngleDown />
@@ -100,83 +114,21 @@ export const ManageUser = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
+            {data.length>0 && data.map((item) => (
+              <tr key={item.id}>
+                <td>{item.staff_code}</td>
+                <td>{item.firstname}{item.last_name}</td>
+                <td>{item.joined_date}</td>
+                <td>{item.username}</td>
+                <td>{item.admin == true ? 'Admin' : "Staff" }</td>
                 <td className="td-without_border">
                   <FaPencilAlt /> {"  "}
                   <FaRegTimesCircle className="delete-icon" />
                 </td>
               </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
+            ))}
+
+              
             </tbody>
           </Table>
           <Pagination

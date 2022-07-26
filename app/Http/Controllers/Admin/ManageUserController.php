@@ -66,4 +66,8 @@ class ManageUserController extends Controller
     {
         //
     }
+    public function manageUser(Request $request)
+    {
+        return $this->ManageUserService->manageUser($request);
+    }
 }
