@@ -2,10 +2,17 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\CreateUserRequest;
 use App\Repositories\BaseRepository;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use App\Rules\JoinedDateWeekend;
+use App\Rules\LatinName;
+use App\Rules\Over18;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class ManageUserRepository extends BaseRepository
 {
@@ -13,7 +20,6 @@ class ManageUserRepository extends BaseRepository
     {
         $this->query = User::query();
     }
-
     public function getAll()
     {
         return $this->query->get();
@@ -36,7 +42,8 @@ class ManageUserRepository extends BaseRepository
         $valid = false;
         if ($valid) {
             return response()->json([
-                'message' => 'There are valid assignments belonging to this user. Please close all assignments before disabling user.',
+                'message' => 'There are valid assignments belonging to this user.
+                              Please close all assignments before disabling user.',
                 'id' => $id,
                 'disable' => $valid
             ], 200);

@@ -23,10 +23,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'staff_code',
         'first_name',
         'last_name',
+        'date_of_birth',
+        'joined_date',
+        'gender',
+        'admin',
         'password',
-        'state'
+        'state',
+        'username',
+        'base_username',
+        'location',
     ];
 
     /**
@@ -46,5 +54,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'date_of_birth' => 'datetime',
+        'joined_date' => 'datetime',
     ];
 }
