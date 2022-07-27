@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\UserResource;
 use App\Repositories\BaseRepository;
 use App\Models\User;
 class ManageUserRepository extends BaseRepository
@@ -39,7 +40,9 @@ class ManageUserRepository extends BaseRepository
         if (!$request->has('sortByType')) {
             $data = $data->orderBy('admin', 'asc');
         }
-        
+
         return $data->paginate($this->default_paginate);
+        
+        return UserResource::collection($data->paginate($this->default_paginate));
     }   
 }
