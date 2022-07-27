@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->boolean('gender')->nullable();
             $table->string('username');
             $table->string('password');
+            $table->string('base_username');
             $table->boolean('admin')->default(false);
             $table->string('location');
             $table->integer('state')->default(0); // check validate 0 = new , 1 = active , -1 = disabled`
