@@ -56,7 +56,6 @@ export const ManageUser = () => {
 
   React.useEffect(() => {
     getApiUser();
-   
   } , []);
   
   const getApiUser = async ({
@@ -113,6 +112,7 @@ export const ManageUser = () => {
 
   }
   const handleFilter = (value) => {
+    setFilter(value);  
       let temp_page;
       let temp_search;
       let temp_sort;
@@ -124,15 +124,15 @@ export const ManageUser = () => {
         temp_page = page;
       }
       if(temp_sort){
-        temp_sort = sortArray;
+        temp_sort =  [...sortArray];
       }
+      setPage(1);
 
-    setFilter(value);
     getApiUser({
       filter: value,
       page: temp_page,
       temp_search: temp_search,
-      temp_sort: temp_sort,
+      sort : temp_sort,
     });
   }
 
@@ -148,23 +148,23 @@ export const ManageUser = () => {
         temp_page = page;
       }
       if(temp_sort){
-        temp_sort = sortArray;
+        temp_sort = [...sortArray];
       }
       getApiUser({
         filter: temp_filter,
         search: currentSearch,
         page: temp_page,
-        temp_sort: temp_sort,
+        sort: temp_sort,
       });
   }
-  const handlePageChange = (page) => {
-    setPage(page);
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber)
+    console.log(page)
+  
     let temp_filter;
     let temp_search;
-    let temp_page;
+    let temp_sort;
 
-
-    console.log(currentButton);
     if (currentButton !== 'All') {
       temp_filter = currentButton;
     }
@@ -173,14 +173,16 @@ export const ManageUser = () => {
       temp_search = currentSearch;
     }
 
-    if(temp_page >= 1){
-      temp_page = page;
+    if(temp_sort){
+      temp_sort = [...sortArray];
     }
+
 
     getApiUser({
       filter: temp_filter,
       search: temp_search,
-      page: temp_page,
+      page: pageNumber,
+      sort: temp_sort,
     });
   }
   const handleSort = (key, value) => {
@@ -231,7 +233,7 @@ export const ManageUser = () => {
     getApiUser({
       filter: temp_filter,
       search: currentSearch,
-      page: temp_page,
+      page: page,
       sort: tempSortArray,
     });
   }
