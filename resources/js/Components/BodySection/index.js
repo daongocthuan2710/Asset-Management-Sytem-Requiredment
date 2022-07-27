@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "../Sidebar";
 import './style.scss'
 import { ManageUser } from "../TableManageUser";
+import CreateNewUser from "../CreateNewUser";
 // no khong hieu o khuc nay`
 
 export default function BodySection() {
@@ -11,9 +12,9 @@ export default function BodySection() {
                 <Sidebar />
             </div>
             <div className='body-content col-lg-9 col-md-6 col-sm-12'>
-             
                 <ManageUser />
             </div>
+            <CreateNewUser/>
         </div>
     )
 }
