@@ -16,6 +16,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
+import { getUserEdit } from '../../Actions/user.action';
+import {useDispatch } from "react-redux";
 import axios from "axios";
 
 export const ManageUser = () => {
@@ -49,7 +51,7 @@ export const ManageUser = () => {
       isSortDESC: false,
     },
 
-   
+
   ])
 
   const [data, setData] = React.useState([]);
@@ -57,7 +59,7 @@ export const ManageUser = () => {
   React.useEffect(() => {
     getApiUser();
   } , []);
-  
+
   const getApiUser = async ({
     filter = undefined,
     search = undefined,
@@ -79,7 +81,7 @@ export const ManageUser = () => {
     if(page){
       array.push(`page=${page}`);
     }
-    
+
     if(sort){
       sort.forEach(item => {
         if (item.key === 'Staff Code') {
@@ -96,7 +98,7 @@ export const ManageUser = () => {
         }
       })
     }
-  
+
     for (let i = 0; i < array.length; i++) {
       if (i === 0) {
         url += "?" + array[i];
@@ -112,7 +114,7 @@ export const ManageUser = () => {
 
   }
   const handleFilter = (value) => {
-    setFilter(value);  
+    setFilter(value);
       let temp_page;
       let temp_search;
       let temp_sort;
@@ -160,7 +162,7 @@ export const ManageUser = () => {
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber)
     console.log(page)
-  
+
     let temp_filter;
     let temp_search;
     let temp_sort;
@@ -203,7 +205,7 @@ export const ManageUser = () => {
 
     const tempSortArray = JSON.parse(JSON.stringify(sortArray));
     const tempHeader = JSON.parse(JSON.stringify(tableHeader));
-    
+
     const index = tempSortArray.findIndex(item => item.key === key);
 
     const indexHeader = tempHeader.findIndex(item => item.name === key);
@@ -226,7 +228,6 @@ export const ManageUser = () => {
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
     }
-
     setTableHeader(tempHeader);
     setSortArray(tempSortArray);
 
@@ -238,11 +239,16 @@ export const ManageUser = () => {
     });
   }
 
+  const dispatch = useDispatch();
+  function handleOpenEditForm(userId = ''){
+    const displayValue = true;
+    dispatch(getUserEdit(displayValue,userId));
+  }
   return (
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
-      
+
           <Dropdown onSelect={()=>handleFilter}>
             <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
               <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
@@ -282,9 +288,9 @@ export const ManageUser = () => {
               </Form>
             </Dropdown.Menu>
           </Dropdown>
-    
+
             <div className="d-flex search-create">
-           
+
              <Form onSubmit={(e) => handleSearch(e)}>
               <InputGroup className="search-bar mb-1">
                   <Form.Control
@@ -299,18 +305,18 @@ export const ManageUser = () => {
                   </InputGroup.Text>
                 </InputGroup>
              </Form>
-  
+
               <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
               </div>
       </div>
       <Row>
-        
+
           <Table responsive="md">
             <thead>
             <tr >
             {tableHeader.map((item, index) => {
               return (
-             
+
                 <th  key={index} onClick={() => {
                   if(item.name !== 'Username') {
                     handleSort(item.name, item.isSortASC)
@@ -334,13 +340,13 @@ export const ManageUser = () => {
                 <td>{item.joined_date}</td>
                 <td>{item.admin == true ? 'Admin' : "Staff" }</td>
                 <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
+                  <FaPencilAlt onClick = {(e) => handleOpenEditForm(item.id)}/> {"  "}
                   <FaRegTimesCircle className="delete-icon" />
                 </td>
               </tr>
             ))}
 
-              
+
             </tbody>
           </Table>
           <Pagination
@@ -358,10 +364,10 @@ export const ManageUser = () => {
             hideFirstLastPages={true}
             onChange={(page) => handlePageChange(page)}
           />
-       
+
       </Row>
     </div>
   );
-  
+
 };
 

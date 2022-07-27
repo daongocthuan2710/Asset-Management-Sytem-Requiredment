@@ -5,8 +5,13 @@ import './style.scss'
 import { ManageUser } from "../TableManageUser";
 import Test from "../Test";
 import ManageAsset from "../ManageAsset";
+import userEditReducer from "../../Reducers/userEdit.reducer";
+import { useSelector} from "react-redux";
+import EditForm from "../ManageUser/EditUser";
 
 export default function BodySection() {
+    const userEditReducer = useSelector(state => state.userEditReducer.value);
+
     return (
         <div className='body-section'>
             <div className='sidebar col-lg-3 col-md-6 col-sm-12'>
@@ -21,7 +26,7 @@ export default function BodySection() {
                         <ManageUser />
                     </Route>
                     <Route path="/manage-user">
-                        <ManageUser />
+                        {(userEditReducer) ? <EditForm/> : <ManageUser />}
                     </Route>
                     <Route path="/manage-asset">
                         <ManageAsset />
