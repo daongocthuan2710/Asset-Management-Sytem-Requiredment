@@ -26,9 +26,20 @@ class ManageUserRepository extends BaseRepository
         ->sortByFullName($request)
         ->sortByStaffCode($request)
         ->sortByJoinedDate($request)
-        ->sortByType($request)
-        ->paginate($this->default_paginate);
+        ->sortByType($request);
+        if (!$request->has('sortByFullName')) {
+            $data = $data->orderBy('first_name', 'asc');
+        }
+        if (!$request->has('sortByStaffCode')) {
+            $data = $data->orderBy('staff_code', 'asc');
+        }
+        if (!$request->has('sortByJoinedDate')) {
+            $data = $data->orderBy('joined_date', 'asc');
+        }
+        if (!$request->has('sortByType')) {
+            $data = $data->orderBy('admin', 'asc');
+        }
         
-        return $data;
+        return $data->paginate($this->default_paginate);
     }   
 }

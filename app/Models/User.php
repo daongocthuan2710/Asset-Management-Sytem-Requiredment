@@ -58,8 +58,8 @@ class User extends Authenticatable
         ->when($request->has('search'), function ($query) use ($request) {
             $search = $request->query('search');
             $query
-                ->where("first_name", "LIKE", "%{$search}%")
-                ->orWhere("staff_code", "LIKE", "%{$search}%");
+                ->where("first_name", "ILIKE", "%{$search}%")
+                ->orWhere("staff_code", "ILIKE", "%{$search}%");
         });
     }
 
@@ -94,7 +94,7 @@ class User extends Authenticatable
         ->when($request->has('sortByJoinedDate'), function ($query) use ($request) {
             $sortByJoinedDate = $request->query('sortByJoinedDate');
             $query
-                ->orderBy("created_at", $sortByJoinedDate);
+                ->orderBy("joined_date", $sortByJoinedDate);
         });
     }
 

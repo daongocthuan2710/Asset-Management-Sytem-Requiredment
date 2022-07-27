@@ -4,6 +4,7 @@ import "./style.css";
 import Table from "react-bootstrap/Table";
 import {
   FaAngleDown,
+  FaAngleUp,
   FaPencilAlt,
   FaRegTimesCircle,
   FaFilter,
@@ -18,27 +19,229 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 
 export const ManageUser = () => {
-  const [currentButton, setFilter] = React.useState("");
+  const [currentButton, setFilter] = React.useState("All");
+  const [currentSearch, setCurrentSearch] = React.useState("");
+  const [page, setPage] = React.useState(1);
+  const [total, setTotal] = React.useState(1);
+  const [sortArray, setSortArray] = React.useState([]);
+  const [tableHeader, setTableHeader] = React.useState( [
+    {
+      name: "Staff Code",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Fullname",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Username",
+    },
+    {
+      name: "Joined Date",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Type",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+
+   
+  ])
+
   const [data, setData] = React.useState([]);
-  const [filterType, setFilterType] = React.useState("");
-  
 
   React.useEffect(() => {
-  getAll();
+    getApiUser();
+   
   } , []);
+  
+  const getApiUser = async ({
+    filter = undefined,
+    search = undefined,
+    page = 1,
+    sort = undefined,
 
-  const getAll = async () => {
-    const response = await axios.get("/api/manageUser");
-    console.log(response.data);
+  } = {}) => {
+    let url = "api/manageUser";
+    let array = [];
+
+    if (filter && filter !== "All") {
+      array.push(`filter=${filter === 'Admin' ? true : false}`);
+    }
+
+    if (search) {
+      array.push(`search=${search}`);
+    }
+
+    if(page){
+      array.push(`page=${page}`);
+    }
+    
+    if(sort){
+      sort.forEach(item => {
+        if (item.key === 'Staff Code') {
+        array.push(`sortByStaffCode=${item.value}`)
+        }
+        if (item.key === 'Fullname') {
+        array.push(`sortByFullName=${item.value}`)
+        }
+        if(item.key === 'Joined Date'){
+          array.push(`sortByJoinedDate=${item.value}`)
+        }
+        if(item.key === 'Type'){
+          array.push(`sortByType=${item.value}`)
+        }
+      })
+    }
+  
+    for (let i = 0; i < array.length; i++) {
+      if (i === 0) {
+        url += "?" + array[i];
+      } else {
+        url += "&" + array[i];
+      }
+    }
+
+    const response = await axios.get(url);
     setData(response.data.data);
+    setTotal(response.data.total);
     return response.data;
+
   }
+  const handleFilter = (value) => {
+      let temp_page;
+      let temp_search;
+      let temp_sort;
+      if(temp_search){
+        temp_search = currentSearch;
+      }
+
+      if(temp_page >= 1){
+        temp_page = page;
+      }
+      if(temp_sort){
+        temp_sort = sortArray;
+      }
+
+    setFilter(value);
+    getApiUser({
+      filter: value,
+      page: temp_page,
+      temp_search: temp_search,
+      temp_sort: temp_sort,
+    });
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+      let temp_filter;
+      let temp_page;
+      let temp_sort;
+      if (currentButton !== 'All') {
+        temp_filter = currentButton;
+      }
+      if(temp_page >= 1){
+        temp_page = page;
+      }
+      if(temp_sort){
+        temp_sort = sortArray;
+      }
+      getApiUser({
+        filter: temp_filter,
+        search: currentSearch,
+        page: temp_page,
+        temp_sort: temp_sort,
+      });
+  }
+  const handlePageChange = (page) => {
+    setPage(page);
+    let temp_filter;
+    let temp_search;
+    let temp_page;
+
+
+    console.log(currentButton);
+    if (currentButton !== 'All') {
+      temp_filter = currentButton;
+    }
+
+    if (currentSearch !== '') {
+      temp_search = currentSearch;
+    }
+
+    if(temp_page >= 1){
+      temp_page = page;
+    }
+
+    getApiUser({
+      filter: temp_filter,
+      search: temp_search,
+      page: temp_page,
+    });
+  }
+  const handleSort = (key, value) => {
+    let temp_filter;
+    let temp_page;
+    let temp_search;
+
+    if (currentButton !== 'All') {
+      temp_filter = currentButton;
+    }
+
+    if(temp_page >= 1){
+      temp_page = page;
+    }
+    if(temp_search){
+      temp_search = currentSearch;
+    }
+
+    const tempSortArray = JSON.parse(JSON.stringify(sortArray));
+    const tempHeader = JSON.parse(JSON.stringify(tableHeader));
+    
+    const index = tempSortArray.findIndex(item => item.key === key);
+
+    const indexHeader = tempHeader.findIndex(item => item.name === key);
+
+    if (index === -1 && value) {
+      tempSortArray.push({
+        key: key,
+        value: 'desc',
+      });
+      tempHeader[indexHeader].isSortASC = false;
+      tempHeader[indexHeader].isSortDESC = true;
+    }
+    if (index !== -1 && !value) {
+      tempSortArray.splice(index, 1);
+      tempHeader[indexHeader].isSortASC = true;
+      tempHeader[indexHeader].isSortDESC = false;
+    }
+    if (index !== -1 && value) {
+      tempSortArray[index].value = 'desc';
+      tempHeader[indexHeader].isSortASC = false;
+      tempHeader[indexHeader].isSortDESC = true;
+    }
+
+    setTableHeader(tempHeader);
+    setSortArray(tempSortArray);
+
+    getApiUser({
+      filter: temp_filter,
+      search: currentSearch,
+      page: temp_page,
+      sort: tempSortArray,
+    });
+  }
+
   return (
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
       
-          <Dropdown>
+          <Dropdown onSelect={()=>handleFilter}>
             <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
               <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
               <div className="fb-icon">
@@ -53,7 +256,8 @@ export const ManageUser = () => {
                   className="mx-4 font-weight-bold"
                   label="All"
                   checked={currentButton === "All"}
-                  onChange={() => setFilter("All")}
+                  onChange={() => handleFilter("All")}
+                  eventKey="All"
                 />
                 <Form.Check
                   type="checkbox"
@@ -61,7 +265,8 @@ export const ManageUser = () => {
                   className="mx-4 my-2 font-weight-bold"
                   label="Admin"
                   checked={currentButton === "Admin"}
-                  onChange={() => setFilter("Admin")}
+                  onChange={() => handleFilter("Admin")}
+                  eventKey="Admin"
                 />
                 <Form.Check
                   type="checkbox"
@@ -69,7 +274,8 @@ export const ManageUser = () => {
                   className="mx-4 font-weight-bold"
                   label="Staff"
                   checked={currentButton === "Staff"}
-                  onChange={() => setFilter("Staff")}
+                  onChange={() => handleFilter("Staff")}
+                  eventkey="Staff"
                 />
               </Form>
             </Dropdown.Menu>
@@ -77,16 +283,20 @@ export const ManageUser = () => {
     
             <div className="d-flex search-create">
            
+             <Form onSubmit={(e) => handleSearch(e)}>
               <InputGroup className="search-bar mb-1">
-                <Form.Control
-                  placeholder="Search"
-                  aria-label="Text input with dropdown button"
-                />
-                <InputGroup.Text id="basic-addon2">
-                  {" "}
-                  <FaSearch />
-                </InputGroup.Text>
-              </InputGroup>
+                  <Form.Control
+                    placeholder="Search"
+                    aria-label="Text input with dropdown button"
+                    value={currentSearch}
+                    onChange={(e) => setCurrentSearch(e.target.value)}
+                  />
+                  <InputGroup.Text id="basic-addon2">
+                    {" "}
+                    <FaSearch />
+                  </InputGroup.Text>
+                </InputGroup>
+             </Form>
   
               <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
               </div>
@@ -95,31 +305,31 @@ export const ManageUser = () => {
         
           <Table responsive="md">
             <thead>
-              <tr>
-                <th>
-                  Staff Code <FaAngleDown />
+            <tr >
+            {tableHeader.map((item, index) => {
+              return (
+             
+                <th  key={index} onClick={() => {
+                  if(item.name !== 'Username') {
+                    handleSort(item.name, item.isSortASC)
+                  }
+                }}>
+                  {item.name}&nbsp;
+                  {item.isSortASC && <FaAngleDown /> }
+                  {item.isSortDESC && <FaAngleUp /> }
                 </th>
-                <th>
-                  Fullname <FaAngleDown />
-                </th>
-                <th>
-                  Username
-                </th>
-                <th>
-                  Joined Date <FaAngleDown />
-                </th>
-                <th>
-                  Type <FaAngleDown />
-                </th>
-              </tr>
+
+              )
+            })}
+            </tr>
             </thead>
             <tbody>
             {data.length>0 && data.map((item) => (
               <tr key={item.id}>
                 <td>{item.staff_code}</td>
-                <td>{item.firstname}{item.last_name}</td>
-                <td>{item.joined_date}</td>
+                <td>{item.first_name}&nbsp;{item.last_name}</td>
                 <td>{item.username}</td>
+                <td>{item.joined_date}</td>
                 <td>{item.admin == true ? 'Admin' : "Staff" }</td>
                 <td className="td-without_border">
                   <FaPencilAlt /> {"  "}
@@ -132,9 +342,9 @@ export const ManageUser = () => {
             </tbody>
           </Table>
           <Pagination
-            activePage={1}
-            itemsCountPerPage={3}
-            totalItemsCount={15}
+            activePage={page}
+            itemsCountPerPage={20}
+            totalItemsCount={total}
             pageRangeDisplayed={3}
             prevPageText="Previous"
             nextPageText="Next"
@@ -144,6 +354,7 @@ export const ManageUser = () => {
             linkClassNext="page-next"
             activeLinkClass="pagination-active"
             hideFirstLastPages={true}
+            onChange={(page) => handlePageChange(page)}
           />
        
       </Row>
