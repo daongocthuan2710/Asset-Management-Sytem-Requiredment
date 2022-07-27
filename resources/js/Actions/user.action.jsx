@@ -39,8 +39,6 @@ export const getUserEdit = (displayValue = false,userId) => {
         const response = await UserService.getUserEdit(userId)
         const userEdit = response.data
         const code = response.code
-        console.log('displayValue', displayValue);
-        console.log('userEdit', userEdit);
         if (code === SUCCESS) {
             dispatch({
                 type: GET_USER_EDIT,

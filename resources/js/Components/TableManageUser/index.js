@@ -21,10 +21,9 @@ import {useDispatch } from "react-redux";
 
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("");
-  const demoData = ['Đào Ngọc Thuận','Đào Ngọc Thuận','Đào Ngọc Thuận'];
   const dispatch = useDispatch();
 
-  function handleOpenEditForm(userId = null){
+  function handleOpenEditForm(userId = ''){
     const displayValue = true;
     dispatch(getUserEdit(displayValue,userId));
   }
@@ -110,19 +109,6 @@ export const ManageUser = () => {
               </tr>
             </thead>
             <tbody>
-                { demoData.map((item,index) =>{
-                        <tr key ={index}>
-                        <td>SD1901</td>
-                        <td>{item}</td>
-                        <td>annt</td>
-                        <td>20/06/2019</td>
-                        <td>Staff</td>
-                        <td className="td-without_border">
-                          <FaPencilAlt /> {"  "}
-                          <FaRegTimesCircle className="delete-icon" />
-                        </td>
-                      </tr>
-                    })}
                     <tr>
                         <td>SD1901</td>
                         <td>Dao Ngoc Thuan</td>

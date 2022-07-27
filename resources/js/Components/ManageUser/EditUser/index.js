@@ -4,24 +4,28 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Row, Container, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserEdit } from "../../../Actions/user.action";
-
+import userEditReducer from "../../../Reducers/userEdit.reducer";
+import { getUserEdit } from '../../../Actions/user.action';
 export default function EditForm() {
-    const userEditInfo = useSelector(state => state.userEditReducer.userEditInfo);
+    const userEditInfo = useSelector(
+        (state) => state.userEditReducer.userEditInfo
+    );
     const [date, setDate] = useState(userEditInfo.date_of_birth);
     const [joinDate, setJoinDate] = useState(userEditInfo.joined_date);
-    const [selectedRadio, setSelectedRadio] = useState(userEditInfo.gender ? 'Male' : 'Female');
-    const type = (userEditInfo.type) ? 'Admin' : 'Staff';
+    const [selectedRadio, setSelectedRadio] = useState(
+        userEditInfo.gender ? "Male" : "Female"
+    );
+    const type = userEditInfo.type ? "Admin" : "Staff";
 
     const dispatch = useDispatch();
     function handleCloseEditForm(e) {
         e.preventDefault();
-        const userId = null;
+        const userId = 1;
         const displayValue = false;
         dispatch(getUserEdit(displayValue, userId));
     }
     return (
-        <Container style = {{width: "100% !impotant" }}>
+        <Container style={{ width: "100% !impotant" }}>
             <Row className="mb-3">
                 <Col md={12} className="editUser">
                     Edit User
@@ -37,7 +41,7 @@ export default function EditForm() {
                             <Col md={10}>
                                 <Form.Control
                                     type="input"
-                                    value = {userEditInfo.first_name}
+                                    value={userEditInfo.first_name}
                                     disabled
                                 />
                             </Col>
@@ -51,7 +55,7 @@ export default function EditForm() {
                             <Col md={10}>
                                 <Form.Control
                                     type="text"
-                                    value = {userEditInfo.last_name}
+                                    value={userEditInfo.last_name}
                                     disabled
                                 />
                             </Col>
@@ -84,10 +88,16 @@ export default function EditForm() {
                                             <Form.Check.Input
                                                 type="radio"
                                                 id="Female"
-                                                checked = {selectedRadio == labelName}
+                                                checked={
+                                                    selectedRadio == labelName
+                                                }
                                                 name="groupGender"
-                                                isInvalid = {selectedRadio == labelName}
-                                                onChange = {(e)=>setSelectedRadio(labelName)}
+                                                isInvalid={
+                                                    selectedRadio == labelName
+                                                }
+                                                onChange={(e) =>
+                                                    setSelectedRadio(labelName)
+                                                }
                                             />
                                             <Form.Check.Label
                                                 style={{ color: "black" }}
@@ -142,7 +152,6 @@ export default function EditForm() {
                             <Button
                                 variant="outline-secondary"
                                 onClick={handleCloseEditForm}
-                                // type="submit"
                             >
                                 Cancel
                             </Button>
