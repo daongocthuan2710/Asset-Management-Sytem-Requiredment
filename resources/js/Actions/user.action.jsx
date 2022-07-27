@@ -20,7 +20,6 @@ export const getUserInfo = () => {
         const response = await UserService.getUserInfo()
         const userInfo = response.data
         const code = response.code
-        console.log('a', userInfo);
         if (code === SUCCESS) {
             dispatch({
                 type: GET_USER_INFO,
