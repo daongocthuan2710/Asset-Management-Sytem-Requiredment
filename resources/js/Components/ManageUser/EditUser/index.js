@@ -3,12 +3,25 @@ import "./style.scss";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Row, Container, Col } from "reactstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserEdit } from "../../../Actions/user.action";
 
 export default function EditForm() {
-    const [date, setDate] = useState("1966-11-10");
-    const [joinDate, setJoinDate] = useState("2019-04-09");
+    const userEditInfo = useSelector(state => state.userEditReducer.userEditInfo);
+    const [date, setDate] = useState(userEditInfo.date_of_birth);
+    const [joinDate, setJoinDate] = useState(userEditInfo.joined_date);
+    const [selectedRadio, setSelectedRadio] = useState(userEditInfo.gender ? 'Male' : 'Female');
+    const type = (userEditInfo.type) ? 'Admin' : 'Staff';
+
+    const dispatch = useDispatch();
+    function handleCloseEditForm(e) {
+        e.preventDefault();
+        const userId = null;
+        const displayValue = false;
+        dispatch(getUserEdit(displayValue, userId));
+    }
     return (
-        <Container>
+        <Container style = {{width: "100% !impotant" }}>
             <Row className="mb-3">
                 <Col md={12} className="editUser">
                     Edit User
@@ -22,10 +35,11 @@ export default function EditForm() {
                                 <Form.Label>First Name</Form.Label>
                             </Col>
                             <Col md={10}>
-                                <Form.Control type="input" placeholder="An" disabled/>
-                                {/* <Form.Text className="text-muted">
-                            { We'll never share your email with anyone else. }
-                        </Form.Text> */}
+                                <Form.Control
+                                    type="input"
+                                    value = {userEditInfo.first_name}
+                                    disabled
+                                />
                             </Col>
                         </Row>
                     </Form.Group>
@@ -37,7 +51,7 @@ export default function EditForm() {
                             <Col md={10}>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Tran Van"
+                                    value = {userEditInfo.last_name}
                                     disabled
                                 />
                             </Col>
@@ -63,15 +77,17 @@ export default function EditForm() {
                             <Col md={2}>
                                 <Form.Label>Gender</Form.Label>
                             </Col>
-                            <Col md={10} style = {{display:"inherit"}}>
+                            <Col md={10} style={{ display: "inherit" }}>
                                 {["Female", "Male"].map((labelName) => (
                                     <div key={labelName} className="mb-3">
                                         <Form.Check inline>
                                             <Form.Check.Input
                                                 type="radio"
                                                 id="Female"
+                                                checked = {selectedRadio == labelName}
                                                 name="groupGender"
-                                                isInvalid
+                                                isInvalid = {selectedRadio == labelName}
+                                                onChange = {(e)=>setSelectedRadio(labelName)}
                                             />
                                             <Form.Check.Label
                                                 style={{ color: "black" }}
@@ -107,10 +123,9 @@ export default function EditForm() {
                                 <Form.Label>Type</Form.Label>
                             </Col>
                             <Col md={10}>
-                                <Form.Control as="select" defaultValue="Staff">
+                                <Form.Control as="select" defaultValue={type}>
                                     <option>Staff</option>
-                                    <option>Amir Conley</option>
-                                    <option>Barney Hirst</option>
+                                    <option>Admin</option>
                                 </Form.Control>
                             </Col>
                         </Row>
@@ -124,7 +139,11 @@ export default function EditForm() {
                             >
                                 Submit
                             </Button>
-                            <Button variant="outline-secondary" type="submit">
+                            <Button
+                                variant="outline-secondary"
+                                onClick={handleCloseEditForm}
+                                // type="submit"
+                            >
                                 Cancel
                             </Button>
                         </Col>

@@ -11,7 +11,6 @@ export default function Sidebar() {
     const [sidebarName, setSidebarName] = useState('Home')
     const dispatch = useDispatch()
     const data = useSelector(state => state.userReducer.userInfo);
-    console.log('sidebar ', data)
 
     let sidebarItems;
     // if (data.length > 0) {

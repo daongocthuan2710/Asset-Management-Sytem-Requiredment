@@ -10,20 +10,30 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import Pagination from "react-js-pagination";
-import Container from "react-bootstrap/Container";
+// import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
+import { getUserEdit } from '../../Actions/user.action';
+import {useDispatch } from "react-redux";
 
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("");
+  const demoData = ['Đào Ngọc Thuận','Đào Ngọc Thuận','Đào Ngọc Thuận'];
+  const dispatch = useDispatch();
+
+  function handleOpenEditForm(userId = null){
+    const displayValue = true;
+    dispatch(getUserEdit(displayValue,userId));
+  }
+
   return (
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
-      
+
           <Dropdown>
             <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
               <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
@@ -60,9 +70,9 @@ export const ManageUser = () => {
               </Form>
             </Dropdown.Menu>
           </Dropdown>
-    
+
             <div className="d-flex search-create">
-           
+
               <InputGroup className="search-bar mb-1">
                 <Form.Control
                   placeholder="Search"
@@ -73,12 +83,12 @@ export const ManageUser = () => {
                   <FaSearch />
                 </InputGroup.Text>
               </InputGroup>
-  
+
               <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
               </div>
       </div>
       <Row>
-        
+
           <Table responsive="md">
             <thead>
               <tr>
@@ -100,83 +110,52 @@ export const ManageUser = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
-              <tr>
-                <td>SD1901</td>
-                <td>An Nguyen Thuy</td>
-                <td>annt</td>
-                <td>20/06/2019</td>
-                <td>Staff</td>
-                <td className="td-without_border">
-                  <FaPencilAlt /> {"  "}
-                  <FaRegTimesCircle className="delete-icon" />
-                </td>
-              </tr>
+                { demoData.map((item,index) =>{
+                        <tr key ={index}>
+                        <td>SD1901</td>
+                        <td>{item}</td>
+                        <td>annt</td>
+                        <td>20/06/2019</td>
+                        <td>Staff</td>
+                        <td className="td-without_border">
+                          <FaPencilAlt /> {"  "}
+                          <FaRegTimesCircle className="delete-icon" />
+                        </td>
+                      </tr>
+                    })}
+                    <tr>
+                        <td>SD1901</td>
+                        <td>Dao Ngoc Thuan</td>
+                        <td>annt</td>
+                        <td>20/06/2019</td>
+                        <td>Staff</td>
+                        <td className="td-without_border">
+                          <div onClick = {(e) => handleOpenEditForm(5)}><FaPencilAlt /></div> {"  "}
+                          <FaRegTimesCircle className="delete-icon" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>SD1901</td>
+                        <td>Dao Ngoc Thuan</td>
+                        <td>annt</td>
+                        <td>20/06/2019</td>
+                        <td>Staff</td>
+                        <td className="td-without_border">
+                          <FaPencilAlt /> {"  "}
+                          <FaRegTimesCircle className="delete-icon" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>SD1901</td>
+                        <td>Dao Ngoc Thuan</td>
+                        <td>annt</td>
+                        <td>20/06/2019</td>
+                        <td>Staff</td>
+                        <td className="td-without_border">
+                          <FaPencilAlt /> {"  "}
+                          <FaRegTimesCircle className="delete-icon" />
+                        </td>
+                      </tr>
             </tbody>
           </Table>
           <Pagination
@@ -193,10 +172,10 @@ export const ManageUser = () => {
             activeLinkClass="pagination-active"
             hideFirstLastPages={true}
           />
-       
+
       </Row>
     </div>
   );
-  
+
 };
 
