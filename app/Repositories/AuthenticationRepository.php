@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\UserResource;
 use App\Repositories\BaseRepository;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -24,11 +25,9 @@ class AuthenticationRepository extends BaseRepository
 
     public function getUserInformation($request)
     {
-        $bearerArr = explode(" ", $request->header('Authorization'));
-        $token = explode("|", $bearerArr[1]);
-        $bearer = DB::table('personal_access_tokens')->where('id', $token[0])->first();
-        $user = $this->query->where('id', $bearer->tokenable_id)->first();
-        return $user;
+        // find user by Bearer token
+        $sanctumUser = auth('sanctum')->user();
+        return $sanctumUser;
     }
 
     public function login($request)
@@ -53,12 +52,13 @@ class AuthenticationRepository extends BaseRepository
 
         $token = $user->createToken('authToken')->plainTextToken;
         return response()->json(
-            ['message' => 'Login Success ! '    ,
-            'username' => $user->username,
-            'state' => $user->state,
-            'admin' => $user->admin,
-            'token' => $token,
-            'token_type' => 'Bearer',
+            [
+                'message' => 'Login Success ! ',
+                'username' => $user->username,
+                'state' => $user->state,
+                'admin' => $user->admin,
+                'token' => $token,
+                'token_type' => 'Bearer',
             ],
             200
         );
