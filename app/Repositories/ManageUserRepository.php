@@ -77,12 +77,13 @@ class ManageUserRepository extends BaseRepository
         //return data for display
         else {
             return response()->json([
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'date_of_birth' => $user->date_of_birth,
-                'joined_date' => $user->joined_date,
-                'gender' => $user->gender,
-                'type' => $user->admin,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'date_of_birth' => $user->date_of_birth,
+            'joined_date' => $user->joined_date,
+            'gender' => $user->gender,
+            'type' => $user->admin,
+            'id' => $user->id,
             ], 200);
         }
     }
