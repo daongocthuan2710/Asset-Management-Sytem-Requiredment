@@ -71,7 +71,7 @@ const CreateNewUser = () => {
       const headers = { headers: { Authorization: `Bearer ${token}` } };
       const response = await axios.post("/user/store", data, headers);
       console.log(response);
-      // window.location.href = "/manage-user";
+      window.location.href = "/manage-user";
     } catch (err) {
       console.log(err.response.data.message);
       setMess(err.response.data.message);
