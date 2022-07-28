@@ -5,9 +5,14 @@ namespace App\Repositories;
 use App\Http\Resources\UserResource;
 use App\Repositories\BaseRepository;
 use App\Models\User;
-use http\Env\Request;
-use Illuminate\Support\Facades\DB;
+use App\Rules\JoinedDateWeekend;
+use App\Rules\LatinName;
+use App\Rules\Over18;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\NoReturn;
 use phpDocumentor\Reflection\Types\Integer;
 
@@ -19,11 +24,23 @@ class ManageUserRepository extends BaseRepository
     {
         $this->query = User::query();
     }
-
     public function getAll()
     {
         return $this->query->get();
     }
+    public function disable($id)
+    {
+        $user = $this->query->findOrFail($id);
+        if ($user) {
+            $user->state = -1;
+            $user = new UserResource($user);
+            return response()->json([
+                'message' => 'update state user disable',
+                'new_state' => $user
+            ]);
+        }
+    }
+
     public function manageUser($request)
     {
         //check admin

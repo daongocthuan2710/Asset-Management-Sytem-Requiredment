@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateUserRequest;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
 
@@ -13,32 +14,12 @@ class ManageUserController extends Controller
     {
         $this->ManageUserService = $manageUserService;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return $this->ManageUserService->getAll();
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
@@ -67,15 +48,24 @@ class ManageUserController extends Controller
         return $this->ManageUserService->update($request, $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function store(Request $request,)
     {
-        //
+        // $validated = $request->validated();
+        // dd($validated);
+        $user = $this->ManageUserService->store($request);
+        return response([
+            'message' => 'Created user status',
+            'user' => $user
+        ], 201);
+    }
+
+    public function disable($id)
+    {
+        return $this->ManageUserService->disable($id);
+    }
+    public function canDisable($id)
+    {
+        return $this->ManageUserService->canDisable($id);
     }
     public function manageUser(Request $request)
     {

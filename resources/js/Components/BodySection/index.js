@@ -3,6 +3,8 @@ import { Route, Switch } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import "./style.scss";
 import { ManageUser } from "../TableManageUser";
+import CreateNewUser from "../CreateNewUser";
+// no khong hieu o khuc nay`
 import Test from "../Test";
 import ManageAsset from "../ManageAsset";
 import userEditReducer from "../../Reducers/userEdit.reducer";
@@ -30,6 +32,9 @@ export default function BodySection() {
                     <Route path="/manage-asset">
                         <ManageAsset />
                     </Route>
+                    <Route path="/create-user">
+                        <CreateNewUser />
+                    </Route>
                     <Route path="/manage-assignment">
                         <Test />
                     </Route>
@@ -41,6 +46,7 @@ export default function BodySection() {
                     </Route>
                 </Switch>
             </div>
+
         </div>
     );
 }
