@@ -16,17 +16,17 @@ return new class extends Migration
         Schema::create('assignment', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->integer('asset_id', false, true);
-            $table->integer('admin_id', false, true)->nullable();
+            $table->integer('assigned_by', false, true)->nullable();
             $table->integer('staff_id', false, true);
-            $table->date('assign_date');
+            $table->date('assigned_date');
             $table->string('note')->nullable();
             $table->integer('state');
             //-1 : decline, 0 : waiting for acceptance, 1: accepted
 
             // Foreign Key
-            // $table->foreign('asset_id')->references('id')->on('asset');
-            // $table->foreign('admin_id')->references('id')->on('user');
-            // $table->foreign('staff_id')->references('id')->on('user');
+            $table->foreign('asset_id')->references('id')->on('asset');
+            $table->foreign('assigned_by')->references('id')->on('user');
+            $table->foreign('staff_id')->references('id')->on('user');
 
             //Time stamp
             $table->timestamps();

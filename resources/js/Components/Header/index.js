@@ -24,7 +24,6 @@ export default function Header() {
     const dispatch = useDispatch()
 
     const userInformation = useSelector(state => state.userReducer.userInfo)
-
     const handleShow = () => {
         setConfirmLogOut(true);
         setTimeout(() => setConfirmLogOut(false), 1);

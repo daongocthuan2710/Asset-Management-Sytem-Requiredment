@@ -8,21 +8,22 @@ class UserResource extends JsonResource
 {
     public function toArray($request)
     {
-        $fullName = $this->last_name . ' ' . $this->first_name;
-        if ($this->gender) {
-            $gender = 'Male';
-        } elseif ($this->gender == null) {
-            $gender = '';
-        } else {
-            $gender = 'Female';
-        }
+        // Gender
+        $gender = $this->gender;
+        if ($gender === 1) $gender = 'Male';
+        elseif ($gender === 0) $gender = 'Female';
+        else $gender = '';
+        // Date Format
+        $newDate = date("d/m/Y", strtotime($this->joined_date));
+        //Full Name
+        $fullName = ucfirst($this->first_name) . ' ' . ucwords($this->last_name);
         return [
-            'id' => $this->id,
+            'staff_code' => $this->staff_code,
             'full_name' => $fullName,
             'username' => $this->username,
             'birthday' => $this->date_of_birth,
             'gender' => $gender,
-            'joined_date' => $this->joined_date,
+            'joined_date' => $newDate,
             'admin' => $this->admin,
             'location' => $this->location,
             'state' => $this->state
