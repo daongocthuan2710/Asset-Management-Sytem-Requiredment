@@ -16,10 +16,11 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
-import { getUserEdit } from "../../Actions/user.action";
-import { useDispatch } from "react-redux";
 import axios from "axios";
-
+import Swal from "sweetalert2";
+import { getUserEdit } from "../../Actions/user.action";
+import { useDispatch,useSelector } from "react-redux";
+import userEditReducer from "../../Reducers/userEdit.reducer";
 export const ManageUser = () => {
     const [currentButton, setFilter] = React.useState("All");
     const [currentSearch, setCurrentSearch] = React.useState("");
@@ -235,9 +236,33 @@ export const ManageUser = () => {
     };
 
     const dispatch = useDispatch();
-    function handleOpenEditForm(userId = "") {
+    async function handleOpenEditForm(userId = ""){
         const displayValue = true;
-        dispatch(getUserEdit(displayValue, userId));
+        const response = await dispatch(getUserEdit(displayValue, userId));
+        handleShowMessage(response);
+    }
+
+    function handleShowMessage(response) {
+        const message = response.data == undefined ? response.message : response.data.message;
+        const code = response.code;
+        switch (code) {
+            case 200:
+                {
+                    //
+                }
+                break;
+            case 401:
+                {
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                }
+                break;
+        }
     }
     return (
         <div className="containermanageuser">
