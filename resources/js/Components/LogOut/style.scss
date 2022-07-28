@@ -17,16 +17,6 @@
         font-size: 20px;
     }
 }
-.modal-dialog {
-    width: 250px !important;
-}
-.modal-footer {
-    flex-direction: column !important;
-    background: #fafcfc;
-    color: #4d5154;
-    border-width: 0 !important;
-    padding: 15px !important;
-}
 #pwSaveButton{
     background: #E9424D;
     color: #FEFAFA;
@@ -36,13 +26,6 @@
     background: #FAFCFC;
     color: #7e8183;
     border-color: #7e8183;
-}
-#logoutText{
-    padding-left: 30px;
-    margin-bottom: 15px;
-}
-#logoutButtonGroup{
-    padding-left: 30px;
 }
 #logoutModal{
     width: 250px;
