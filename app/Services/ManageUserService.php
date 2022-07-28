@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Requests\CreateUserRequest;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Repositories\ManageUserRepository;
@@ -51,14 +50,16 @@ class ManageUserService extends BaseService
             $staff_code = $this->createNewStaffCode($id);
             $password = Hash::make($this->generatePassword($username, $dob));
             $location = $sanctumUser->location;
-            // $password = $this->generatePassword($username, $dob);
+//             $password = $this->generatePassword($username, $dob);
             $user->update([
                 "staff_code" => $staff_code,
                 "username" => $username,
                 "password" => $password,
                 "location" => $location
             ]);
-            return $user;
+            return response()->json([
+                'user' => $user
+            ], 201);
         }
     }
     protected function createBaseUsername(string $first_name, string $last_name): string

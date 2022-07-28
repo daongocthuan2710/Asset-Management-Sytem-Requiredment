@@ -44,6 +44,6 @@ class JoinedDateWeekend implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Joined date is Saturday or Sunday. Please select a different date';
     }
 }
