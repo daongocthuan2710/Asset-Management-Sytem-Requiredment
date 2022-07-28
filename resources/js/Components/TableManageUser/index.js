@@ -2,6 +2,8 @@ import React from "react";
 import "./style.scss";
 import "./style.css";
 import Table from "react-bootstrap/Table";
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
+
 import {
   FaAngleDown,
   FaAngleUp,
@@ -18,7 +20,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
 import { getUserEdit } from '../../Actions/user.action';
 import { useDispatch } from "react-redux";
+
 import axios from "axios";
+import Nodata  from "../../../assets/Nodata.gif"
 
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("All");
@@ -26,6 +30,7 @@ export const ManageUser = () => {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
+  
   const [tableHeader, setTableHeader] = React.useState([
     {
       name: "Staff Code",
@@ -107,6 +112,11 @@ export const ManageUser = () => {
       }
     }
 
+    Loading.dots({
+      clickToClose: true,
+      svgSize: '100px',
+      svgColor: 'rgb(220 53 69)',
+    });
     const response = await axios.get(
       url,
       {
@@ -115,7 +125,7 @@ export const ManageUser = () => {
         }
       }
     );
-
+    Loading.remove();
     setData(response.data.data);
     setTotal(response.data.meta.total);
     return response.data;
@@ -259,7 +269,6 @@ export const ManageUser = () => {
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
-      
           <Dropdown onSelect={()=>handleFilter}>
             <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
               <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
@@ -310,9 +319,9 @@ export const ManageUser = () => {
                     value={currentSearch}
                     onChange={(e) => setCurrentSearch(e.target.value)}
                   />
-                  <InputGroup.Text id="basic-addon2">
+                  <InputGroup.Text id="basic-addon2"  onClick={(e)=>handleSearch(e)}>
                     {" "}
-                    <FaSearch onClick={(e)=>handleSearch(e)} />
+                    <FaSearch />
                   </InputGroup.Text>
                 </InputGroup>
              </Form>
@@ -321,11 +330,12 @@ export const ManageUser = () => {
               </div>
       </div>
       <Row>
-
-        <Table responsive="md">
+        <div id="table-manage-user">
+        <Table i responsive="md">
           <thead>
             <tr >
-              {tableHeader.map((item, index) => {
+              {data.length > 0 ? (
+                tableHeader.map((item, index) => {
                 return (
 
                   <th key={index} onClick={() => {
@@ -339,11 +349,13 @@ export const ManageUser = () => {
                   </th>
 
                 )
-              })}
+              })
+              ) : ("")}
             </tr>
           </thead>
           <tbody>
-            {data && data.map((item) => (
+            {data.length > 0 ? (
+              data.length > 0 && data.map((item) => (
               <tr key={item.id}>
                 <td>{item.staff_code}</td>
                 <td>{item.full_name}</td>
@@ -351,16 +363,20 @@ export const ManageUser = () => {
                 <td>{item.joined_date}</td>
                 <td>{item.admin == true ? 'Admin' : "Staff"}</td>
                 <td className="td-without_border">
-                  <FaPencilAlt onClick={(e) => handleOpenEditForm(item.id)} /> {"  "}
+                  <FaPencilAlt onClick={() => handleOpenEditForm(item.id)} /> {"  "}
                   <FaRegTimesCircle className="delete-icon" />
                 </td>
               </tr>
-            ))}
+            ))
+            ) : (
+              <img src={Nodata}></img>
+            )}
 
 
           </tbody>
         </Table>
-        <Pagination
+        </div>
+        {total > 5 ? (<Pagination
           activePage={page}
           itemsCountPerPage={5}
           totalItemsCount={total}
@@ -374,8 +390,8 @@ export const ManageUser = () => {
           activeLinkClass="pagination-active"
           hideFirstLastPages={true}
           onChange={(page) => handlePageChange(page)}
-        />
-
+        />) : ("")}
+      
       </Row>
     </div>
   );
