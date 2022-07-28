@@ -11,7 +11,6 @@ import EditForm from "../ManageUser/EditUser";
 
 export default function BodySection() {
     const userEditReducer = useSelector((state) => state.userEditReducer.value);
-    console.log("userEditReducer", userEditReducer);
     return (
         <div className="body-section">
             <div className="sidebar col-lg-3 col-md-6 col-sm-12">

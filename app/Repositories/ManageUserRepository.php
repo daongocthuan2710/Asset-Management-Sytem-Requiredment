@@ -82,6 +82,7 @@ class ManageUserRepository extends BaseRepository
             'joined_date' => $user->joined_date,
             'gender' => $user->gender,
             'type' => $user->admin,
+            'id' => $user->id,
             ], 200);
         }
     }

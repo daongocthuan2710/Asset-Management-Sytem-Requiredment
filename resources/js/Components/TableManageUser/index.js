@@ -351,7 +351,7 @@ export const ManageUser = () => {
                                     </td>
                                     <td className="td-without_border">
                                         <FaPencilAlt
-                                            onClick={(e) =>
+                                            onClick={() =>
                                                 handleOpenEditForm(item.id)
                                             }
                                         />{" "}
