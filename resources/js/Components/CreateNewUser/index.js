@@ -49,7 +49,7 @@ const CreateNewUser = () => {
       setJoinedDate(date)
   
     }
-    ;
+    
     
     
   })
@@ -200,7 +200,7 @@ const CreateNewUser = () => {
             >
               Save
             </Button>
-            <Button variant="outline-secondary" onClick={e => window.location.href = "/manage-user"}>
+            <Button variant="outline-secondary" onClick={() => window.location.href = "/manage-user"}>
               Cancle
             </Button>
           </Form.Group>
