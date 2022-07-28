@@ -38,7 +38,6 @@ export default function Header() {
         if (userInformation.state === 0) setShowChangePasswordFirst(true)
         setTimeout(() => setShowChangePasswordFirst(false), 1);
     }, [userInformation.state])
-    // console.log(userInformation.username);
     return (
         <>
             <header>
