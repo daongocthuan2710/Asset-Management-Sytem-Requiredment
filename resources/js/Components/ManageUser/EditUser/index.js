@@ -13,7 +13,6 @@ export default function EditForm() {
     const userEditInfo = useSelector(
         (state) => state.userEditReducer.userEditInfo
     );
-    console.log(userEditInfo);
     const [date, setDate] = useState(userEditInfo.date_of_birth);
     const [joinDate, setJoinDate] = useState(userEditInfo.joined_date);
     const [selectedRadio, setSelectedRadio] = useState(

@@ -19,10 +19,10 @@ export default function BodySection() {
             <div className="body-content col-lg-9 col-md-6 col-sm-12">
                 <Switch>
                     <Route exact path="/">
-                        <ManageUser />
+                        <div>HOME</div>
                     </Route>
                     <Route path="/home">
-                        <ManageUser />
+                        <div>HOME</div>
                     </Route>
                     <Route path="/manage-user">
                         {userEditReducer ? <EditForm /> : <ManageUser />}

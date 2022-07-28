@@ -13,7 +13,7 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class ManageUserRepository extends BaseRepository
 {
-    public int $default_paginate = 20;
+    public int $default_paginate = 5;
 
     public function __construct()
     {
@@ -26,28 +26,29 @@ class ManageUserRepository extends BaseRepository
     }
     public function manageUser($request)
     {
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
         $data = $this->query
-        ->search($request)
-        ->filter($request)
-        ->sortByFullName($request)
-        ->sortByStaffCode($request)
-        ->sortByJoinedDate($request)
-        ->sortByType($request);
+            ->where('location', $sanctumUser->location)
+            ->search($request)
+            ->filter($request)
+            ->sortByFullName($request)
+            ->sortByStaffCode($request)
+            ->sortByJoinedDate($request)
+            ->sortByType($request);
         if (!$request->has('sortByFullName')) {
             $data = $data->orderBy('first_name', 'asc');
-        }
-        if (!$request->has('sortByStaffCode')) {
+        } elseif (!$request->has('sortByStaffCode')) {
             $data = $data->orderBy('staff_code', 'asc');
-        }
-        if (!$request->has('sortByJoinedDate')) {
+        } elseif (!$request->has('sortByJoinedDate')) {
             $data = $data->orderBy('joined_date', 'asc');
-        }
-        if (!$request->has('sortByType')) {
+        } else {
             $data = $data->orderBy('admin', 'asc');
         }
-
-        return $data->paginate($this->default_paginate);
 
         return UserResource::collection($data->paginate($this->default_paginate));
     }

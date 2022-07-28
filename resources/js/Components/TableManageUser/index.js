@@ -2,6 +2,8 @@ import React from "react";
 import "./style.scss";
 import "./style.css";
 import Table from "react-bootstrap/Table";
+import { Loading } from "notiflix/build/notiflix-loading-aio";
+
 import {
     FaAngleDown,
     FaAngleUp,
@@ -19,14 +21,17 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import userEditReducer from "../../Reducers/userEdit.reducer";
+import Nodata from "../../../assets/Nodata.gif";
+
 export const ManageUser = () => {
     const [currentButton, setFilter] = React.useState("All");
     const [currentSearch, setCurrentSearch] = React.useState("");
     const [page, setPage] = React.useState(1);
     const [total, setTotal] = React.useState(1);
     const [sortArray, setSortArray] = React.useState([]);
+
     const [tableHeader, setTableHeader] = React.useState([
         {
             name: "Staff Code",
@@ -105,9 +110,19 @@ export const ManageUser = () => {
             }
         }
 
-        const response = await axios.get(url);
+        Loading.dots({
+            clickToClose: true,
+            svgSize: "100px",
+            svgColor: "rgb(220 53 69)",
+        });
+        const response = await axios.get(url, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+        });
+        Loading.remove();
         setData(response.data.data);
-        setTotal(response.data.total);
+        setTotal(response.data.meta.total);
         return response.data;
     };
     const handleFilter = (value) => {
@@ -122,9 +137,10 @@ export const ManageUser = () => {
         if (temp_page >= 1) {
             temp_page = page;
         }
-        if (temp_sort) {
+        if (sortArray.length > 0) {
             temp_sort = [...sortArray];
         }
+
         setPage(1);
 
         getApiUser({
@@ -146,9 +162,10 @@ export const ManageUser = () => {
         if (temp_page >= 1) {
             temp_page = page;
         }
-        if (temp_sort) {
+        if (sortArray.length > 0) {
             temp_sort = [...sortArray];
         }
+
         getApiUser({
             filter: temp_filter,
             search: currentSearch,
@@ -172,7 +189,7 @@ export const ManageUser = () => {
             temp_search = currentSearch;
         }
 
-        if (temp_sort) {
+        if (sortArray.length > 0) {
             temp_sort = [...sortArray];
         }
 
@@ -236,14 +253,17 @@ export const ManageUser = () => {
     };
 
     const dispatch = useDispatch();
-    async function handleOpenEditForm(userId = ""){
+    async function handleOpenEditForm(userId = "") {
         const displayValue = true;
         const response = await dispatch(getUserEdit(displayValue, userId));
         handleShowMessage(response);
     }
 
     function handleShowMessage(response) {
-        const message = response.data == undefined ? response.message : response.data.message;
+        const message =
+            response.data == undefined
+                ? response.message
+                : response.data.message;
         const code = response.code;
         switch (code) {
             case 200:
@@ -264,6 +284,7 @@ export const ManageUser = () => {
                 break;
         }
     }
+
     return (
         <div className="containermanageuser">
             <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
@@ -310,8 +331,8 @@ export const ManageUser = () => {
                     </Dropdown.Menu>
                 </Dropdown>
 
-                <div className="d-flex search-create">
-                    <Form onSubmit={(e) => handleSearch(e)}>
+                <div id="search-create" className="d-flex search-create">
+                    <Form id="form-search" onSubmit={(e) => handleSearch(e)}>
                         <InputGroup className="search-bar mb-1">
                             <Form.Control
                                 placeholder="Search"
@@ -321,7 +342,10 @@ export const ManageUser = () => {
                                     setCurrentSearch(e.target.value)
                                 }
                             />
-                            <InputGroup.Text id="basic-addon2">
+                            <InputGroup.Text
+                                id="basic-addon2"
+                                onClick={(e) => handleSearch(e)}
+                            >
                                 {" "}
                                 <FaSearch />
                             </InputGroup.Text>
@@ -337,71 +361,90 @@ export const ManageUser = () => {
                 </div>
             </div>
             <Row>
-                <Table responsive="md">
-                    <thead>
-                        <tr>
-                            {tableHeader.map((item, index) => {
-                                return (
-                                    <th
-                                        key={index}
-                                        onClick={() => {
-                                            if (item.name !== "Username") {
-                                                handleSort(
-                                                    item.name,
-                                                    item.isSortASC
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        {item.name}&nbsp;
-                                        {item.isSortASC && <FaAngleDown />}
-                                        {item.isSortDESC && <FaAngleUp />}
-                                    </th>
-                                );
-                            })}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data.length > 0 &&
-                            data.map((item) => (
-                                <tr key={item.id}>
-                                    <td>{item.staff_code}</td>
-                                    <td>
-                                        {item.first_name}&nbsp;{item.last_name}
-                                    </td>
-                                    <td>{item.username}</td>
-                                    <td>{item.joined_date}</td>
-                                    <td>
-                                        {item.admin == true ? "Admin" : "Staff"}
-                                    </td>
-                                    <td className="td-without_border">
-                                        <FaPencilAlt
-                                            onClick={() =>
-                                                handleOpenEditForm(item.id)
-                                            }
-                                        />{" "}
-                                        {"  "}
-                                        <FaRegTimesCircle className="delete-icon" />
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </Table>
-                <Pagination
-                    activePage={page}
-                    itemsCountPerPage={20}
-                    totalItemsCount={total}
-                    pageRangeDisplayed={3}
-                    prevPageText="Previous"
-                    nextPageText="Next"
-                    itemClass="page-item"
-                    linkClass="page-link"
-                    linkClassPrev="page-prev"
-                    linkClassNext="page-next"
-                    activeLinkClass="pagination-active"
-                    hideFirstLastPages={true}
-                    onChange={(page) => handlePageChange(page)}
-                />
+                <div id="table-manage-user">
+                    <Table i responsive="md">
+                        <thead>
+                            <tr>
+                                {data.length > 0
+                                    ? tableHeader.map((item, index) => {
+                                          return (
+                                              <th
+                                                  key={index}
+                                                  onClick={() => {
+                                                      if (
+                                                          item.name !==
+                                                          "Username"
+                                                      ) {
+                                                          handleSort(
+                                                              item.name,
+                                                              item.isSortASC
+                                                          );
+                                                      }
+                                                  }}
+                                              >
+                                                  {item.name}&nbsp;
+                                                  {item.isSortASC && (
+                                                      <FaAngleDown />
+                                                  )}
+                                                  {item.isSortDESC && (
+                                                      <FaAngleUp />
+                                                  )}
+                                              </th>
+                                          );
+                                      })
+                                    : ""}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.length > 0 ? (
+                                data.length > 0 &&
+                                data.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>{item.staff_code}</td>
+                                        <td>{item.full_name}</td>
+                                        <td>{item.username}</td>
+                                        <td>{item.joined_date}</td>
+                                        <td>
+                                            {item.admin == true
+                                                ? "Admin"
+                                                : "Staff"}
+                                        </td>
+                                        <td className="td-without_border">
+                                            <FaPencilAlt
+                                                onClick={() =>
+                                                    handleOpenEditForm(item.id)
+                                                }
+                                            />{" "}
+                                            {"  "}
+                                            <FaRegTimesCircle className="delete-icon" />
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <img src={Nodata}></img>
+                            )}
+                        </tbody>
+                    </Table>
+                </div>
+                {total > 5 ? (
+                    <Pagination
+                        activePage={page}
+                        itemsCountPerPage={5}
+                        totalItemsCount={total}
+                        pageRangeDisplayed={3}
+                        prevPageText="Previous"
+                        nextPageText="Next"
+                        itemClass="page-item"
+                        linkClass="page-link"
+                        linkClassPrev="page-prev"
+                        linkClassNext="page-next"
+                        activeLinkClass="pagination-active"
+                        hideFirstLastPages={true}
+                        onChange={(page) => handlePageChange(page)}
+                    />
+                ) : (
+                    ""
+                )}
             </Row>
         </div>
     );
