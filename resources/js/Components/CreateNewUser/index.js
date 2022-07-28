@@ -9,142 +9,203 @@ const CreateNewUser = () => {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = React.useState("");
-  const [gender, setGender] = React.useState();
+  const [gender, setGender] = React.useState(null);
   const [joinedDate, setJoinedDate] = React.useState("");
-  const [type, setType] = React.useState();
+  const [type, setType] = React.useState(false);
   const [mess, setMess] = React.useState("");
+  const [enabled, setEnabled] = React.useState(true)
+  const [dateOfBirthError, setDateOfBirthError] = React.useState({error: false, message: ""})
+  const [joinedDateError, setJoinedDateError] = React.useState({error: false, message: ""})
+
   React.useEffect(() => {
-    console.log("SignIn");
-  }, []);
+    setEnabled(true)
+    if (firstName !== "" && lastName !== "" && dateOfBirth !== "" && gender !== null && joinedDate !== "" && type !== null)
+      setEnabled(false)
+  }, [firstName, lastName, dateOfBirth, gender, type, joinedDate]);
 
-  const checkForm = () => {
-    if (username === "" || password === "") {
-      // setMess("Please enter username and password");
-      return true;
+
+  const dateOfBirthCheck = ((date)=>{
+    
+    if (new Date(date).getFullYear() > (new Date().getFullYear()-18)){
+    setDateOfBirthError({error:true,message:"User is under 18. Please select a different date"});
+    setDateOfBirth("");}
+    else {
+      setDateOfBirth(date);
+      setDateOfBirthError({error:false,message:""})
     }
-    return false;
+    
+  })
+
+  const joinDateCheck = ((date)=>{
+    if (date<dateOfBirth){
+    setJoinedDateError({error: true, message: "Joined date is not later than Date of Birth. Please select a different date"})
+    setJoinedDate("")}
+    else if(new Date(date).getDay() !== 4 && new Date(date).getDay() !== 5){
+      setJoinedDateError({error: true, message: "Joined date is Saturday or Sunday. Please select a different date"})
+      setJoinedDate("")
+    }
+    else {
+      setJoinedDateError({error: false, message: ""})
+      setJoinedDate(date)
+  
+    }
+    ;
+    
+    
+  })
+
+
+  const handleSubmit = async (e) => {
+    try {
+      const data = {
+        "first_name": firstName,
+        "last_name": lastName,
+        "date_of_birth": dateOfBirth,
+        "gender": gender,
+        "joined_date": joinedDate,
+        "admin": type,
+      };
+      e.preventDefault();
+      console.log(data);
+      const token = localStorage.getItem('token')
+      const headers = { headers: { Authorization: `Bearer ${token}` } };
+      const response = await axios.post("/user/store", data, headers);
+      console.log(response);
+      // window.location.href = "/manage-user";
+    } catch (err) {
+      console.log(err.response.data.message);
+      setMess(err.response.data.message);
+    }
+
   }
-
-
-  const handleSubmit = (e) => {
-    const data = {
-      firstName: firstName,
-      lastName: lastName,
-      dateOfBirth: dateOfBirth,
-      gender: gender,
-      joinedDate: joinedDate,
-      type: type,
-
-    };
-    e.preventDefault();
-    console.log(data);
-
-  }
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const data = {
-  //       username: username,
-  //       password: password,
-  //     };
-
-  //     const response = await axios.post("/login", data);
-
-  //     console.log(response.data.message);
-  //     localStorage.setItem("token", response.data.token);
-
-
-  //     window.location.href = "/HomePage";
-  //   } catch (err) {
-  //     console.log(err.response.data.message);
-  //     setMess(err.response.data.message);
-  //   }
-  // };
 
   return (
     <>
       <Container>
-        <Row>
-          <Col xs={12} md={8}>
-            <div className="content">
-              <Form onSubmit={(e) => handleSubmit(e)}>
-                <Form.Group className="mb-3" controlId="formBasicText">
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </Form.Group>
+        <h4><b>Create New User</b></h4><br></br>
+        <Form onSubmit={(e) => handleSubmit(e)}>
+          <Form.Group controlId="formBasicText">
+            <Row>
+              <Col >
+                <Form.Label>First Name</Form.Label>
+              </Col><Col md={8}>
+                <Form.Control
+                  required
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </Col>
+            </Row>
+          </Form.Group>
+          <br></br>
+          <Form.Group controlId="formBasicText">
+            <Row>
+              <Col>
+                <Form.Label>Last Name</Form.Label>
+              </Col><Col md={8}>
+                <Form.Control
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </Col>
+            </Row>
+          </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicText">
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicDate">
-                  <Form.Label>Date of Birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={dateOfBirth}
-                    placeholder=""
-                    onChange={(e) => setDateOfBirth(e.target.value)}
-                  />
-                </Form.Group>
+          <br></br>
+          <Form.Group controlId="formBasicDate">
+            <Row>
+              <Col >
+                <Form.Label>Date of Birth</Form.Label>
+              </Col><Col md={8}>
+                <Form.Control
+                  required 
+                  type="date"
+                  onChange={(e) => dateOfBirthCheck(e.target.value)}
+                  isInvalid={dateOfBirthError.error}
+                />
+                <Form.Control.Feedback type="invalid">{dateOfBirthError.message}</Form.Control.Feedback>
+              </Col>
+            </Row>
 
-                <Form.Group className="mb-3" controlId="formGender" >
-                  <Form.Label>Gender</Form.Label>
-                  <Form.Check
-                    name="gender"
-                    type="radio"
-                    value={false}
-                    onChange={(e) => setGender(e.target.value)}
-                    label="Female"
-                  />
-                  <Form.Check
-                    name="gender"
-                    type="radio"
-                    value={true}
-                    onChange={(e) => setGender(e.target.value)}
-                    label="Male"
-                  />
-                </Form.Group>
+          </Form.Group>
+          <br></br>
+          <Form.Group controlId="formGender" >
+            <Row>
+              <Col>
+                <Form.Label>Gender</Form.Label>
+              </Col><Col md={4}>
+                <Form.Check
+                  name="gender"
+                  type="radio"
+                  value={false}
+                  onChange={(e) => setGender(e.target.value)}
+                  label="Female"
+                /></Col>
+              <Col md={4}>
+                <Form.Check
+                  name="gender"
+                  type="radio"
+                  value={true}
+                  onChange={(e) => setGender(e.target.value)}
+                  label="Male"
+                /></Col>
+            </Row>
+          </Form.Group>
 
+          <br></br>
+          <Form.Group controlId="formJoinedDate">
+            <Row>
+              <Col>
+                <Form.Label>Joined Date</Form.Label>
+              </Col><Col md={8}>
+                <Form.Control
+                  type="date"
+                  onChange={(e) => joinDateCheck(e.target.value)}
+                  isInvalid={joinedDateError.error}
+                />
+                <Form.Control.Feedback type="invalid">{joinedDateError.message}</Form.Control.Feedback>
+              </Col>
+            </Row>
+          </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formJoinedDate">
-                  <Form.Label>Joined Date</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={joinedDate}
-                    placeholder=""
-                    onChange={(e) => setJoinedDate(e.target.value)}
-                  />
-                </Form.Group>
+          <br></br>
+          <Form.Group controlId="formBasicSelect">
+            <Row>
+              <Col>
 
+                <Form.Label>Type</Form.Label>
+              </Col><Col md={8}>
+                <Form.Control
+                  as="select"
+                  onChange={e => {
+                    setType(e.target.value)
+                  }}
+                >
+                  <option value={false}>Staff</option>
+                  <option value={true}>Admin</option>
 
-                <Form.Group controlId="formBasicSelect">
-                  <Form.Label>Type</Form.Label>
-                  <Form.Control
-                    as="select"
-                    onChange={e => {
-                      setType(e.target.value)
-                    }}
-                  >
-                    <option value={true}>Admin</option>
-                    <option value={false}>Staff</option>
-                  </Form.Control>
-                </Form.Group>
+                </Form.Control>
+              </Col>
+            </Row>
+          </Form.Group>
+          <br></br>
+          <p className="err-msg">{mess} </p>
+          <Form.Group className="text-end">
+            <Button className="me-3"
+              variant="danger"
+              type="submit"
+              disabled={enabled}
+            >
+              Save
+            </Button>
+            <Button variant="outline-secondary" onClick={e => window.location.href = "/manage-user"}>
+              Cancle
+            </Button>
+          </Form.Group>
+        </Form>
 
-                <Button className="btn-submit" disabled={''} type="submit">
-                  Save
-                </Button>
-              </Form>
-            </div>
-          </Col>
-        </Row>
       </Container>
     </>
   );

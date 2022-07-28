@@ -306,7 +306,7 @@ export const ManageUser = () => {
                 </InputGroup>
              </Form>
 
-              <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
+              <Button id="btn-createnewuser" className="btn-createnewuser" href="create-user">Create new user</Button>
               </div>
       </div>
       <Row>

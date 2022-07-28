@@ -8,7 +8,7 @@ import CreateNewUser from "../CreateNewUser";
 import Test from "../Test";
 import ManageAsset from "../ManageAsset";
 import userEditReducer from "../../Reducers/userEdit.reducer";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";
 
 export default function BodySection() {
@@ -20,7 +20,6 @@ export default function BodySection() {
                 <Sidebar />
             </div>
             <div className='body-content col-lg-9 col-md-6 col-sm-12'>
-                <ManageUser />
                 <Switch>
                     <Route exact path="/">
                         <ManageUser />
@@ -29,10 +28,13 @@ export default function BodySection() {
                         <ManageUser />
                     </Route>
                     <Route path="/manage-user">
-                        {(userEditReducer) ? <EditForm/> : <ManageUser />}
+                        {(userEditReducer) ? <EditForm /> : <ManageUser />}
                     </Route>
                     <Route path="/manage-asset">
                         <ManageAsset />
+                    </Route>
+                    <Route path="/create-user">
+                        <CreateNewUser />
                     </Route>
                     <Route path="/manage-assignment">
                         <Test />
@@ -45,7 +47,7 @@ export default function BodySection() {
                     </Route>
                 </Switch>
             </div>
-            <CreateNewUser/>
+
         </div>
     )
 }
