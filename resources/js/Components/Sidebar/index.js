@@ -5,40 +5,44 @@ import './style.scss'
 import { useDispatch, useSelector } from "react-redux"
 import { updateTitleHeader } from "../../Actions"
 import nashtechlogo from "../../../assets/nashtech_logo.svg";
+import { Link } from 'react-router-dom'
 
 
 export default function Sidebar() {
     const [sidebarName, setSidebarName] = useState('Home')
     const dispatch = useDispatch()
     const data = useSelector(state => state.userReducer.userInfo);
-    console.log('sidebar ', data)
 
-    let sidebarItems;
-    // if (data.length > 0) {
+    let sidebarRoutes;
     if (data.admin === true) {
-        sidebarItems = [
-            'Home', 'Manage User', 'Manage Asset', 'Manage Assignment', 'Request for Returning', 'Report'
+        sidebarRoutes = [
+            'home', 'manage-user', 'manage-asset', 'manage-assignment', 'request-for-returning', 'report'
         ]
     } else {
-        // } else if (data.admin === false) {
-        sidebarItems = [
-            'Home'
+        sidebarRoutes = [
+            'home'
         ]
     }
-    // }
 
     const handleClickSidebar = (e) => {
-        setSidebarName(e.target.dataset.name)
+        let title = e.target.dataset.name
+            .split('-').map(char => char.charAt(0).toUpperCase() + char.slice(1))
+            .join(" ");
+        setSidebarName(title)
     }
     useEffect(() => {
         dispatch(updateTitleHeader(sidebarName))
 
     }, [handleClickSidebar])
 
-    const dataBindingGrid = () => sidebarItems.map((item, index) => {
+    const dataBindingGrid = () => sidebarRoutes.map((item, index) => {
         return (
-            <ListGroup.Item data-name={item} key={index} action href={`#link${index + 1}`} onClick={e => handleClickSidebar(e)}>
-                {item}
+            <ListGroup.Item>
+                <Link to={`/${item}`} data-name={item} key={index} action onClick={e => handleClickSidebar(e)}>
+                    {item.split('-')
+                        .map(char => char.charAt(0).toUpperCase() + char.slice(1))
+                        .join(" ")}
+                </Link>
             </ListGroup.Item>
         )
     })
@@ -47,7 +51,7 @@ export default function Sidebar() {
             <div className='row'>
                 <div className='sidebar-brand'>
                     <NavbarBrand>
-                        <img width="200" height="200"src={nashtechlogo}  />
+                        <img width="200" height="200" src={nashtechlogo} />
                         <h4><b>Online Asset Management</b></h4>
                     </NavbarBrand>
                 </div>

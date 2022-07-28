@@ -13,12 +13,12 @@ class Repository {
         this.token = ''
     }
     async get(endpoint, data) {
-        // this.token = getToken()
+        this.token = getToken()
         const response = await axios
             .get(`${endpoint}`, {
                 headers: {
                     Accept: 'application/json',
-                    // Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${this.token}`,
                 },
                 params: data,
             })

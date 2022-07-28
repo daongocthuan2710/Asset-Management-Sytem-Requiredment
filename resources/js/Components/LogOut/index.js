@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal } from "react-bootstrap";
+import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import './style.scss';
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ export default function LogOut(props) {
         if(props.show) setShow(Boolean(true))
     },[props.show])
 
-    
+
 
     const handleLogout = async (e) => {
         try {
@@ -34,20 +34,24 @@ export default function LogOut(props) {
                 show={show}
                 backdrop="static"
                 keyboard={false}
+                id="logoutModal"
             >
                 <Modal.Header>
-                    <Modal.Title>Are you sure?</Modal.Title>
+                    <Modal.Title id="pwChangePasswordHeader">Are you sure?</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
-                    <div>
-                        <p>
-                            Do you want to log out?
-                        </p>
-                    </div>
-                    <div>
-                        <Button onClick={handleLogout} className="primaryButton">Log out</Button>
-                        <Button onClick={handleClose} className="secondaryButton">Cancel</Button>
-                    </div>
+                    <Container>
+                        <Row>
+                            <Col id='logoutText'>Do you want to log out?</Col>
+                        </Row>
+                        <Row>
+                            <Col md={{span: 12, offset: 0}} id='logoutButtonGroup'>
+                                <Button onClick={handleLogout} id="pwSaveButton" variant="light">Log out</Button>
+                                <b>  </b>
+                                <Button onClick={handleClose} id="pwCancelButton" variant="light">Cancel</Button>
+                            </Col>
+                        </Row>
+                    </Container>
                 </Modal.Footer>
             </Modal>
         </>

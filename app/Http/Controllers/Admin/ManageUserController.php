@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Rules\JoinedDateWeekend;
+use App\Rules\LatinName;
+use App\Rules\Over18;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ManageUserController extends Controller
 {
@@ -13,57 +18,77 @@ class ManageUserController extends Controller
     {
         $this->ManageUserService = $manageUserService;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return $this->ManageUserService->getAll();
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
+     * Edit the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function edit(Request $request, int $id)
     {
-        //
+        return $this->ManageUserService->edit($request, $id);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified resource in storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function update(Request $request, int $id)
     {
-        //
+        return $this->ManageUserService->update($request, $id);
+    }
+
+    public function store(Request $request)
+    {
+        $message = [
+            'joined_date.after' => 'Joined date is not later than Date of Birth. Please select a different date',
+            'first_name.required' => 'Please input first name',
+            'last_name.required' => 'Please input last name',
+        ];
+        $validate = Validator::make($request->all(), [
+            'first_name' => ['required', 'string', 'max:64', new LatinName()],
+            'last_name' => ['required', 'string', 'max:64', new LatinName()],
+            'date_of_birth' => ['required', 'date', new Over18()],
+            'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
+            'admin' => ['required', 'bool', Rule::in([0, 1])],
+            'gender' => ['required', 'integer', Rule::in([0, 1])],
+        ], $message);
+        if ($validate->fails()) {
+            return response()->json(['message' => $validate->errors()], 400);
+        }
+        try {
+            return $this->ManageUserService->store($request);
+        } catch (\Throwable) {
+            return response()->json([
+                'error' => 'Server error'
+            ], 500);
+        }
+    }
+
+    public function disable($id)
+    {
+        return $this->ManageUserService->disable($id);
+    }
+    public function canDisable($id)
+    {
+        return $this->ManageUserService->canDisable($id);
+    }
+    public function manageUser(Request $request)
+    {
+        return $this->ManageUserService->manageUser($request);
     }
 }

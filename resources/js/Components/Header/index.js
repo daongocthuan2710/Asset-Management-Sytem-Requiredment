@@ -24,7 +24,6 @@ export default function Header() {
     const dispatch = useDispatch()
 
     const userInformation = useSelector(state => state.userReducer.userInfo)
-
     const handleShow = () => {
         setConfirmLogOut(true);
         setTimeout(() => setConfirmLogOut(false), 1);
@@ -39,7 +38,6 @@ export default function Header() {
         if (userInformation.state === 0) setShowChangePasswordFirst(true)
         setTimeout(() => setShowChangePasswordFirst(false), 1);
     }, [userInformation.state])
-    // console.log(userInformation.username);
     return (
         <>
             <header>
