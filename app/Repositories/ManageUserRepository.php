@@ -53,8 +53,6 @@ class ManageUserRepository extends BaseRepository
             $data = $data->orderBy('admin', 'asc');
         }
 
-        return $data->paginate($this->default_paginate);
-
         return UserResource::collection($data->paginate($this->default_paginate));
     }
 

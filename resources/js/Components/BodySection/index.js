@@ -6,7 +6,7 @@ import { ManageUser } from "../TableManageUser";
 import Test from "../Test";
 import ManageAsset from "../ManageAsset";
 import userEditReducer from "../../Reducers/userEdit.reducer";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";
 
 export default function BodySection() {
@@ -20,13 +20,13 @@ export default function BodySection() {
             <div className='body-content col-lg-9 col-md-6 col-sm-12'>
                 <Switch>
                     <Route exact path="/">
-                        <ManageUser />
+                        <div>HOME</div>
                     </Route>
                     <Route path="/home">
-                        <ManageUser />
+                        <div>HOME</div>
                     </Route>
                     <Route path="/manage-user">
-                        {(userEditReducer) ? <EditForm/> : <ManageUser />}
+                        {(userEditReducer) ? <EditForm /> : <ManageUser />}
                     </Route>
                     <Route path="/manage-asset">
                         <ManageAsset />

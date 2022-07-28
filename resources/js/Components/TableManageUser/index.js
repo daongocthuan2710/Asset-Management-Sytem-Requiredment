@@ -117,7 +117,7 @@ export const ManageUser = () => {
     );
 
     setData(response.data.data);
-    setTotal(response.data.total);
+    setTotal(response.data.meta.total);
     return response.data;
 
   }
@@ -340,10 +340,10 @@ export const ManageUser = () => {
             </tr>
           </thead>
           <tbody>
-            {data.length > 0 && data.map((item) => (
+            {data && data.map((item) => (
               <tr key={item.id}>
                 <td>{item.staff_code}</td>
-                <td>{item.first_name}&nbsp;{item.last_name}</td>
+                <td>{item.full_name}</td>
                 <td>{item.username}</td>
                 <td>{item.joined_date}</td>
                 <td>{item.admin == true ? 'Admin' : "Staff"}</td>
