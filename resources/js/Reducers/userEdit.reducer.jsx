@@ -3,6 +3,7 @@ const { GET_USER_EDIT } = userConstants;
 
 const initState = {
     userEditInfo: {},
+    value:false
 };
 
 const userEditReducer = (state = initState, action) => {
@@ -10,7 +11,7 @@ const userEditReducer = (state = initState, action) => {
         case GET_USER_EDIT:
             return {
                 ...state,
-                value: action.payload.value || false,
+                value: action.payload.value,
                 userEditInfo: action.payload.data,
             };
         default:

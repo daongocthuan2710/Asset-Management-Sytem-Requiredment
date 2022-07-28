@@ -62,9 +62,9 @@ class User extends Authenticatable
         ->when($request->has('search'), function ($query) use ($request) {
             $search = $request->query('search');
             $query
-                ->where("first_name", "LIKE", "%{$search}%")
-                ->orWhere("last_name", "Like", "%{$search}%")
-                ->orWhere("staff_code", "LIKE", "%{$search}%");
+                ->where("first_name", "ILIKE", "%{$search}%")
+                ->orWhere("last_name", "ILike", "%{$search}%")
+                ->orWhere("staff_code", "ILIKE", "%{$search}%");
         });
     }
 

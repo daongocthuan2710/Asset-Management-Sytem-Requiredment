@@ -30,4 +30,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/user-information', [AuthenticationController::class, 'userInformation']);
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::resource('/profile', ProfileController::class);
+    Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
 });

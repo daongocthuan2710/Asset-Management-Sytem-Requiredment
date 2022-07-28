@@ -67,4 +67,39 @@ class AuthenticationTest extends TestCase
         $this->json('POST', 'api/login', $body, ['Accept' => 'application/json'])
             ->assertStatus(404);
     }
+
+    public function test_log_out_successfully()
+    {
+        $response = $this->postJson(
+            'api/login',
+            [
+                'username' => 'tuandc',
+                'password' => '12345',
+            ]
+        );
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $response = $this->getJson(
+            '/api/auth/tokens',
+            [],
+            [
+                'Authorization' => "Bearer $token"
+            ]
+        );
+        $response->assertStatus(200);
+    }
+
+    // public function test_get_information_failed()
+    // {
+    //     $response = $this->postJson(
+    //         'api/login',
+    //         [
+    //             'username' => 'datdn',
+    //             'password' => '12345',
+    //         ]
+    //     );
+    //     $response->assertStatus(200);
+    //     $response = $this->getJson('/api/auth/tokens',);
+    //     $response->assertStatus(200);
+    // }
 }

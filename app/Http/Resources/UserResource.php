@@ -32,7 +32,8 @@ class UserResource extends JsonResource
             'joined_date' => $newDate,
             'admin' => $this->admin,
             'location' => $this->location,
-            'state' => $this->state
+            'state' => $this->state,
+            'id' => $this->id,
         ];
     }
 }
