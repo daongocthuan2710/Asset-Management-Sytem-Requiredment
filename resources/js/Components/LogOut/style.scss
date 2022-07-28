@@ -11,7 +11,7 @@
     border-color: #8d8f91 !important;
     padding: 15px !important;
     .modal-title{
-        padding: 0 20px;
+        padding: 0 0px;
         font-weight: 700;
         font-size: 20px;
     }
@@ -22,21 +22,24 @@
     color: #4D5154;
     border-width: 0 !important;
     padding: 15px !important;
-    div{
-        margin: 5px 15px;
-        .primaryButton{
-            background: #E9424D;
-            color: #FEFAFA;
-            margin: 0 5px;
-        }
-        .secondaryButton{
-            background: #FAFCFC;
-            color: #E9424D;
-            border-color: #E9424D;
-            margin: 0 5px;
-        }
-        p{
-            margin: 0 5px;
-        }
-    }
+}
+#pwSaveButton{
+    background: #E9424D;
+    color: #FEFAFA;
+    border-width: 0;
+}
+#pwCancelButton{
+    background: #FAFCFC;
+    color: #7e8183;
+    border-color: #7e8183;
+}
+#logoutText{
+    padding-left: 30px;
+    margin-bottom: 15px;
+}
+#logoutButtonGroup{
+    padding-left: 30px;
+}
+#logoutModal{
+    width: 250px;
 }

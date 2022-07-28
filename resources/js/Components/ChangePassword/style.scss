@@ -29,65 +29,63 @@
     .row{
         margin: 10px 0;
 
-        #saveButton{
+        #pwSaveButton{
             background: #E9424D;
             color: #FEFAFA;
             border-width: 0;
         }
-        #cancelButton{
+        #pwCancelButton{
             background: #FAFCFC;
             color: #7e8183;
             border-color: #7e8183;
         }
-        #oldPasswordInput:focus{
+        #pwOldPasswordInput:focus{
             box-shadow: none !important;
             border-right: none;
         }
-        #newPasswordInput:focus{
+        #pwNewPasswordInput:focus{
             box-shadow: none !important;
             border-right: none;
         }
-        #oldPasswordButton:focus{
-            box-shadow: none !important;
-        }
-        #newPasswordButton:focus{
-            box-shadow: none !important;
-        }
-        #oldPasswordInput{
+        #pwOldPasswordInput{
             border-color: #7e8183;
+            border-right-width: 0;
         }
-        #newPasswordInput{
+        #pwNewPasswordInput{
             border-color: #7e8183;
+            border-right-width: 0;
         }
-        #oldPasswordButton{
-            border-left: none;
-            background-color: white;
-            border-color: #7e8183;
+        #pwOldPasswordButton{
+            background-color: white !important;
+            border-color: #7e8183 #7e8183 #7e8183 white;
             svg{
                 fill: black;
             }
         }
-        #newPasswordButton{
-            border-left: none;
-            background-color: white;
-            border-color: #7e8183;
+        #pwNewPasswordButton{
+            background-color: white !important;
+            border-color: #7e8183 #7e8183 #7e8183 white;
             svg{
                 fill: black;
             }
         }
-        #oldPasswordButton:hover{
+        #pwOldPasswordButton:hover{
             border-left: none;
             background-color: white;
+            border-width: 1px;
+            border-color: #7e8183 #7e8183 #7e8183 white;
         }
-        #newPasswordButton:hover{
+        #pwNewPasswordButton:hover{
             border-left: none;
             background-color: white;
+            border-width: 1px;
+            border-color: #7e8183 #7e8183 #7e8183 white;
         }
-        #oldPasswordError{
+        #pwOldPasswordError{
             color: #e73a44;
             margin: -10px 0;
         }
-        #newPasswordError{
+        #pwNewPasswordError{
             color: #e73a44;
             margin: -10px 0;
         }
@@ -98,10 +96,6 @@
     position: relative;
     top: 50%;
     transform: translateY(-50%);
-}
-#changePassword{
-    margin-left: -18px !important;
-
 }
 .modal-content{
     margin-top: 147px !important;
