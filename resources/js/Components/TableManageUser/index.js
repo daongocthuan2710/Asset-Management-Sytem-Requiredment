@@ -17,7 +17,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { Button } from "react-bootstrap";
 import { getUserEdit } from '../../Actions/user.action';
-import {useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 export const ManageUser = () => {
@@ -26,7 +26,7 @@ export const ManageUser = () => {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [tableHeader, setTableHeader] = React.useState( [
+  const [tableHeader, setTableHeader] = React.useState([
     {
       name: "Staff Code",
       isSortASC: true,
@@ -58,7 +58,7 @@ export const ManageUser = () => {
 
   React.useEffect(() => {
     getApiUser();
-  } , []);
+  }, []);
 
   const getApiUser = async ({
     filter = undefined,
@@ -78,22 +78,22 @@ export const ManageUser = () => {
       array.push(`search=${search}`);
     }
 
-    if(page){
+    if (page) {
       array.push(`page=${page}`);
     }
 
-    if(sort){
+    if (sort) {
       sort.forEach(item => {
         if (item.key === 'Staff Code') {
-        array.push(`sortByStaffCode=${item.value}`)
+          array.push(`sortByStaffCode=${item.value}`)
         }
         if (item.key === 'Fullname') {
-        array.push(`sortByFullName=${item.value}`)
+          array.push(`sortByFullName=${item.value}`)
         }
-        if(item.key === 'Joined Date'){
+        if (item.key === 'Joined Date') {
           array.push(`sortByJoinedDate=${item.value}`)
         }
-        if(item.key === 'Type'){
+        if (item.key === 'Type') {
           array.push(`sortByType=${item.value}`)
         }
       })
@@ -107,7 +107,15 @@ export const ManageUser = () => {
       }
     }
 
-    const response = await axios.get(url);
+    const response = await axios.get(
+      url,
+      {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      }
+    );
+
     setData(response.data.data);
     setTotal(response.data.total);
     return response.data;
@@ -115,49 +123,49 @@ export const ManageUser = () => {
   }
   const handleFilter = (value) => {
     setFilter(value);
-      let temp_page;
-      let temp_search;
-      let temp_sort;
-      if(temp_search){
-        temp_search = currentSearch;
-      }
+    let temp_page;
+    let temp_search;
+    let temp_sort;
+    if (temp_search) {
+      temp_search = currentSearch;
+    }
 
-      if(temp_page >= 1){
-        temp_page = page;
-      }
-      if(temp_sort){
-        temp_sort =  [...sortArray];
-      }
-      setPage(1);
+    if (temp_page >= 1) {
+      temp_page = page;
+    }
+    if (temp_sort) {
+      temp_sort = [...sortArray];
+    }
+    setPage(1);
 
     getApiUser({
       filter: value,
       page: temp_page,
       temp_search: temp_search,
-      sort : temp_sort,
+      sort: temp_sort,
     });
   }
 
   const handleSearch = (e) => {
     e.preventDefault();
-      let temp_filter;
-      let temp_page;
-      let temp_sort;
-      if (currentButton !== 'All') {
-        temp_filter = currentButton;
-      }
-      if(temp_page >= 1){
-        temp_page = page;
-      }
-      if(temp_sort){
-        temp_sort = [...sortArray];
-      }
-      getApiUser({
-        filter: temp_filter,
-        search: currentSearch,
-        page: temp_page,
-        sort: temp_sort,
-      });
+    let temp_filter;
+    let temp_page;
+    let temp_sort;
+    if (currentButton !== 'All') {
+      temp_filter = currentButton;
+    }
+    if (temp_page >= 1) {
+      temp_page = page;
+    }
+    if (temp_sort) {
+      temp_sort = [...sortArray];
+    }
+    getApiUser({
+      filter: temp_filter,
+      search: currentSearch,
+      page: temp_page,
+      sort: temp_sort,
+    });
   }
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber)
@@ -175,7 +183,7 @@ export const ManageUser = () => {
       temp_search = currentSearch;
     }
 
-    if(temp_sort){
+    if (temp_sort) {
       temp_sort = [...sortArray];
     }
 
@@ -196,10 +204,10 @@ export const ManageUser = () => {
       temp_filter = currentButton;
     }
 
-    if(temp_page >= 1){
+    if (temp_page >= 1) {
       temp_page = page;
     }
-    if(temp_search){
+    if (temp_search) {
       temp_search = currentSearch;
     }
 
@@ -240,130 +248,130 @@ export const ManageUser = () => {
   }
 
   const dispatch = useDispatch();
-  function handleOpenEditForm(userId = ''){
+  function handleOpenEditForm(userId = '') {
     const displayValue = true;
-    dispatch(getUserEdit(displayValue,userId));
+    dispatch(getUserEdit(displayValue, userId));
   }
   return (
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
 
-          <Dropdown onSelect={()=>handleFilter}>
-            <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
-              <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
-              <div className="fb-icon">
-                <FaFilter />
-              </div>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Form>
-                <Form.Check
-                  type="checkbox"
-                  id="checkbox-all"
-                  className="mx-4 font-weight-bold"
-                  label="All"
-                  checked={currentButton === "All"}
-                  onChange={() => handleFilter("All")}
-                  eventKey="All"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id="checkbox-admin"
-                  className="mx-4 my-2 font-weight-bold"
-                  label="Admin"
-                  checked={currentButton === "Admin"}
-                  onChange={() => handleFilter("Admin")}
-                  eventKey="Admin"
-                />
-                <Form.Check
-                  type="checkbox"
-                  id="checkbox-staff"
-                  className="mx-4 font-weight-bold"
-                  label="Staff"
-                  checked={currentButton === "Staff"}
-                  onChange={() => handleFilter("Staff")}
-                  eventkey="Staff"
-                />
-              </Form>
-            </Dropdown.Menu>
-          </Dropdown>
+        <Dropdown onSelect={() => handleFilter}>
+          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
+            <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
+            <div className="fb-icon">
+              <FaFilter />
+            </div>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Form>
+              <Form.Check
+                type="checkbox"
+                id="checkbox-all"
+                className="mx-4 font-weight-bold"
+                label="All"
+                checked={currentButton === "All"}
+                onChange={() => handleFilter("All")}
+                eventKey="All"
+              />
+              <Form.Check
+                type="checkbox"
+                id="checkbox-admin"
+                className="mx-4 my-2 font-weight-bold"
+                label="Admin"
+                checked={currentButton === "Admin"}
+                onChange={() => handleFilter("Admin")}
+                eventKey="Admin"
+              />
+              <Form.Check
+                type="checkbox"
+                id="checkbox-staff"
+                className="mx-4 font-weight-bold"
+                label="Staff"
+                checked={currentButton === "Staff"}
+                onChange={() => handleFilter("Staff")}
+                eventkey="Staff"
+              />
+            </Form>
+          </Dropdown.Menu>
+        </Dropdown>
 
-            <div className="d-flex search-create">
+        <div className="d-flex search-create">
 
-             <Form onSubmit={(e) => handleSearch(e)}>
-              <InputGroup className="search-bar mb-1">
-                  <Form.Control
-                    placeholder="Search"
-                    aria-label="Text input with dropdown button"
-                    value={currentSearch}
-                    onChange={(e) => setCurrentSearch(e.target.value)}
-                  />
-                  <InputGroup.Text id="basic-addon2">
-                    {" "}
-                    <FaSearch />
-                  </InputGroup.Text>
-                </InputGroup>
-             </Form>
+          <Form onSubmit={(e) => handleSearch(e)}>
+            <InputGroup className="search-bar mb-1">
+              <Form.Control
+                placeholder="Search"
+                aria-label="Text input with dropdown button"
+                value={currentSearch}
+                onChange={(e) => setCurrentSearch(e.target.value)}
+              />
+              <InputGroup.Text id="basic-addon2">
+                {" "}
+                <FaSearch />
+              </InputGroup.Text>
+            </InputGroup>
+          </Form>
 
-              <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
-              </div>
+          <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
+        </div>
       </div>
       <Row>
 
-          <Table responsive="md">
-            <thead>
+        <Table responsive="md">
+          <thead>
             <tr >
-            {tableHeader.map((item, index) => {
-              return (
+              {tableHeader.map((item, index) => {
+                return (
 
-                <th  key={index} onClick={() => {
-                  if(item.name !== 'Username') {
-                    handleSort(item.name, item.isSortASC)
-                  }
-                }}>
-                  {item.name}&nbsp;
-                  {item.isSortASC && <FaAngleDown /> }
-                  {item.isSortDESC && <FaAngleUp /> }
-                </th>
+                  <th key={index} onClick={() => {
+                    if (item.name !== 'Username') {
+                      handleSort(item.name, item.isSortASC)
+                    }
+                  }}>
+                    {item.name}&nbsp;
+                    {item.isSortASC && <FaAngleDown />}
+                    {item.isSortDESC && <FaAngleUp />}
+                  </th>
 
-              )
-            })}
+                )
+              })}
             </tr>
-            </thead>
-            <tbody>
-            {data.length>0 && data.map((item) => (
+          </thead>
+          <tbody>
+            {data.length > 0 && data.map((item) => (
               <tr key={item.id}>
                 <td>{item.staff_code}</td>
                 <td>{item.first_name}&nbsp;{item.last_name}</td>
                 <td>{item.username}</td>
                 <td>{item.joined_date}</td>
-                <td>{item.admin == true ? 'Admin' : "Staff" }</td>
+                <td>{item.admin == true ? 'Admin' : "Staff"}</td>
                 <td className="td-without_border">
-                  <FaPencilAlt onClick = {(e) => handleOpenEditForm(item.id)}/> {"  "}
+                  <FaPencilAlt onClick={(e) => handleOpenEditForm(item.id)} /> {"  "}
                   <FaRegTimesCircle className="delete-icon" />
                 </td>
               </tr>
             ))}
 
 
-            </tbody>
-          </Table>
-          <Pagination
-            activePage={page}
-            itemsCountPerPage={20}
-            totalItemsCount={total}
-            pageRangeDisplayed={3}
-            prevPageText="Previous"
-            nextPageText="Next"
-            itemClass="page-item"
-            linkClass="page-link"
-            linkClassPrev="page-prev"
-            linkClassNext="page-next"
-            activeLinkClass="pagination-active"
-            hideFirstLastPages={true}
-            onChange={(page) => handlePageChange(page)}
-          />
+          </tbody>
+        </Table>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={5}
+          totalItemsCount={total}
+          pageRangeDisplayed={3}
+          prevPageText="Previous"
+          nextPageText="Next"
+          itemClass="page-item"
+          linkClass="page-link"
+          linkClassPrev="page-prev"
+          linkClassNext="page-next"
+          activeLinkClass="pagination-active"
+          hideFirstLastPages={true}
+          onChange={(page) => handlePageChange(page)}
+        />
 
       </Row>
     </div>
