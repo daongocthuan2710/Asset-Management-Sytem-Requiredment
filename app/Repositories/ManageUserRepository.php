@@ -97,8 +97,8 @@ class ManageUserRepository extends BaseRepository
             return response()->json([
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
-            'date_of_birth' => $user->date_of_birth,
-            'joined_date' => $user->joined_date,
+            'date_of_birth' => date_format($user->date_of_birth,"Y-m-d"),
+            'joined_date' => date_format($user->joined_date,"Y-m-d"),
             'gender' => $user->gender,
             'type' => $user->admin,
             'id' => $user->id,
