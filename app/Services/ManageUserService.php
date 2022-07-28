@@ -91,4 +91,16 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->canDisable($id);
     }
+    public function manageUser($request)
+    {
+        return $this->manageUserRepository->manageUser($request);
+    }
+    public function update($request, $id): \Illuminate\Http\JsonResponse
+    {
+        return $this->manageUserRepository->update($request, $id);
+    }
+    public function edit($id): \Illuminate\Http\JsonResponse
+    {
+        return $this->manageUserRepository->edit($id);
+    }
 }

@@ -18,5 +18,7 @@ class CategorySeeder extends Seeder
         Category::create(["id" => "LP", "name" => "Laptop"]);
         Category::create(["id" => "MO", "name" => "Monitor"]);
         Category::create(["id" => "PC", "name" => "PC"]);
+        Category::create(["id" => "BM", "name" => "Bluetooth Mouse"]);
+        Category::create(["id" => "HE", "name" => "Headset"]);
     }
 }

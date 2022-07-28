@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('asset', function (Blueprint $table) {
             $table->integer('id', true, true);
+            $table->string('asset_code');
             $table->string('name');
             $table->string('category_id', 2);
             $table->string('specification')->nullable();
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->string('location');
 
             // Foreign Key
-            // $table->foreign('category_id')->references('id')->on('category');
+            $table->foreign('category_id')->references('id')->on('category');
 
             //Time stamp
             $table->timestamps();

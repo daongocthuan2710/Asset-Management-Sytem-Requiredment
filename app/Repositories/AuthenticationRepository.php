@@ -40,10 +40,10 @@ class AuthenticationRepository extends BaseRepository
             return response()->json(['message' => 'Username or password can not be null '], 404);
         }
         if (!$user) {
-            return response()->json(['message' => 'Username or password is incorrect please try again ! '], 404);
+            return response()->json(['message' => 'Username or password is incorrect. Please try again'], 404);
         }
         if ((!Hash::check($request->password, $user->password))) {
-            return response()->json(['message' => 'Username or password is incorrect please try again ! '], 404);
+            return response()->json(['message' => 'Username or password is incorrect. Please try again'], 404);
         }
         if ($user->state == -1) {
             return response()->json(['message' => 'Your account has been disable ! '], 404);
