@@ -43,6 +43,7 @@ class EditUserTest extends TestCase
             'admin' => false,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(401);
@@ -56,6 +57,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(422);
@@ -74,6 +76,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(422);
@@ -92,6 +95,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(404);
@@ -110,6 +114,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(401);
@@ -128,6 +133,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(422);
@@ -146,6 +152,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(422);
@@ -164,6 +171,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(422);
@@ -182,6 +190,7 @@ class EditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('PUT', "api/user/$id", $body)
             ->assertStatus(200);

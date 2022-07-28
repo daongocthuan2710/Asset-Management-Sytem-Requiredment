@@ -31,6 +31,7 @@ class GetEditUserTest extends TestCase
             'admin' => false,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('GET', "api/user/$id/edit")
             ->assertStatus(401);
@@ -43,6 +44,7 @@ class GetEditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('GET', "api/user/$id/edit")
             ->assertStatus(404);
@@ -55,6 +57,7 @@ class GetEditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('GET', "api/user/$id/edit")
             ->assertStatus(401);
@@ -66,6 +69,7 @@ class GetEditUserTest extends TestCase
             'admin' => true,
             'location' => 'HN',
             'staff_code' => 'SD2001',
+            'base_username' => 'user',
         ]));
         $this->json('GET', "api/user/$id/edit")
             ->assertStatus(200);

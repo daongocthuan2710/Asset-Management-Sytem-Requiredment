@@ -110,8 +110,8 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->update($request, $id);
     }
-    public function edit($id): \Illuminate\Http\JsonResponse
+    public function edit($request, $id): \Illuminate\Http\JsonResponse
     {
-        return $this->manageUserRepository->edit($id);
+        return $this->manageUserRepository->edit($request, $id);
     }
 }

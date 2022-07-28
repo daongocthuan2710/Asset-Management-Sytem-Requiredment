@@ -33,11 +33,11 @@ class ManageUserController extends Controller
      * Edit the specified resource in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function edit($id)
+    public function edit(Request $request, int $id)
     {
-        return $this->ManageUserService->edit($id);
+        return $this->ManageUserService->edit($request, $id);
     }
 
     /**

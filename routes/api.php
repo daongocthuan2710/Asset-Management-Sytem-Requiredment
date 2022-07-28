@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ManageAssetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -28,6 +29,7 @@ Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
 
 // Route::resource('/login', AuthenticationController::class);
+Route::resource('/asset', ManageAssetController::class);
 Route::post('/login', [AuthenticationController::class, 'index']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user-information', [AuthenticationController::class, 'userInformation']);

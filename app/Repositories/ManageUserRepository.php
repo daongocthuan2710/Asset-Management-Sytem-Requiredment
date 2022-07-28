@@ -71,7 +71,7 @@ class ManageUserRepository extends BaseRepository
         return UserResource::collection($data->paginate($this->default_paginate));
     }
 
-    public function edit($id)
+    public function edit($request, $id)
     {
         //check admin
         $sanctumUser = auth('sanctum')->user();
@@ -89,7 +89,7 @@ class ManageUserRepository extends BaseRepository
         //check user location
         if ($user->location != $sanctumUser->location) {
             return response()->json([
-                'message' => 'you do not have permission to edit this in other location'
+            'message' => 'you do not have permission to edit user in other location'
             ], 401);
         }
         //return data for display
@@ -136,7 +136,7 @@ class ManageUserRepository extends BaseRepository
         //check user location
         if ($user->location != $sanctumUser->location) {
             return response()->json([
-                'message' => 'you do not have permission to edit this in other location'
+                'message' => 'you do not have permission to edit user in other location'
             ], 401);
         }
         //user must be >18 years old
