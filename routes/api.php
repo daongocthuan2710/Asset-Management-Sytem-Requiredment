@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ManageAssetController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -23,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('/user', ManageUserController::class);
+Route::resource('/asset', ManageAssetController::class);
 // Route::resource('/login', AuthenticationController::class);
 Route::post('/login', [AuthenticationController::class, 'index']);
 Route::group(['middleware' => ['auth:sanctum']], function () {

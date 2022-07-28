@@ -70,7 +70,7 @@ class ManageUserRepository extends BaseRepository
         //check user location
         if ($user->location != $sanctumUser->location) {
             return response()->json([
-                'message' => 'you do not have permission to edit user in other location'
+            'message' => 'you do not have permission to edit user in other location'
             ], 401);
         }
         //return data for display
