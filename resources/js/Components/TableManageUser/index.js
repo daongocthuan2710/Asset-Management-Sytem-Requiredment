@@ -133,9 +133,10 @@ export const ManageUser = () => {
     if (temp_page >= 1) {
       temp_page = page;
     }
-    if (temp_sort) {
+    if (sortArray.length > 0) {
       temp_sort = [...sortArray];
     }
+
     setPage(1);
 
     getApiUser({
@@ -157,9 +158,10 @@ export const ManageUser = () => {
     if (temp_page >= 1) {
       temp_page = page;
     }
-    if (temp_sort) {
+    if (sortArray.length > 0) {
       temp_sort = [...sortArray];
     }
+
     getApiUser({
       filter: temp_filter,
       search: currentSearch,
@@ -183,7 +185,7 @@ export const ManageUser = () => {
       temp_search = currentSearch;
     }
 
-    if (temp_sort) {
+    if (sortArray.length > 0) {
       temp_sort = [...sortArray];
     }
 
@@ -196,6 +198,7 @@ export const ManageUser = () => {
     });
   }
   const handleSort = (key, value) => {
+
     let temp_filter;
     let temp_page;
     let temp_search;
@@ -256,66 +259,66 @@ export const ManageUser = () => {
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
-
-        <Dropdown onSelect={() => handleFilter}>
-          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
-            <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
-            <div className="fb-icon">
-              <FaFilter />
-            </div>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Form>
-              <Form.Check
-                type="checkbox"
-                id="checkbox-all"
-                className="mx-4 font-weight-bold"
-                label="All"
-                checked={currentButton === "All"}
-                onChange={() => handleFilter("All")}
-                eventKey="All"
-              />
-              <Form.Check
-                type="checkbox"
-                id="checkbox-admin"
-                className="mx-4 my-2 font-weight-bold"
-                label="Admin"
-                checked={currentButton === "Admin"}
-                onChange={() => handleFilter("Admin")}
-                eventKey="Admin"
-              />
-              <Form.Check
-                type="checkbox"
-                id="checkbox-staff"
-                className="mx-4 font-weight-bold"
-                label="Staff"
-                checked={currentButton === "Staff"}
-                onChange={() => handleFilter("Staff")}
-                eventkey="Staff"
-              />
-            </Form>
-          </Dropdown.Menu>
-        </Dropdown>
-
-        <div className="d-flex search-create">
-
-          <Form onSubmit={(e) => handleSearch(e)}>
-            <InputGroup className="search-bar mb-1">
-              <Form.Control
-                placeholder="Search"
-                aria-label="Text input with dropdown button"
-                value={currentSearch}
-                onChange={(e) => setCurrentSearch(e.target.value)}
-              />
-              <InputGroup.Text id="basic-addon2">
-                {" "}
-                <FaSearch />
-              </InputGroup.Text>
-            </InputGroup>
-          </Form>
-
-          <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
-        </div>
+      
+          <Dropdown onSelect={()=>handleFilter}>
+            <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
+              <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
+              <div className="fb-icon">
+                <FaFilter />
+              </div>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Form>
+                <Form.Check
+                  type="checkbox"
+                  id="checkbox-all"
+                  className="mx-4 font-weight-bold"
+                  label="All"
+                  checked={currentButton === "All"}
+                  onChange={() => handleFilter("All")}
+                  eventKey="All"
+                />
+                <Form.Check
+                  type="checkbox"
+                  id="checkbox-admin"
+                  className="mx-4 my-2 font-weight-bold"
+                  label="Admin"
+                  checked={currentButton === "Admin"}
+                  onChange={() => handleFilter("Admin")}
+                  eventKey="Admin"
+                />
+                <Form.Check
+                  type="checkbox"
+                  id="checkbox-staff"
+                  className="mx-4 font-weight-bold"
+                  label="Staff"
+                  checked={currentButton === "Staff"}
+                  onChange={() => handleFilter("Staff")}
+                  eventkey="Staff"
+                />
+              </Form>
+            </Dropdown.Menu>
+          </Dropdown>
+    
+            <div id="search-create"className="d-flex search-create">
+           
+             <Form id="form-search" onSubmit={(e) => handleSearch(e)}>
+              <InputGroup className="search-bar mb-1">
+                  <Form.Control
+                    placeholder="Search"
+                    aria-label="Text input with dropdown button"
+                    value={currentSearch}
+                    onChange={(e) => setCurrentSearch(e.target.value)}
+                  />
+                  <InputGroup.Text id="basic-addon2">
+                    {" "}
+                    <FaSearch onClick={(e)=>handleSearch(e)} />
+                  </InputGroup.Text>
+                </InputGroup>
+             </Form>
+  
+              <Button id="btn-createnewuser" className="btn-createnewuser">Create new user</Button>
+              </div>
       </div>
       <Row>
 
