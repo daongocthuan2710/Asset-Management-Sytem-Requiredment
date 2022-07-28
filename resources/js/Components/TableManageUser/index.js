@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import Nodata from "../../../assets/Nodata.gif";
 import { Link } from "react-router-dom";
+import DisableUser from "../DisableUser"
 
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("All");
@@ -32,6 +33,7 @@ export const ManageUser = () => {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
+  const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
 
   const [tableHeader, setTableHeader] = React.useState([
     {
@@ -63,7 +65,13 @@ export const ManageUser = () => {
 
   React.useEffect(() => {
     getApiUser();
+    
   }, []);
+  const handleDisableUser = (id) => {
+    setDisableUser({ show: true, id: id });
+    console.log(disableUser);
+    setTimeout(() => setDisableUser({show:false ,id:id}), 1);
+  }
 
   const getApiUser = async ({
     filter = undefined,
@@ -286,6 +294,7 @@ export const ManageUser = () => {
 
   return (
     <div className="containermanageuser">
+      <DisableUser show={disableUser.show} id={disableUser.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div className="d-flex justify-content-between type-seach-create">
         <Dropdown onSelect={() => handleFilter}>
@@ -395,7 +404,7 @@ export const ManageUser = () => {
                         onClick={() => handleOpenEditForm(item.id)}
                       />{" "}
                       {"  "}
-                      <FaRegTimesCircle className="delete-icon" />
+                      <FaRegTimesCircle className="delete-icon"  onClick={() => handleDisableUser(item.id)} type="button" />
                     </td>
                   </tr>
                 ))

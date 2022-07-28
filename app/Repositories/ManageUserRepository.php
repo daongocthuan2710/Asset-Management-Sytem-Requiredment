@@ -51,6 +51,7 @@ class ManageUserRepository extends BaseRepository
 
         $data = $this->query
             ->where('location', $sanctumUser->location)
+            ->whereNot('state','=' ,-1)
             ->search($request)
             ->filter($request)
             ->sortByFullName($request)

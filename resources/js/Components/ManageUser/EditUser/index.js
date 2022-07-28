@@ -101,6 +101,7 @@ export default function EditForm() {
                                 <Form.Control
                                     type="input"
                                     value={userEditInfo.first_name}
+                                    className="fs-5"
                                     disabled
                                 />
                             </Col>

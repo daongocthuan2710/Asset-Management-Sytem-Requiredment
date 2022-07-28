@@ -6,28 +6,23 @@ import axios from 'axios';
 export default function DisableUser(props) {
 
 
-    const [haveAssignment, setHaveAssignment] = useState(true);
+    const [haveAssignment, setHaveAssignment] = useState(false);
     const [show, setShow] = useState(props.show);
-    useEffect(() => {
-        if (props.show) setShow(Boolean(true))
+    useEffect(async () => {
+        if (props.show) setShow(Boolean(true));
+        const response = await axios.get(`/api/can-disable/${props.id}`);
+        setHaveAssignment(response.data.disable);
     }, [props.show])
 
 
 
     const handleDisableUser = async (e) => {
         try {
-
-            //TODO: DISABLE USER
-
-            // const token = localStorage.getItem('token')
-            // const headers = { headers: { Authorization: `Bearer ${token}` } };
-            // axios.get('api/logout', headers)
-            //     .then(resp => {
-            //         localStorage.clear()
-            //         window.location.reload()
-            //     })
-            console.log('user is deleted')
+            //console.log(`user ${props.id} is deleted`)
+            const response = await axios.get(`/api/disable/${props.id}`);
+            //console.log(`user ${props.id} is deleted`)
             setShow(false)
+            window.location.reload();
         } catch (e) {
             const error = new Error("Something went wrong");
             throw error;
@@ -65,24 +60,24 @@ export default function DisableUser(props) {
                         </div>
                     </Modal.Footer>
                 </Modal>
-                : 
-                    <Modal
-                        show={show}
-                        backdrop="static"
-                        keyboard={false}
-                    >
-                        <Modal.Header>
-                            <Modal.Title>Can not disable user</Modal.Title>
-                            <Button onClick={handleClose}>X</Button>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div>
-                                <p>
+                :
+                <Modal
+                    show={show}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header>
+                        <Modal.Title>Can not disable user</Modal.Title>
+                        <Button onClick={handleClose}>X</Button>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div>
+                            <p>
                                 There are valid assignments belonging to this user. Please close all assignments before disabling user.
-                                </p>
-                            </div>
-                        </Modal.Body>
-                    </Modal>
+                            </p>
+                        </div>
+                    </Modal.Body>
+                </Modal>
             }
         </>
     );
