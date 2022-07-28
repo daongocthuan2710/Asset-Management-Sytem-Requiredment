@@ -43,7 +43,6 @@ class ManageUserRepository extends BaseRepository
 
     public function manageUser($request)
     {
-
         $data = $this->query
             ->search($request)
             ->filter($request)

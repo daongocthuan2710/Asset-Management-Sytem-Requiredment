@@ -24,32 +24,42 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->getAll();
     }
-    public function store($data): User
+    public function store($data)
     {
-        $dob = Carbon::parse($data['date_of_birth']);
-        $first_name = trim(preg_replace("/\s+/", ' ', $data['first_name']));
-        $last_name = trim(preg_replace("/\s+/", ' ', $data['last_name']));
-        $base_username = $this->createBaseUsername($first_name, $last_name);
-
-        $user = User::create(
-            [
-                "first_name" => $first_name,
-                "last_name" => $last_name,
-                "base_username" => $base_username,
-                "date_of_birth" => $data['date_of_birth'],
-                "joined_date" => $data['joined_date'],
-                "admin" => $data['admin'],
-                "location" => $data['location'],
-                "gender" => $data['gender'],
-            ]
-        );
-        $id = $user->id;
-        $username = $this->createNewUserName($first_name, $last_name, $id);
-        $staff_code = $this->createNewStaffCode($id);
-        $password = Hash::make($this->generatePassword($username, $dob));
-        // $password = $this->generatePassword($username, $dob);
-        $user->update(["staff_code" => $staff_code, "username" => $username, "password" => $password]);
-        return $user;
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } else {
+            $dob = Carbon::parse($data['date_of_birth']);
+            $first_name = trim(preg_replace("/\s+/", ' ', $data['first_name']));
+            $last_name = trim(preg_replace("/\s+/", ' ', $data['last_name']));
+            $base_username = $this->createBaseUsername($first_name, $last_name);
+            $user = User::create(
+                [
+                    "first_name" => $first_name,
+                    "last_name" => $last_name,
+                    "base_username" => $base_username,
+                    "date_of_birth" => $data['date_of_birth'],
+                    "joined_date" => $data['joined_date'],
+                    "admin" => $data['admin'],
+                    "gender" => $data['gender'],
+                ]
+            );
+            $id = $user->id;
+            $username = $this->createNewUserName($first_name, $last_name, $id);
+            $staff_code = $this->createNewStaffCode($id);
+            $password = Hash::make($this->generatePassword($username, $dob));
+            $location = $sanctumUser->location;
+            // $password = $this->generatePassword($username, $dob);
+            $user->update([
+                "staff_code" => $staff_code,
+                "username" => $username,
+                "password" => $password,
+                "location" => $location
+            ]);
+            return $user;
+        }
     }
     protected function createBaseUsername(string $first_name, string $last_name): string
     {

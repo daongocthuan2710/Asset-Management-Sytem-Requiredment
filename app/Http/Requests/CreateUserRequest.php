@@ -28,18 +28,18 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:64', new LatinName()],
-            'last_name' => ['required', 'string', 'max:64', new LatinName()],
-            'date_of_birth' => ['required', 'date', new Over18()],
-            'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
-            'admin' => ['required', 'bool', Rule::in([true, false])],
-            'gender' => ['required', 'integer', Rule::in([0, 1])],
+            // 'first_name' => ['required', 'string', 'max:64', new LatinName()],
+            // 'last_name' => ['required', 'string', 'max:64', new LatinName()],
+            // 'date_of_birth' => ['required', 'date', new Over18()],
+            // 'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
+            // 'admin' => ['required', 'bool', Rule::in([true, false])],
+            // 'gender' => ['required', 'integer', Rule::in([0, 1])],
         ];
     }
     public function messages()
     {
         return [
-            'joined_date.before' => 'Joined date is not later than Date of Birth. Please select a different date'
+            // 'joined_date.before' => 'Joined date is not later than Date of Birth. Please select a different date'
         ];
     }
 }

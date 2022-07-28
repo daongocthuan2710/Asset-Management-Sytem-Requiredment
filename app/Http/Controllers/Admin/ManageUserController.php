@@ -48,15 +48,14 @@ class ManageUserController extends Controller
         return $this->ManageUserService->update($request, $id);
     }
 
-    public function store(Request $request)
+    public function store(Request $request,)
     {
-        //        $validated_request = $request->validate();
-
+        // $validated = $request->validated();
+        // dd($validated);
         $user = $this->ManageUserService->store($request);
         return response([
-            'message' => 'Created user successfully',
+            'message' => 'Created user status',
             'user' => $user
-            //            'test' => $validated_request
         ], 201);
     }
 
