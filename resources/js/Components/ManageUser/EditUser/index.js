@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { Row, Container, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import userEditReducer from "../../../Reducers/userEdit.reducer";
-import { getUserEdit } from '../../../Actions/user.action';
+import { getUserEdit } from "../../../Actions/user.action";
 export default function EditForm() {
     const userEditInfo = useSelector(
         (state) => state.userEditReducer.userEditInfo
@@ -25,17 +25,18 @@ export default function EditForm() {
         dispatch(getUserEdit(displayValue, userId));
     }
     return (
-        <Container style={{ width: "100% !impotant" }}>
+        <Container id = "containerFormEdit">
             <Row className="mb-3">
-                <Col md={12} className="editUser">
+                <Col md={2} className="editUser fs-4 d-flex justify-content-end">
                     Edit User
                 </Col>
+                <Col md={10}></Col>
             </Row>
             <Row>
-                <Form>
+                <Form className = "fs-5">
                     <Form.Group className="mb-3" controlId="firstNameForm">
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} className = "d-flex justify-content-end">
                                 <Form.Label>First Name</Form.Label>
                             </Col>
                             <Col md={10}>
@@ -49,12 +50,13 @@ export default function EditForm() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="lastNameForm">
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} className = "d-flex justify-content-end">
                                 <Form.Label>Last Name</Form.Label>
                             </Col>
                             <Col md={10}>
                                 <Form.Control
                                     type="text"
+                                    className = "fs-5"
                                     value={userEditInfo.last_name}
                                     disabled
                                 />
@@ -63,7 +65,7 @@ export default function EditForm() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="dueDateForm">
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} className = "d-flex justify-content-end">
                                 <Form.Label>Date of Birth</Form.Label>
                             </Col>
                             <Col md={10}>
@@ -71,6 +73,7 @@ export default function EditForm() {
                                     type="date"
                                     value={date}
                                     placeholder="Due Date"
+                                    className = "fs-5"
                                     onChange={(e) => setDate(e.target.value)}
                                 />
                             </Col>
@@ -78,7 +81,7 @@ export default function EditForm() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="genderForm">
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} className = "d-flex justify-content-end">
                                 <Form.Label>Gender</Form.Label>
                             </Col>
                             <Col md={10} style={{ display: "inherit" }}>
@@ -88,6 +91,7 @@ export default function EditForm() {
                                             <Form.Check.Input
                                                 type="radio"
                                                 id="Female"
+                                                className = "fs-5"
                                                 checked={
                                                     selectedRadio == labelName
                                                 }
@@ -112,7 +116,7 @@ export default function EditForm() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="dueJoinDateForm">
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} className = "d-flex justify-content-end">
                                 <Form.Label>Joined Date</Form.Label>
                             </Col>
                             <Col md={10}>
@@ -120,6 +124,7 @@ export default function EditForm() {
                                     type="date"
                                     value={joinDate}
                                     placeholder="Due Join Date"
+                                    className = "fs-5"
                                     onChange={(e) =>
                                         setJoinDate(e.target.value)
                                     }
@@ -129,11 +134,11 @@ export default function EditForm() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="TypeForm">
                         <Row>
-                            <Col md={2}>
+                            <Col md={2} className = "d-flex justify-content-end">
                                 <Form.Label>Type</Form.Label>
                             </Col>
                             <Col md={10}>
-                                <Form.Control as="select" defaultValue={type}>
+                                <Form.Control as="select" defaultValue={type} className = "fs-5">
                                     <option>Staff</option>
                                     <option>Admin</option>
                                 </Form.Control>
@@ -143,13 +148,14 @@ export default function EditForm() {
                     <Row className="text-end">
                         <Col>
                             <Button
-                                className="me-5"
+                                className="me-5 fs-5"
                                 variant="danger"
                                 type="submit"
                             >
                                 Submit
                             </Button>
                             <Button
+                            className="fs-5"
                                 variant="outline-secondary"
                                 onClick={handleCloseEditForm}
                             >
