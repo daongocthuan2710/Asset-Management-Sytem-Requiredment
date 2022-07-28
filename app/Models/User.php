@@ -64,7 +64,9 @@ class User extends Authenticatable
             $query
                 ->where("first_name", "ILIKE", "%{$search}%")
                 ->orWhere("last_name", "ILike", "%{$search}%")
-                ->orWhere("staff_code", "ILIKE", "%{$search}%");
+                ->orWhere("staff_code", "ILIKE", "%{$search}%")
+                ->orWhereRaw("CONCAT(first_name, ' ', last_name) ILIKE '%{$search}%'");
+                
         });
     }
 

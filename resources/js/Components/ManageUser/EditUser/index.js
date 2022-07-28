@@ -31,7 +31,7 @@ export default function EditForm() {
         e.preventDefault();
         const userId = userEditInfo.id;
         const date_of_birth = e.target.form[2].value;
-        const gender = e.target.form[4].checked ? 0 : 1;
+        const gender = e.target.form[4].checked ? 1 : 0;
         const joined_date = e.target.form[5].value;
         const type = e.target.form[6].value === "Admin" ? 1 : 0;
 
