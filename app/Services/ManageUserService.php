@@ -57,7 +57,9 @@ class ManageUserService extends BaseService
                 "password" => $password,
                 "location" => $location
             ]);
-            return $user;
+            return response()->json([
+                'user' => $user
+            ], 201);
         }
     }
     protected function createBaseUsername(string $first_name, string $last_name): string

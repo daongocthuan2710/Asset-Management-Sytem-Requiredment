@@ -60,22 +60,23 @@ class ManageUserController extends Controller
             'last_name.required' => 'Please input last name',
         ];
         $validate = Validator::make($request->all(), [
-                'first_name' => ['required', 'string', 'max:64', new LatinName()],
-                'last_name' => ['required', 'string', 'max:64', new LatinName()],
-                'date_of_birth' => ['required', 'date', new Over18()],
-                'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
-                'admin' => ['required', 'bool', Rule::in([0, 1])],
-                'gender' => ['required', 'integer', Rule::in([0, 1])],
-                ], $message);
+            'first_name' => ['required', 'string', 'max:64', new LatinName()],
+            'last_name' => ['required', 'string', 'max:64', new LatinName()],
+            'date_of_birth' => ['required', 'date', new Over18()],
+            'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
+            'admin' => ['required', 'bool', Rule::in([0, 1])],
+            'gender' => ['required', 'integer', Rule::in([0, 1])],
+        ], $message);
         if ($validate->fails()) {
             return response()->json(['message' => $validate->errors()], 400);
         }
-//        $validate = $request->validated();
-        $user = $this->ManageUserService->store($request);
-        return response([
-            'message' => 'Created user status',
-            'user' => $user
-        ], 201);
+        try {
+            return $this->ManageUserService->store($request);
+        } catch (\Throwable) {
+            return response()->json([
+                'error' => 'Server error'
+            ], 500);
+        }
     }
 
     public function disable($id)
