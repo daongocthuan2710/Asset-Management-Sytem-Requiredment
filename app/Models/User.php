@@ -17,7 +17,6 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    public $timestamps = false;
     protected $table = 'user';
     protected $id_user = 'SD';
 
@@ -125,4 +124,15 @@ class User extends Authenticatable
                     ->orderBy("admin", $sortByType);
             });
     }
+    public function scopeSortByEditUser($querry, $request)
+    {
+        return $querry
+            ->when($request->has('sortByEditUser'), function ($query) use ($request) {
+                $sortByEditUser = $request->query('sortByEditUser');
+                $query
+                    ->orderBy("updated_at", 'desc');
+            });
+    }
+
+
 }

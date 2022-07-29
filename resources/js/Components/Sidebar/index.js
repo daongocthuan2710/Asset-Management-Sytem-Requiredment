@@ -37,8 +37,8 @@ export default function Sidebar() {
 
     const dataBindingGrid = () => sidebarRoutes.map((item, index) => {
         return (
-            <ListGroup.Item>
-                <Link to={`/${item}`} data-name={item} key={index} action onClick={e => handleClickSidebar(e)}>
+            <ListGroup.Item key={index}>
+                <Link to={`/${item}`} data-name={item} key={index} action = 'true' onClick={e => handleClickSidebar(e)}>
                     {item.split('-')
                         .map(char => char.charAt(0).toUpperCase() + char.slice(1))
                         .join(" ")}

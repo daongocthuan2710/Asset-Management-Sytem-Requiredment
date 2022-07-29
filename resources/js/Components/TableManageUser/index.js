@@ -21,7 +21,7 @@ import { Button } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import Nodata from "../../../assets/Nodata.gif";
 import { Link } from "react-router-dom";
@@ -34,6 +34,11 @@ export const ManageUser = () => {
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
+
+  const sort_update_at = useSelector(
+    (state) => state.userEditReducer.sort_update_at
+);
+
 
   const [tableHeader, setTableHeader] = React.useState([
     {
@@ -93,6 +98,10 @@ export const ManageUser = () => {
     if (page) {
       array.push(`page=${page}`);
     }
+    if(sort_update_at.length> 0){
+      array.push('sortByEditUser');
+
+    }
 
     if (sort) {
       sort.forEach((item) => {
@@ -149,6 +158,8 @@ export const ManageUser = () => {
     if (sortArray.length > 0) {
       temp_sort = [...sortArray];
     }
+
+    
 
     setPage(1);
 
@@ -366,7 +377,7 @@ export const ManageUser = () => {
       </div>
       <Row>
         <div id="table-manage-user">
-          <Table i responsive="md">
+          <Table responsive="md">
             <thead>
               <tr>
                 {data.length > 0

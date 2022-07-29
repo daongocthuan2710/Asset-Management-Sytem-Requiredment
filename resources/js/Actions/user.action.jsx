@@ -33,7 +33,7 @@ export const getUserInfo = () => {
     }
 }
 
-export const getUserEdit = (displayValue = false,userId) => {
+export const getUserEdit = (displayValue = false,userId,sort_update_at='') => {
     return async function (dispatch) {
         const response = await UserService.getUserEdit(userId)
         const userEdit = response.data
@@ -44,6 +44,7 @@ export const getUserEdit = (displayValue = false,userId) => {
                 payload: {
                     value: displayValue,
                     data: userEdit,
+                    sort_update_at: sort_update_at,
                 },
             })
         }

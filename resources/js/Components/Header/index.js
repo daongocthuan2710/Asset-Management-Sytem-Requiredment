@@ -48,7 +48,7 @@ export default function Header() {
                     id={'dropdown-button-drop-down'}
                     drop={'down'}
                     variant="danger"
-                    title={userInformation.username}
+                    title={userInformation.username || ''}
                 >
                     <Dropdown.Item eventKey="1" onClick={handleChangePassword}>Change Password</Dropdown.Item>
                     <Dropdown.Item eventKey="2">Update profile</Dropdown.Item>

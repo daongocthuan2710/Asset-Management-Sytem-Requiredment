@@ -61,7 +61,7 @@ export default function EditForm() {
                     });
                     setTimeout(
                         () => {const displayValue = false;
-                        dispatch(getUserEdit(displayValue, userId))},
+                        dispatch(getUserEdit(displayValue, userId,'sortByEditUser'))},
                         1500);
                 }
                 break;

@@ -3,7 +3,8 @@ const { GET_USER_EDIT } = userConstants;
 
 const initState = {
     userEditInfo: {},
-    value:false
+    value:false,
+    sort_update_at:'',
 };
 
 const userEditReducer = (state = initState, action) => {
@@ -13,6 +14,7 @@ const userEditReducer = (state = initState, action) => {
                 ...state,
                 value: action.payload.value,
                 userEditInfo: action.payload.data,
+                sort_update_at: action.payload.sort_update_at || '',
             };
         default:
             return state;

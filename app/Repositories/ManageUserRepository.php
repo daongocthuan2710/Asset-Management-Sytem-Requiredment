@@ -50,23 +50,20 @@ class ManageUserRepository extends BaseRepository
         }
 
         $data = $this->query
-            ->where('location', $sanctumUser->location)
-            ->whereNot('state','=' ,-1)
-            ->search($request)
-            ->filter($request)
-            ->sortByFullName($request)
-            ->sortByStaffCode($request)
-            ->sortByJoinedDate($request)
-            ->sortByType($request);
-        if (!$request->has('sortByFullName')) {
-            $data = $data->orderBy('first_name', 'asc');
-        } elseif (!$request->has('sortByStaffCode')) {
-            $data = $data->orderBy('staff_code', 'asc');
-        } elseif (!$request->has('sortByJoinedDate')) {
-            $data = $data->orderBy('joined_date', 'asc');
-        } else {
-            $data = $data->orderBy('admin', 'asc');
-        }
+        ->where('location', $sanctumUser->location)
+        ->search($request)
+        ->filter($request)
+        ->sortByFullName($request)
+        ->sortByStaffCode($request)
+        ->sortByJoinedDate($request)
+        ->sortByType($request)
+        ->sortByEditUser($request)
+        ->orderBy('first_name')
+        ->orderBy('staff_code')
+        ->orderBy('joined_date')
+        ->orderBy('admin');
+ 
+
 
         return UserResource::collection($data->paginate($this->default_paginate));
     }
