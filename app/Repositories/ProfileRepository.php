@@ -18,11 +18,6 @@ class ProfileRepository extends BaseRepository
         $this->query = User::query();
     }
 
-    public function getAll()
-    {
-        return $this->query->get();
-    }
-
     public function changePassword($request, $user)
     {
         $validator = Validator::make($request->all(), [
@@ -37,12 +32,6 @@ class ProfileRepository extends BaseRepository
             ], 422);
         }
 
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'Your user is not exist'
-            ], 404);
-        }
         if (Hash::check($request->oldPassword, $user->password)) {
             $user->update([
                 'password' => Hash::make($request->newPassword)
@@ -71,23 +60,14 @@ class ProfileRepository extends BaseRepository
             ], 422);
         }
 
-        if (!$user) {
-            return response()->json([
-                'message' => 'Your user is not exist'
-            ], 404);
-        } else {
-            $user->update([
-                'password' => Hash::make($request->newPassword)
-            ]);
+        $user->update([
+            'password' => Hash::make($request->newPassword),
+            'state' => '1'
+        ]);
 
-            $user->update([
-                'state' => '1'
-            ]);
-
-            return response()->json([
-                'message' => 'Your password has been changed successfully'
-            ], 200);
-        }
+        return response()->json([
+            'message' => 'Your password has been changed successfully'
+        ], 200);
     }
 
     public function kindOfChangePassword($request)
@@ -96,15 +76,12 @@ class ProfileRepository extends BaseRepository
         $token = explode("|", $bearerArr[1]);
         $bearer = DB::table('personal_access_tokens')->where('id', $token[0])->first();
         $user = $this->query->where('id', $bearer->tokenable_id)->first();
-        // $user = User::where('username', $request->username)->first();
-        $state = $user->state;
 
+        $state = $user->state;
         switch ($state) {
             case ('0'):
                 return $this->firstChangePassword($request, $user);
             case ('1'):
-                return $this->changePassword($request, $user);
-            default:
                 return $this->changePassword($request, $user);
         }
     }
