@@ -92,9 +92,7 @@ class ManageUserRepository extends BaseRepository
             return response()->json([
                 'message' => 'you do not have permission to edit user in other location'
             ], 401);
-        }
-        //return data for display
-        else {
+        } else {
             return response()->json([
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
