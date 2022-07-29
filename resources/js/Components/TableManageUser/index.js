@@ -334,9 +334,9 @@ console.log(sort_create_at , "sort_create_at o day");
     <div className="containermanageuser">
       <DisableUser show={disableUser.show} id={disableUser.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
-      <div className="d-flex justify-content-between type-seach-create">
+      <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <Dropdown onSelect={() => handleFilter}>
-          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
+          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center ">
             <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
             <div className="fb-icon">
               <FaFilter />
@@ -451,10 +451,13 @@ console.log(sort_create_at , "sort_create_at o day");
             </tbody>
           </Table>
         </div>
-        {total > 5 ? (
+        {/* Sai lai la total lon hon 5 mowi sua lai dung AC quen doi ... dau total la so trang a em, con 20 la per page, total lon hon 1 thi hien ? */}
+      </Row>
+      <Row>
+      {total > 1 ? (
           <Pagination
             activePage={page}
-            itemsCountPerPage={5}
+            itemsCountPerPage={20}
             totalItemsCount={total}
             pageRangeDisplayed={3}
             prevPageText="Previous"
