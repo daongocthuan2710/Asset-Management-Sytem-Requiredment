@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\NewUserResource;
 use App\Http\Resources\UserResource;
 use App\Repositories\BaseRepository;
 use App\Models\User;
@@ -18,7 +19,7 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class ManageUserRepository extends BaseRepository
 {
-    public int $default_paginate = 5;
+    // public int $default_paginate = 5;
 
     public function __construct()
     {
@@ -56,7 +57,7 @@ class ManageUserRepository extends BaseRepository
 
         $data = $this->query
         ->where('location', $sanctumUser->location)
-        ->where('state','!=',-1)
+        ->where('state', '!=', -1)
         ->search($request)
         ->filter($request)
         ->sortByFullName($request)
@@ -69,7 +70,7 @@ class ManageUserRepository extends BaseRepository
         ->orderBy('staff_code')
         ->orderBy('joined_date')
         ->orderBy('admin');
-        return UserResource::collection($data->paginate($this->default_paginate));
+        return UserResource::collection($data->paginate(config('app.limit')));
     }
 
     public function edit($request, $id)
@@ -92,18 +93,8 @@ class ManageUserRepository extends BaseRepository
             return response()->json([
                 'message' => 'you do not have permission to edit user in other location'
             ], 401);
-        }
-        //return data for display
-        else {
-            return response()->json([
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'date_of_birth' => date_format($user->date_of_birth, "Y-m-d"),
-                'joined_date' => date_format($user->joined_date, "Y-m-d"),
-                'gender' => $user->gender,
-                'type' => $user->admin,
-                'id' => $user->id,
-            ], 200);
+        } else {
+            return response()->json(new NewUserResource($user), 200);
         }
     }
 
@@ -173,5 +164,10 @@ class ManageUserRepository extends BaseRepository
     {
         $weekDay = date('w', strtotime($date));
         return ($weekDay == 0 || $weekDay == 6);
+    }
+    public function show($id)
+    {
+        $user = User::query()->where("id", $id)->first();
+        return new UserResource($user);
     }
 }

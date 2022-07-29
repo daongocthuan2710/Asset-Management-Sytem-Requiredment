@@ -26,7 +26,7 @@ class ManageUserController extends Controller
 
     public function show($id)
     {
-        //
+        return $this->ManageUserService->show($id);
     }
 
     /**

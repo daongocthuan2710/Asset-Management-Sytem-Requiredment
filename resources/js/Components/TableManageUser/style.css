@@ -157,9 +157,11 @@ tbody{
 }
 
 #table-manage-user{
-    height: 528px;
     width: 1200px;
 }
 #img-nodata{
     margin-left: 140px;
+}
+#filter-search{
+    width: 1180px;
 }

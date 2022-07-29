@@ -3,6 +3,7 @@ import "./style.scss";
 import "./style.css";
 import Table from "react-bootstrap/Table";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
+import moment from "moment";
 
 import {
   FaAngleDown,
@@ -11,6 +12,7 @@ import {
   FaRegTimesCircle,
   FaFilter,
   FaSearch,
+  FaRegWindowClose
 } from "react-icons/fa";
 import Pagination from "react-js-pagination";
 import Row from "react-bootstrap/Row";
@@ -25,7 +27,9 @@ import { useDispatch,useSelector } from "react-redux";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import Nodata from "../../../assets/Nodata.gif";
 import { Link } from "react-router-dom";
-import DisableUser from "../DisableUser"
+import DisableUser from "../DisableUser";
+import Modal from 'react-bootstrap/Modal';
+import userService from "../../Services/user.service";
 
 export const ManageUser = () => {
   const [currentButton, setFilter] = React.useState("All");
@@ -34,6 +38,7 @@ export const ManageUser = () => {
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
+  const [modal, setModal] = React.useState(false);
 
    const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -286,7 +291,8 @@ console.log(sort_create_at , "sort_create_at o day");
   };
 
   const dispatch = useDispatch();
-  async function handleOpenEditForm(userId = "") {
+  async function handleOpenEditForm(e, userId = "") {
+    e.stopPropagation();
     const displayValue = true;
     const response = await dispatch(getUserEdit(displayValue, userId));
     handleShowMessage(response);
@@ -315,14 +321,22 @@ console.log(sort_create_at , "sort_create_at o day");
         break;
     }
   }
+  const [user, setUser] = React.useState([]);
+
+  const handleGetUserById = async (userId) => {
+    const response =  await userService.getUserById(userId); 
+    setModal(true);
+    console.log(response);
+    setUser(response.data.data);
+  }
 
   return (
     <div className="containermanageuser">
       <DisableUser show={disableUser.show} id={disableUser.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
-      <div className="d-flex justify-content-between type-seach-create">
+      <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <Dropdown onSelect={() => handleFilter}>
-          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center">
+          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center ">
             <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
             <div className="fb-icon">
               <FaFilter />
@@ -416,7 +430,7 @@ console.log(sort_create_at , "sort_create_at o day");
               {data.length > 0 ? (
                 data.length > 0 &&
                 data.map((item) => (
-                  <tr key={item.id}>
+                  <tr key={item.id} onClick={() => handleGetUserById(item.id)}>
                     <td>{item.staff_code}</td>
                     <td>{item.full_name}</td>
                     <td>{item.username}</td>
@@ -424,7 +438,7 @@ console.log(sort_create_at , "sort_create_at o day");
                     <td>{item.admin == true ? "Admin" : "Staff"}</td>
                     <td className="td-without_border">
                       <FaPencilAlt
-                        onClick={() => handleOpenEditForm(item.id)} id='editUserButton'
+                        onClick={(e) => handleOpenEditForm(e, item.id)} id='editUserButton'
                       />{" "}
                       {"  "}
                       <FaRegTimesCircle className="delete-icon"  onClick={() => handleDisableUser(item.id)} type="button" />
@@ -437,10 +451,13 @@ console.log(sort_create_at , "sort_create_at o day");
             </tbody>
           </Table>
         </div>
-        {total > 5 ? (
+        {/* Sai lai la total lon hon 5 mowi sua lai dung AC quen doi ... dau total la so trang a em, con 20 la per page, total lon hon 1 thi hien ? */}
+      </Row>
+      <Row>
+      {total > 1 ? (
           <Pagination
             activePage={page}
-            itemsCountPerPage={5}
+            itemsCountPerPage={20}
             totalItemsCount={total}
             pageRangeDisplayed={3}
             prevPageText="Previous"
@@ -457,6 +474,54 @@ console.log(sort_create_at , "sort_create_at o day");
           ""
         )}
       </Row>
+      <Modal
+      show={modal}
+      size="lg"
+      onHide={() => setModal(false)}
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header className="w-100">
+        <Modal.Title id="contained-modal-title-vcenter" className="d-flex justify-content-betweeen align-items-center w-100 flex-grow-1">
+          <h4 className="flex-grow-1"> Detailed User Information</h4>
+          <FaRegWindowClose onClick={() => setModal(false)} style={{ cursor: 'pointer' }} />
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+          <div className="d-flex">
+            <p className="w-25">Staff Code</p>
+            <p className="w-75">{user.staff_code}</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Full Name</p>
+            <p className="w-75">{user.full_name}</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Username</p>
+            <p className="w-75">{user.username}</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Date of Birth</p>
+            <p className="w-75">{moment(user.birthday).format('DD/MM/YYYY') }</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Gender</p>
+            <p className="w-75">{user.gender}</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Joined Date</p>
+            <p className="w-75">{user.joined_date}</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Type</p>
+            <p className="w-75">{user.admin ? 'Admin' : 'Staff'}</p>
+          </div>
+          <div className="d-flex">
+            <p className="w-25">Location</p>
+            <p className="w-75">{user.location}</p>
+          </div>
+      </Modal.Body>
+    </Modal>
     </div>
   );
 };

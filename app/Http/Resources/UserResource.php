@@ -10,8 +10,9 @@ class UserResource extends JsonResource
     {
         // Gender
         $gender = $this->gender;
-        if ($gender === 1) $gender = 'Male';
-        elseif ($gender === 0) $gender = 'Female';
+    
+        if ($gender === true) $gender = 'Male';
+        elseif ($gender === false) $gender = 'Female';
         else $gender = '';
         // Date Format
         $newDate = date("d/m/Y", strtotime($this->joined_date));
