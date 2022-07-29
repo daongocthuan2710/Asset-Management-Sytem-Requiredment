@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\Types\Integer;
 
 class ManageUserRepository extends BaseRepository
 {
-    public int $default_paginate = 5;
+    // public int $default_paginate = 5;
 
     public function __construct()
     {
@@ -69,7 +69,7 @@ class ManageUserRepository extends BaseRepository
         ->orderBy('staff_code')
         ->orderBy('joined_date')
         ->orderBy('admin');
-        return UserResource::collection($data->paginate($this->default_paginate));
+        return UserResource::collection($data->paginate(config('app.limit')));
     }
 
     public function edit($request, $id)
