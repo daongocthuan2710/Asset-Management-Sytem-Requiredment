@@ -1,8 +1,8 @@
+// import { display } from "@mui/system";
 import { userConstants, exceptionConstants } from "../Constants";
 import UserService from "../Services/user.service"
-const { GET_USER_INFO } = userConstants;
-const { GET_USER_EDIT } = userConstants;
-const { SUCCESS } = exceptionConstants;
+const { GET_USER_EDIT,GET_USER_CREATE,GET_USER_INFO } = userConstants;
+const { SUCCESS, CREATED } = exceptionConstants;
 
 // export const getUserInfo = (data) => {
 //     return async function (dispatch) {
@@ -38,10 +38,6 @@ export const getUserEdit = (displayValue = false,userId,sort_update_at='') => {
         const response = await UserService.getUserEdit(userId)
         const userEdit = response.data
         const code = response.code
-        console.log('action',response);
-        console.log('sort_update_at_action',sort_update_at);
-        console.log('displayValue',displayValue);
-        console.log(code);
         if (code === SUCCESS) {
             dispatch({
                 type: GET_USER_EDIT,
@@ -56,21 +52,18 @@ export const getUserEdit = (displayValue = false,userId,sort_update_at='') => {
     }
 }
 
-export const getUserCreate = (displayValue = false,userId,sort_update_at='',code) => {
+export const getUserCreate = (sort_update_at='',status) => {
     return async function (dispatch) {
-        const response = await UserService.getUserEdit(userId)
-        const userEdit = response.data
-        if (code === code) {
+        if (status === CREATED) {
             dispatch({
-                type: GET_USER_EDIT,
+                type: GET_USER_CREATE,
                 payload: {
-                    value: displayValue,
-                    data: userEdit,
+                    value: false,
+                    data: '',
                     sort_update_at: sort_update_at,
                 },
             })
         }
-        return response
     }
 }
 

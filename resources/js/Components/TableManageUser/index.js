@@ -42,7 +42,7 @@ export const ManageUser = () => {
 const sort_create_at = useSelector(
   (state) => state.userEditReducer.sort_update_at
 );  
-console.log(sort_create_at);
+console.log(sort_create_at , "sort_create_at o day");
 
 
   const [tableHeader, setTableHeader] = React.useState([
@@ -432,7 +432,7 @@ console.log(sort_create_at);
                   </tr>
                 ))
               ) : (
-                <img src={Nodata}></img>
+                <img id="img-nodata"src={Nodata}></img>
               )}
             </tbody>
           </Table>

@@ -1,6 +1,6 @@
 import { userConstants } from "../Constants";
-const { GET_USER_EDIT,GET_USER_CREATE } = userConstants;
-
+const { GET_USER_EDIT } = userConstants;
+const { GET_USER_CREATE } = userConstants;
 const initState = {
     userEditInfo: {},
     value:false,
@@ -20,7 +20,7 @@ const userEditReducer = (state = initState, action) => {
         case GET_USER_CREATE:
             return {
                 ...state,
-                value: false,
+                value: action.payload.value,
                 userEditInfo: action.payload.data,
                 sort_update_at: action.payload.sort_update_at,
             };

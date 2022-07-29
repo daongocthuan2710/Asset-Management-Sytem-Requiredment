@@ -83,15 +83,18 @@ const CreateNewUser = () => {
     };
     const token = localStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${token}` } };
-    const response = await axios
+    await axios
       .post("/user/store", data, headers)
       .then(function (response) {
-        history.push("/manage-user");
-        dispatch(getUserCreate(false,1 ,'sortByCreateUser',response.code))
+        console.log('response',response);
+        dispatch(getUserCreate('sortByCreateUser',response.status));
+       history.push("/manage-user");
       })
       .catch(function () {
         setMess("First name or last name has invalid characters");
       });
+
+      console.log('headers',headers);
   };
 
   return (
