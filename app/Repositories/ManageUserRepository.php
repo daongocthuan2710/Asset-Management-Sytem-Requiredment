@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\NewUserResource;
 use App\Http\Resources\UserResource;
 use App\Repositories\BaseRepository;
 use App\Models\User;
@@ -93,15 +94,7 @@ class ManageUserRepository extends BaseRepository
                 'message' => 'you do not have permission to edit user in other location'
             ], 401);
         } else {
-            return response()->json([
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'date_of_birth' => date_format($user->date_of_birth, "Y-m-d"),
-                'joined_date' => date_format($user->joined_date, "Y-m-d"),
-                'gender' => $user->gender,
-                'type' => $user->admin,
-                'id' => $user->id,
-            ], 200);
+            return response()->json(new NewUserResource($user), 200);
         }
     }
 
