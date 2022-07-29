@@ -2,17 +2,16 @@ import React from "react";
 import { Container, Row, Col, Button, Form, } from "react-bootstrap";
 import axios from "../../Services/base.service";
 import "./style.css";
-import {Link} from "react-router-dom";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const CreateNewUser = () => {
-  // let history = useHistory();
+  let history = useHistory();
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = React.useState("");
   const [gender, setGender] = React.useState(null);
   const [joinedDate, setJoinedDate] = React.useState("");
-  const [type, setType] = React.useState(false);
+  const [type, setType] = React.useState(0);
   const [mess, setMess] = React.useState("");
   const [enabled, setEnabled] = React.useState(true)
   const [dateOfBirthError, setDateOfBirthError] = React.useState({error: false, message: ""})
@@ -70,9 +69,10 @@ const CreateNewUser = () => {
       console.log(data);
       const token = localStorage.getItem('token')
       const headers = { headers: { Authorization: `Bearer ${token}` } };
+      
       const response = await axios.post("/user/store", data, headers);
       console.log(response);
-      window.location.href = "/manage-user";
+      history.push("/manage-user");
     } catch (err) {
       console.log(err.response.data.message);
       setMess(err.response.data.message);
@@ -140,7 +140,7 @@ const CreateNewUser = () => {
                 <Form.Check
                   name="gender"
                   type="radio"
-                  value={false}
+                  value={0}
                   onChange={(e) => setGender(e.target.value)}
                   label="Female"
                 /></Col>
@@ -148,7 +148,7 @@ const CreateNewUser = () => {
                 <Form.Check
                   name="gender"
                   type="radio"
-                  value={true}
+                  value={1}
                   onChange={(e) => setGender(e.target.value)}
                   label="Male"
                 /></Col>
@@ -184,8 +184,8 @@ const CreateNewUser = () => {
                     setType(e.target.value)
                   }}
                 >
-                  <option value={false}>Staff</option>
-                  <option value={true}>Admin</option>
+                  <option value={0}>Staff</option>
+                  <option value={1}>Admin</option>
 
                 </Form.Control>
               </Col>
@@ -201,11 +201,9 @@ const CreateNewUser = () => {
             >
               Save
             </Button>
-              {/*<Link to="/manage-user">*/}
-                <Button variant="outline-secondary" onClick={() => window.location.href = "/manage-user"} >
-                  Cancel
-                </Button>
-              {/*</Link>*/}
+            <Button variant="outline-secondary" onClick={() => history.push("/manage-user") }>
+              Cancle
+            </Button>
           </Form.Group>
         </Form>
 
