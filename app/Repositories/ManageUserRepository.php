@@ -30,14 +30,19 @@ class ManageUserRepository extends BaseRepository
     }
     public function disable($id)
     {
-        $user = $this->query->findOrFail($id);
-        if ($user) {
-            $user->state = -1;
-            $user = new UserResource($user);
-            return response()->json([
-                'message' => 'update state user disable',
-                'new_state' => $user
-            ]);
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } else {
+            $user = $this->query->findOrFail($id);
+            if ($user) {
+                $user->update([
+                    'state' => $user->state = -1
+                ]);
+                return response()->json([
+                    'message' => 'update state user disable',
+                ], 200);
+            }
         }
     }
 
@@ -51,7 +56,7 @@ class ManageUserRepository extends BaseRepository
 
         $data = $this->query
             ->where('location', $sanctumUser->location)
-            ->whereNot('state','=' ,-1)
+            ->whereNot('state', '=', -1)
             ->search($request)
             ->filter($request)
             ->sortByFullName($request)
@@ -89,19 +94,19 @@ class ManageUserRepository extends BaseRepository
         //check user location
         if ($user->location != $sanctumUser->location) {
             return response()->json([
-            'message' => 'you do not have permission to edit user in other location'
+                'message' => 'you do not have permission to edit user in other location'
             ], 401);
         }
         //return data for display
         else {
             return response()->json([
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'date_of_birth' => date_format($user->date_of_birth,"Y-m-d"),
-            'joined_date' => date_format($user->joined_date,"Y-m-d"),
-            'gender' => $user->gender,
-            'type' => $user->admin,
-            'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'date_of_birth' => date_format($user->date_of_birth, "Y-m-d"),
+                'joined_date' => date_format($user->joined_date, "Y-m-d"),
+                'gender' => $user->gender,
+                'type' => $user->admin,
+                'id' => $user->id,
             ], 200);
         }
     }
