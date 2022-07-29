@@ -87,13 +87,6 @@ export default function EditForm() {
             setDateOfBirthError({error:false,message:""});
             if(joinedDateError.error === false)  setDisableSubmit(false)
         }
-        if (date>joinDate) {
-            setJoinedDateError({
-                error: true,
-                message: "Joined date is not later than Date of Birth. Please select a different date"
-            })
-            setDisableSubmit(true)
-        }
     }
 
     const handleJoinDateCheck = (e)=>{

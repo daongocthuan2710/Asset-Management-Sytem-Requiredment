@@ -357,7 +357,6 @@ export const ManageUser = () => {
           </Form>
           <Link to="/create-user">
           <Button id="btn-createnewuser" className="btn-createnewuser" >
-
             Create new user
           </Button>
           </Link>

@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row, Col, Button, Form, } from "react-bootstrap";
 import axios from "../../Services/base.service";
 import "./style.css";
+import {Link} from "react-router-dom";
 // import { useHistory } from "react-router-dom";
 
 const CreateNewUser = () => {
@@ -25,7 +26,7 @@ const CreateNewUser = () => {
 
 
   const dateOfBirthCheck = ((date)=>{
-    
+
     if (new Date(date).getFullYear() > (new Date().getFullYear()-18)){
     setDateOfBirthError({error:true,message:"User is under 18. Please select a different date"});
     setDateOfBirth("");}
@@ -33,25 +34,25 @@ const CreateNewUser = () => {
       setDateOfBirth(date);
       setDateOfBirthError({error:false,message:""})
     }
-    
+
   })
 
   const joinDateCheck = ((date)=>{
     if (date<dateOfBirth){
     setJoinedDateError({error: true, message: "Joined date is not later than Date of Birth. Please select a different date"})
     setJoinedDate("")}
-    else if(new Date(date).getDay() !== 4 && new Date(date).getDay() !== 5){
+    else if(new Date(date).getDay() === 0 || new Date(date).getDay() === 6) {
       setJoinedDateError({error: true, message: "Joined date is Saturday or Sunday. Please select a different date"})
       setJoinedDate("")
     }
     else {
       setJoinedDateError({error: false, message: ""})
       setJoinedDate(date)
-  
+
     }
-    
-    
-    
+
+
+
   })
 
 
@@ -120,7 +121,7 @@ const CreateNewUser = () => {
                 <Form.Label>Date of Birth</Form.Label>
               </Col><Col md={8}>
                 <Form.Control
-                  required 
+                  required
                   type="date"
                   onChange={(e) => dateOfBirthCheck(e.target.value)}
                   isInvalid={dateOfBirthError.error}
@@ -200,9 +201,11 @@ const CreateNewUser = () => {
             >
               Save
             </Button>
-            <Button variant="outline-secondary" onClick={() => window.location.href = "/manage-user"}>
-              Cancle
-            </Button>
+              {/*<Link to="/manage-user">*/}
+                <Button variant="outline-secondary" onClick={() => window.location.href = "/manage-user"} >
+                  Cancel
+                </Button>
+              {/*</Link>*/}
           </Form.Group>
         </Form>
 
