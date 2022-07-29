@@ -56,7 +56,7 @@ class ManageUserRepository extends BaseRepository
 
         $data = $this->query
         ->where('location', $sanctumUser->location)
-        ->where('state','!=',-1)
+        ->where('state', '!=', -1)
         ->search($request)
         ->filter($request)
         ->sortByFullName($request)
@@ -173,5 +173,10 @@ class ManageUserRepository extends BaseRepository
     {
         $weekDay = date('w', strtotime($date));
         return ($weekDay == 0 || $weekDay == 6);
+    }
+    public function show($id)
+    {
+        $user = User::query()->where("id", $id)->first();
+        return new UserResource($user);
     }
 }

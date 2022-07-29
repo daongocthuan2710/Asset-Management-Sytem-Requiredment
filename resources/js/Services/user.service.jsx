@@ -18,5 +18,11 @@ class UserService {
         const response = await Repository.put(endpoint)
         return response;
     }
+
+    async getUserById(userId) {
+        const endpoint = `/user/${userId}`;
+        const response = await Repository.get(endpoint);
+        return response;
+    }
 }
 export default new UserService()

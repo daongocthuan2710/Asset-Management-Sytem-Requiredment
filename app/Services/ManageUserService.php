@@ -105,9 +105,11 @@ class ManageUserService extends BaseService
             return response()->json([
                 'disable' => $assignment
             ]);
-        } else return response()->json([
+        } else {
+            return response()->json([
             'disable' => $assignment
-        ]);
+            ]);
+        }
     }
     public function manageUser($request)
     {
@@ -120,5 +122,10 @@ class ManageUserService extends BaseService
     public function edit($request, $id): \Illuminate\Http\JsonResponse
     {
         return $this->manageUserRepository->edit($request, $id);
+    }
+
+    public function show($id)
+    {
+        return $this->manageUserRepository->show($id);
     }
 }

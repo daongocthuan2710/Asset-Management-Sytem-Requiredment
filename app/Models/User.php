@@ -10,7 +10,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
 
-
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -72,7 +71,6 @@ class User extends Authenticatable
                 ->orWhere("last_name", "ILike", "%{$search}%")
                 ->orWhere("staff_code", "ILIKE", "%{$search}%")
                 ->orWhereRaw("CONCAT(first_name, ' ', last_name) ILIKE '%{$search}%'");
-                
         });
     }
 
@@ -143,6 +141,4 @@ class User extends Authenticatable
                     ->orderBy("created_at", 'desc');
             });
     }
-
-
 }
