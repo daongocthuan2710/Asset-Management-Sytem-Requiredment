@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('asset', function (Blueprint $table) {
             $table->integer('id', true, true);
-            $table->string('asset_code');
+            $table->string('asset_code')->nullable();
             $table->string('name');
             $table->string('category_id', 2);
             $table->string('specification')->nullable();

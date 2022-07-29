@@ -16,4 +16,9 @@ class Asset extends Model
         'installed_date',
         'state',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
