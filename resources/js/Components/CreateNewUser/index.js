@@ -14,8 +14,8 @@ const CreateNewUser = () => {
   const [type, setType] = React.useState(0);
   const [mess, setMess] = React.useState("");
   const [enabled, setEnabled] = React.useState(true)
-  const [dateOfBirthError, setDateOfBirthError] = React.useState({error: false, message: ""})
-  const [joinedDateError, setJoinedDateError] = React.useState({error: false, message: ""})
+  const [dateOfBirthError, setDateOfBirthError] = React.useState({ error: false, message: "" })
+  const [joinedDateError, setJoinedDateError] = React.useState({ error: false, message: "" })
 
   React.useEffect(() => {
     setEnabled(true)
@@ -24,28 +24,30 @@ const CreateNewUser = () => {
   }, [firstName, lastName, dateOfBirth, gender, type, joinedDate]);
 
 
-  const dateOfBirthCheck = ((date)=>{
+  const dateOfBirthCheck = ((date) => {
 
-    if (new Date(date).getFullYear() > (new Date().getFullYear()-18)){
-    setDateOfBirthError({error:true,message:"User is under 18. Please select a different date"});
-    setDateOfBirth("");}
+    if (new Date(date).getFullYear() > (new Date().getFullYear() - 18)) {
+      setDateOfBirthError({ error: true, message: "User is under 18. Please select a different date" });
+      setDateOfBirth("");
+    }
     else {
       setDateOfBirth(date);
-      setDateOfBirthError({error:false,message:""})
+      setDateOfBirthError({ error: false, message: "" })
     }
 
   })
 
-  const joinDateCheck = ((date)=>{
-    if (date<dateOfBirth){
-    setJoinedDateError({error: true, message: "Joined date is not later than Date of Birth. Please select a different date"})
-    setJoinedDate("")}
-    else if(new Date(date).getDay() === 0 || new Date(date).getDay() === 6) {
-      setJoinedDateError({error: true, message: "Joined date is Saturday or Sunday. Please select a different date"})
+  const joinDateCheck = ((date) => {
+    if (date < dateOfBirth) {
+      setJoinedDateError({ error: true, message: "Joined date is not later than Date of Birth. Please select a different date" })
+      setJoinedDate("")
+    }
+    else if (new Date(date).getDay() === 0 || new Date(date).getDay() === 6) {
+      setJoinedDateError({ error: true, message: "Joined date is Saturday or Sunday. Please select a different date" })
       setJoinedDate("")
     }
     else {
-      setJoinedDateError({error: false, message: ""})
+      setJoinedDateError({ error: false, message: "" })
       setJoinedDate(date)
 
     }
@@ -56,27 +58,23 @@ const CreateNewUser = () => {
 
 
   const handleSubmit = async (e) => {
-    try {
-      const data = {
-        "first_name": firstName,
-        "last_name": lastName,
-        "date_of_birth": dateOfBirth,
-        "gender": gender,
-        "joined_date": joinedDate,
-        "admin": type,
-      };
-      e.preventDefault();
-      console.log(data);
-      const token = localStorage.getItem('token')
-      const headers = { headers: { Authorization: `Bearer ${token}` } };
-      
-      const response = await axios.post("/user/store", data, headers);
-      console.log(response);
-      history.push("/manage-user");
-    } catch (err) {
-      console.log(err.response.data.message);
-      setMess(err.response.data.message);
-    }
+    e.preventDefault();
+    const data = {
+      "first_name": firstName,
+      "last_name": lastName,
+      "date_of_birth": dateOfBirth,
+      "gender": gender,
+      "joined_date": joinedDate,
+      "admin": type,
+    };
+    const token = localStorage.getItem('token')
+    const headers = { headers: { Authorization: `Bearer ${token}` } };
+    const response = await axios.post("/user/store", data, headers)
+      .then(function (response) { console.log(response); history.push("/manage-user") })
+      .catch(function () {
+        setMess("First name or last name has invalid characters")
+
+      })
 
   }
 
@@ -192,8 +190,8 @@ const CreateNewUser = () => {
             </Row>
           </Form.Group>
           <br></br>
-          <p className="err-msg">{mess} </p>
           <Form.Group className="text-end">
+            <p className="err-msg">{mess}</p>
             <Button className="me-3"
               variant="danger"
               type="submit"
@@ -201,7 +199,7 @@ const CreateNewUser = () => {
             >
               Save
             </Button>
-            <Button variant="outline-secondary" onClick={() => history.push("/manage-user") }>
+            <Button variant="outline-secondary" onClick={() => history.push("/manage-user")}>
               Cancle
             </Button>
           </Form.Group>
