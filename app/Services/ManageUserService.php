@@ -100,7 +100,14 @@ class ManageUserService extends BaseService
     }
     public function canDisable($id)
     {
-        return $this->manageUserRepository->canDisable($id);
+        $assignment = false;
+        if ($assignment) {
+            return response()->json([
+                'disable' => $assignment
+            ]);
+        } else return response()->json([
+            'disable' => $assignment
+        ]);
     }
     public function manageUser($request)
     {

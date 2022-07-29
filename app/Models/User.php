@@ -134,5 +134,15 @@ class User extends Authenticatable
             });
     }
 
+    public function scopeSortByCreateUser($querry, $request)
+    {
+        return $querry
+            ->when($request->has('sortByCreateUser'), function ($query) use ($request) {
+                $sortByCreateUser = $request->query('sortByCreateUser');
+                $query
+                    ->orderBy("created_at", 'desc');
+            });
+    }
+
 
 }

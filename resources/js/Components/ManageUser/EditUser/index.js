@@ -61,13 +61,8 @@ export default function EditForm() {
         switch (code) {
             case 200:
                 {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: message,
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
+                    setModalHeader("Success")
+                    setModalBody(message)
                     setTimeout(
                         () => {const displayValue = false;
                         dispatch(getUserEdit(displayValue, userId,'sortByEditUser'))},
@@ -201,7 +196,8 @@ export default function EditForm() {
                                                         selectedRadio == labelName
                                                     }
                                                     onChange={() =>
-                                                        setSelectedRadio(labelName)
+                                                       { setSelectedRadio(labelName)
+                                                        setDisableSubmit(false)}
                                                     }
                                                 />
                                                 <Form.Check.Label
@@ -245,6 +241,8 @@ export default function EditForm() {
                                         as="select"
                                         defaultValue={type}
                                         className="fs-5"
+                                        onChange={()=>
+                                            setDisableSubmit(false)}
                                     >
                                         <option>Staff</option>
                                         <option>Admin</option>

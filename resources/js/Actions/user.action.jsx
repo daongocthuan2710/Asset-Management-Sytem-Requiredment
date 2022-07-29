@@ -38,7 +38,29 @@ export const getUserEdit = (displayValue = false,userId,sort_update_at='') => {
         const response = await UserService.getUserEdit(userId)
         const userEdit = response.data
         const code = response.code
+        console.log('action',response);
+        console.log('sort_update_at_action',sort_update_at);
+        console.log('displayValue',displayValue);
+        console.log(code);
         if (code === SUCCESS) {
+            dispatch({
+                type: GET_USER_EDIT,
+                payload: {
+                    value: displayValue,
+                    data: userEdit,
+                    sort_update_at: sort_update_at,
+                },
+            })
+        }
+        return response
+    }
+}
+
+export const getUserCreate = (displayValue = false,userId,sort_update_at='',code) => {
+    return async function (dispatch) {
+        const response = await UserService.getUserEdit(userId)
+        const userEdit = response.data
+        if (code === code) {
             dispatch({
                 type: GET_USER_EDIT,
                 payload: {

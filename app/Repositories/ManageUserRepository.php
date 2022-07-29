@@ -63,13 +63,11 @@ class ManageUserRepository extends BaseRepository
         ->sortByJoinedDate($request)
         ->sortByType($request)
         ->sortByEditUser($request)
+        ->sortByCreateUser($request)
         ->orderBy('first_name')
         ->orderBy('staff_code')
         ->orderBy('joined_date')
         ->orderBy('admin');
- 
-
-
         return UserResource::collection($data->paginate($this->default_paginate));
     }
 

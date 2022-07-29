@@ -15,12 +15,11 @@ export default function DisableUser(props) {
     }, [props.show])
 
 
-
     const handleDisableUser = async (e) => {
         try {
-            //console.log(`user ${props.id} is deleted`)
-            const response = await axios.get(`/api/disable/${props.id}`);
-            //console.log(`user ${props.id} is deleted`)
+            const token = localStorage.getItem('token')
+            const headers = { headers: { Authorization: `Bearer ${token}` } };
+            await axios.get(`/api/disable/${props.id}`, headers);
             setShow(false)
             window.location.reload();
         } catch (e) {

@@ -35,9 +35,14 @@ export const ManageUser = () => {
   const [sortArray, setSortArray] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
 
-  const sort_update_at = useSelector(
+   const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
-);
+);  
+
+const sort_create_at = useSelector(
+  (state) => state.userEditReducer.sort_update_at
+);  
+console.log(sort_create_at);
 
 
   const [tableHeader, setTableHeader] = React.useState([
@@ -98,10 +103,18 @@ export const ManageUser = () => {
     if (page) {
       array.push(`page=${page}`);
     }
-    if(sort_update_at.length> 0){
+    if(sort_update_at === 'sortByEditUser'){
       array.push('sortByEditUser');
 
     }
+    if(sort_create_at ===  'sortByCreateUser'){
+      array.push('sortByCreateUser');
+    }
+
+    console.log(sort_create_at);
+
+
+
 
     if (sort) {
       sort.forEach((item) => {
