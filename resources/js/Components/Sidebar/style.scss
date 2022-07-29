@@ -50,6 +50,9 @@
 
     .list-group-item.active {
         // margin: 1px;
+        a {
+            color: white;
+        }
         color: #ececec;
         background-color: #dc3545;
     }

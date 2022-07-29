@@ -37,8 +37,8 @@ export default function Sidebar() {
 
     const dataBindingGrid = () => sidebarRoutes.map((item, index) => {
         return (
-            <ListGroup.Item key={index}>
-                <Link to={`/${item}`} data-name={item} key={index} action = 'true' onClick={e => handleClickSidebar(e)}>
+            <ListGroup.Item key={index} href={`/${item}`}>
+                <Link to={`/${item}`} data-name={item} onClick={e => handleClickSidebar(e)}>
                     {item.split('-')
                         .map(char => char.charAt(0).toUpperCase() + char.slice(1))
                         .join(" ")}
@@ -59,7 +59,7 @@ export default function Sidebar() {
             <div className='row'>
                 <div className='col-lg-12'>
                     <div className='sidebar-select'>
-                        <ListGroup defaultActiveKey="#link1">
+                        <ListGroup defaultActiveKey="/home">
                             {dataBindingGrid()}
                         </ListGroup>
                     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, RefreshRoute } from "react-router-dom";
 import Sidebar from "../Sidebar";
 import "./style.scss";
 import { ManageUser } from "../TableManageUser";
@@ -44,6 +44,7 @@ export default function BodySection() {
                     <Route path="/report">
                         <Test />
                     </Route>
+                    <RefreshRoute path='/' redirectionPath='/' />
                 </Switch>
             </div>
 
