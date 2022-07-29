@@ -17,7 +17,7 @@ table > :not(caption) > * > *{
     border: 1px solid #ddd !important;
     color: #000 !important;
     margin-left: px ;
-  
+
     border-radius: 5px !important;
 
 }
@@ -26,7 +26,7 @@ table > :not(caption) > * > *{
     border: 1px solid #ddd !important;
     color: #000 !important;
     margin-left: 1px ;
-  
+
     border-radius: 5px !important;
 }
 
@@ -42,14 +42,16 @@ a .page-link{
     display: none !important;
 }
 
-.page-link{
-    color: rgb(220 53 69) !important;
+.page-item .page-link{
+    color: #e73943 !important;
 }
-.pagination-active{
+.page-item.disabled .page-link{
+    color: #8b9197 !important;
+}
+.page-item.active .page-link{
     color: rgb(255, 255, 255) !important;
-    background-color: rgb(220 53 69) !important;
+    background-color: #e30c18 !important;
 }
-
 .pagination{
     display: flex;
     justify-content: flex-end;
@@ -85,7 +87,7 @@ a .page-link{
     background-color: rgb(255, 255, 255) !important;
     border: rgb(206 212 218) 1px solid !important;
   }
-  
+
   .filter-button,
   .filter-button:hover,
   .filter-button.btn-check:focus + .btn,
@@ -94,12 +96,12 @@ a .page-link{
     background-color: var(--bs-white);
     color: var(--bs-black);
   }
-  
+
   .filter-button .fb-icon {
     border-left: 2px solid #ced4da;
     padding-left: 5px;
   }
-  
+
   button.filter-button.dropdown-toggle::after {
     content: none;
     align-items: center;
@@ -116,7 +118,7 @@ a .page-link{
     border-color: rgb(220 53 69) !important;
 }
 table{
-  
+
     margin-top: 10px;
 }
 thead{
@@ -136,7 +138,7 @@ tr{
 }
 tbody{
     margin-top: 20px !important;
-    
+
 }
 
 #search-create{

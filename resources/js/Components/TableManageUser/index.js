@@ -70,7 +70,7 @@ export const ManageUser = () => {
 
   React.useEffect(() => {
     getApiUser();
-    
+
   }, []);
   const handleDisableUser = (id) => {
     setDisableUser({ show: true, id: id });
@@ -368,7 +368,6 @@ export const ManageUser = () => {
           </Form>
           <Link to="/create-user">
           <Button id="btn-createnewuser" className="btn-createnewuser" >
-           
             Create new user
           </Button>
           </Link>
@@ -412,7 +411,7 @@ export const ManageUser = () => {
                     <td>{item.admin == true ? "Admin" : "Staff"}</td>
                     <td className="td-without_border">
                       <FaPencilAlt
-                        onClick={() => handleOpenEditForm(item.id)}
+                        onClick={() => handleOpenEditForm(item.id)} id='editUserButton'
                       />{" "}
                       {"  "}
                       <FaRegTimesCircle className="delete-icon"  onClick={() => handleDisableUser(item.id)} type="button" />

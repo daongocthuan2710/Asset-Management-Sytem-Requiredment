@@ -39,7 +39,7 @@ export default function LogOut(props) {
                 <Modal.Header>
                     <Modal.Title id="pwChangePasswordHeader">Are you sure?</Modal.Title>
                 </Modal.Header>
-                <Modal.Footer>
+                <Modal.Body>
                     <Container>
                         <Row>
                             <Col id='logoutText'>Do you want to log out?</Col>
@@ -52,7 +52,7 @@ export default function LogOut(props) {
                             </Col>
                         </Row>
                     </Container>
-                </Modal.Footer>
+                </Modal.Body>
             </Modal>
         </>
     );
