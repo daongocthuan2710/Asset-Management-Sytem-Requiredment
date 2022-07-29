@@ -85,7 +85,7 @@ export default function ChangePasswordFirst(props) {
                     {
                         newPassword.validate === 'Your password has been changed successfully'
                             ?
-                            <Container>
+                            <Container id='pwChangePasswordFirstContainer'>
                                 <Row>
                                     <p id='successAlert'>{newPassword.validate}</p>
                                 </Row>
@@ -99,7 +99,7 @@ export default function ChangePasswordFirst(props) {
                                     </Col>
                                 </Row>
                             </Container>
-                            : <Container>
+                            : <Container id='pwChangePasswordFirstContainer'>
                                 <Row>
                                     <p style={{marginBottom: "-1px"}}>This is the first time you logged in.</p>
                                     <p style={{marginBottom: "-1px"}}>You have to change your password to continue.</p>
