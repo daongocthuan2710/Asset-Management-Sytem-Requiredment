@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
-
 use App\Http\Requests\CreateUserRequest;
 
 class ManageUserController extends Controller
