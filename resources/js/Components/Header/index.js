@@ -18,6 +18,9 @@ export default function Header() {
     const pathName = arrayPath[1]
     let currentPage = null
     switch (pathName) {
+        case 'create-user':
+            currentPage = 'Manage User'
+            break
         case 'manage-user':
             currentPage = 'Manage User'
             break
