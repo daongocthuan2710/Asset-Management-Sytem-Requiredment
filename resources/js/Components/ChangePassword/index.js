@@ -1,7 +1,8 @@
 import {Button, Col, Container, Form, InputGroup, Modal, Row} from "react-bootstrap";
 import React,{useEffect, useState} from "react";
 import "./style.scss"
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {FaEye , FaEyeSlash} from "react-icons/fa";
+
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -155,8 +156,8 @@ export default function ChangePassword(props){
                                             <Form.Control id="pwOldPasswordInput" type={oldPassword.showPassword ? 'text': 'password'} onChange={handleOldPasswordInput}/>
                                             <Button id="pwOldPasswordButton" onClick={handleOldPasswordButton}>
                                                 {oldPassword.showPassword
-                                                    ? <VisibilityOff/>
-                                                    : <Visibility/>}
+                                                    ? <FaEyeSlash/>
+                                                    : <FaEye/>}
                                             </Button>
                                         </InputGroup>
                                     </Col>
@@ -181,8 +182,8 @@ export default function ChangePassword(props){
                                             <Form.Control id="pwNewPasswordInput" type={newPassword.showPassword ? 'text': 'password'} onChange={handleNewPasswordInput}/>
                                             <Button id="pwNewPasswordButton" onClick={handleNewPasswordButton}>
                                                 {newPassword.showPassword
-                                                    ? <VisibilityOff/>
-                                                    : <Visibility/>}
+                                                    ? <FaEyeSlash/>
+                                                    : <FaEye/>}
                                             </Button>
                                         </InputGroup>
                                     </Col>

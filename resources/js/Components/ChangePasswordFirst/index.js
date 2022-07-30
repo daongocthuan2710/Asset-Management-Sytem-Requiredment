@@ -2,7 +2,8 @@
 import {Button, Col, Container, Form, InputGroup, Modal, Row} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import "./style.scss"
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {FaEye , FaEyeSlash} from "react-icons/fa";
+
 import axios from "axios";
 
 export default function ChangePasswordFirst(props) {
@@ -119,8 +120,8 @@ export default function ChangePasswordFirst(props) {
                                                           onChange={handleNewPasswordInput}/>
                                             <Button id="pwNewPasswordButton" onClick={handleNewPasswordButton}>
                                                 {newPassword.showPassword
-                                                    ? <VisibilityOff/>
-                                                    : <Visibility/>}
+                                                    ? <FaEyeSlash/>
+                                                    : <FaEye/>}
                                             </Button>
                                         </InputGroup>
                                     </Col>
