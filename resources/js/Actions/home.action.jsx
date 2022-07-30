@@ -22,7 +22,6 @@ const {UPDATE_TITLE_HEADER} = homeConstants
 // }
 export const updateTitleHeader = (data) => {
     return async function (dispatch) {
-        // console.log('a',data)
         dispatch({
             type: UPDATE_TITLE_HEADER,
             payload: {

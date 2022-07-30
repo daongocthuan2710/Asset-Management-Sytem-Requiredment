@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
+use App\Http\Requests\CreateUserRequest;
 
 class ManageUserController extends Controller
 {
@@ -13,57 +14,56 @@ class ManageUserController extends Controller
     {
         $this->ManageUserService = $manageUserService;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return $this->ManageUserService->getAll();
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function show($id)
     {
-        //
+        return $this->ManageUserService->show($id);
     }
 
     /**
-     * Display the specified resource.
+     * Edit the specified resource in storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function edit(Request $request, int $id)
     {
-        //
+        return $this->ManageUserService->edit($request, $id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
-        //
+        return $this->ManageUserService->update($request, $id);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $input = $request->all();
+        return $this->ManageUserService->store($input);
+    }
+
+    public function disable($id)
+    {
+        return $this->ManageUserService->disable($id);
+    }
+    public function canDisable($id)
+    {
+        return $this->ManageUserService->canDisable($id);
+    }
+    public function manageUser(Request $request)
+    {
+        return $this->ManageUserService->manageUser($request);
     }
 }

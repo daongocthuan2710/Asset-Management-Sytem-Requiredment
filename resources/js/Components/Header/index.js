@@ -10,9 +10,36 @@ import LogOut from '../LogOut';
 import { getUserInfo } from '../../Actions/user.action';
 // eslint-disable-next-line no-unused-vars
 import homeReducer from "../../Reducers/home.reducer";
-import userReducer from "../../Reducers/user.reducer";
+import { useLocation } from "react-router-dom";
 
 export default function Header() {
+    const location = useLocation()
+    const arrayPath = location.pathname.split('/')
+    const pathName = arrayPath[1]
+    let currentPage = null
+    switch (pathName) {
+        case 'create-user':
+            currentPage = 'Manage User'
+            break
+        case 'manage-user':
+            currentPage = 'Manage User'
+            break
+        case 'manage-asset':
+            currentPage = 'Manage Asset'
+            break
+        case 'manage-assignment':
+            currentPage = 'Manage Assignment'
+            break
+        case 'request-for-returning':
+            currentPage = 'Request For Returning'
+            break
+        case 'report':
+            currentPage = 'Report'
+            break
+        default:
+            currentPage = 'Home'
+            break
+    }
     useEffect(() => {
         dispatch(getUserInfo())
     }, [])
@@ -20,11 +47,9 @@ export default function Header() {
     const [showChangePasswordFirst, setShowChangePasswordFirst] = useState(false)
 
     const [confirmLogOut, setConfirmLogOut] = useState(false)
-    const data = useSelector(state => state.homeReducer.headerNameList)
     const dispatch = useDispatch()
 
     const userInformation = useSelector(state => state.userReducer.userInfo)
-
     const handleShow = () => {
         setConfirmLogOut(true);
         setTimeout(() => setConfirmLogOut(false), 1);
@@ -39,18 +64,17 @@ export default function Header() {
         if (userInformation.state === 0) setShowChangePasswordFirst(true)
         setTimeout(() => setShowChangePasswordFirst(false), 1);
     }, [userInformation.state])
-    // console.log(userInformation.username);
     return (
         <>
             <header>
-                <h5>{data.headerNameList}</h5>
+                <h5>{currentPage}</h5>
                 <DropdownButton
                     as={ButtonGroup}
                     key={'down'}
                     id={'dropdown-button-drop-down'}
                     drop={'down'}
                     variant="danger"
-                    title={userInformation.username}
+                    title={userInformation.username || ''}
                 >
                     <Dropdown.Item eventKey="1" onClick={handleChangePassword}>Change Password</Dropdown.Item>
                     <Dropdown.Item eventKey="2">Update profile</Dropdown.Item>

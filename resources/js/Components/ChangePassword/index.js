@@ -123,17 +123,7 @@ export default function ChangePassword(props){
                 keyboard={false}
             >
                 <Modal.Header >
-                    <Container>
-                        <Row>
-                            <Col md={11}>
-                                <Modal.Title id="changePassword">Change password</Modal.Title>
-                            </Col>
-                            {/*Close Button*/}
-                            {/*<Col md={1} align='right'>*/}
-                            {/*    <button style={{border: 0}} onClick={handleClose}>X</button>*/}
-                            {/*</Col>*/}
-                        </Row>
-                    </Container>
+                    <Modal.Title id="pwChangePasswordHeader">Change password</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {
@@ -146,7 +136,7 @@ export default function ChangePassword(props){
                                 <Row>
                                     <Col align='right'>
                                         <Button onClick={handleClose}
-                                                id="cancelButton"
+                                                id="pwCancelButton"
                                                 variant="light">
                                             Close
                                         </Button>
@@ -162,8 +152,8 @@ export default function ChangePassword(props){
                                     </Col>
                                     <Col md={8}>
                                         <InputGroup>
-                                            <Form.Control id="oldPasswordInput" type={oldPassword.showPassword ? 'text': 'password'} onChange={handleOldPasswordInput}/>
-                                            <Button id="oldPasswordButton" onClick={handleOldPasswordButton}>
+                                            <Form.Control id="pwOldPasswordInput" type={oldPassword.showPassword ? 'text': 'password'} onChange={handleOldPasswordInput}/>
+                                            <Button id="pwOldPasswordButton" onClick={handleOldPasswordButton}>
                                                 {oldPassword.showPassword
                                                     ? <VisibilityOff/>
                                                     : <Visibility/>}
@@ -176,7 +166,7 @@ export default function ChangePassword(props){
                                         ? <></>
                                         : <Row>
                                             <Col md={{span: 8, offset: 4}}>
-                                                <p id='oldPasswordError'>{oldPassword.validate}</p>
+                                                <p id='pwOldPasswordError'>{oldPassword.validate}</p>
                                             </Col>
                                         </Row>
                                 }
@@ -188,8 +178,8 @@ export default function ChangePassword(props){
                                     </Col>
                                     <Col md={8}>
                                         <InputGroup>
-                                            <Form.Control id="newPasswordInput" type={newPassword.showPassword ? 'text': 'password'} onChange={handleNewPasswordInput}/>
-                                            <Button id="newPasswordButton" onClick={handleNewPasswordButton}>
+                                            <Form.Control id="pwNewPasswordInput" type={newPassword.showPassword ? 'text': 'password'} onChange={handleNewPasswordInput}/>
+                                            <Button id="pwNewPasswordButton" onClick={handleNewPasswordButton}>
                                                 {newPassword.showPassword
                                                     ? <VisibilityOff/>
                                                     : <Visibility/>}
@@ -202,23 +192,22 @@ export default function ChangePassword(props){
                                         ? <></>
                                         : <Row>
                                             <Col md={{span: 8, offset: 4}}>
-                                                <p id='oldPasswordError'>{newPassword.validate}</p>
+                                                <p id='pwOldPasswordError'>{newPassword.validate}</p>
                                             </Col>
                                         </Row>
 
                                 }
                                 <Row>
-                                    <Col md={{span: 2, offset: 7}} align='right'>
+                                    <Col md={{span: 6, offset: 6}} align={'right'}>
                                         <Button onClick={handleSave}
-                                                id="saveButton"
+                                                id="pwSaveButton"
                                                 variant="light"
                                                 disabled={!filledPassword}>
                                             Save
                                         </Button>
-                                    </Col>
-                                    <Col md={3} align='right'>
+                                        <b>  </b>
                                         <Button onClick={handleClose}
-                                                id="cancelButton"
+                                                id="pwCancelButton"
                                                 variant="light">
                                             Cancel
                                         </Button>

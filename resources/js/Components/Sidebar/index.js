@@ -5,40 +5,74 @@ import './style.scss'
 import { useDispatch, useSelector } from "react-redux"
 import { updateTitleHeader } from "../../Actions"
 import nashtechlogo from "../../../assets/nashtech_logo.svg";
+import {Link, useLocation} from 'react-router-dom'
 
 
 export default function Sidebar() {
+    const location = useLocation()
+    const arrayPath = location.pathname.split('/')
+    const pathName = arrayPath[1]
+    let activePath = null
+    switch (pathName) {
+        case 'create-user':
+            activePath = '/manage-user'
+            break
+        case 'home':
+            activePath = '/home'
+            break
+        case 'manage-user':
+            activePath = '/manage-user'
+            break
+        case 'manage-asset':
+            activePath = '/manage-asset'
+            break
+        case 'manage-assignment':
+            activePath = '/manage-assignment'
+            break
+        case 'request-for-returning':
+            activePath = '/request-for-returning'
+            break
+        case 'report':
+            activePath = '/report'
+            break
+        default:
+            activePath = '/home'
+            break
+    }
     const [sidebarName, setSidebarName] = useState('Home')
     const dispatch = useDispatch()
     const data = useSelector(state => state.userReducer.userInfo);
-    console.log('sidebar ', data)
 
-    let sidebarItems;
-    // if (data.length > 0) {
+    let sidebarRoutes;
     if (data.admin === true) {
-        sidebarItems = [
-            'Home', 'Manage User', 'Manage Asset', 'Manage Assignment', 'Request for Returning', 'Report'
+        sidebarRoutes = [
+            'home', 'manage-user', 'manage-asset', 'manage-assignment', 'request-for-returning', 'report'
         ]
     } else {
-        // } else if (data.admin === false) {
-        sidebarItems = [
-            'Home'
+        sidebarRoutes = [
+            'home'
         ]
     }
-    // }
 
     const handleClickSidebar = (e) => {
-        setSidebarName(e.target.dataset.name)
+        let title = e.target.dataset.name
+            .split('-').map(char => char.charAt(0).toUpperCase() + char.slice(1))
+            .join(" ");
+        setSidebarName(title)
     }
     useEffect(() => {
         dispatch(updateTitleHeader(sidebarName))
 
     }, [handleClickSidebar])
 
-    const dataBindingGrid = () => sidebarItems.map((item, index) => {
+    const dataBindingGrid = () => sidebarRoutes.map((item, index) => {
         return (
-            <ListGroup.Item data-name={item} key={index} action href={`#link${index + 1}`} onClick={e => handleClickSidebar(e)}>
-                {item}
+            <ListGroup.Item key={index} href={`/${item}`}>
+                <Link to={`/${item}`} data-name={item} onClick={e => handleClickSidebar(e)}>
+                    {item.split('-')
+                        .map(char => char.charAt(0).toUpperCase() + char.slice(1))
+                        .join(" ")}
+                </Link>
             </ListGroup.Item>
         )
     })
@@ -47,7 +81,7 @@ export default function Sidebar() {
             <div className='row'>
                 <div className='sidebar-brand'>
                     <NavbarBrand>
-                        <img width="200" height="200"src={nashtechlogo}  />
+                        <img width="200" height="200" src={nashtechlogo} />
                         <h4><b>Online Asset Management</b></h4>
                     </NavbarBrand>
                 </div>
@@ -55,7 +89,7 @@ export default function Sidebar() {
             <div className='row'>
                 <div className='col-lg-12'>
                     <div className='sidebar-select'>
-                        <ListGroup defaultActiveKey="#link1">
+                        <ListGroup activeKey={activePath}>
                             {dataBindingGrid()}
                         </ListGroup>
                     </div>

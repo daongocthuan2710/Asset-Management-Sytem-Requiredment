@@ -5,7 +5,7 @@ import "./style.scss"
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import axios from "axios";
 
-export default function ChangePasswordFirst(props){
+export default function ChangePasswordFirst(props) {
     const [show, setShow] = useState(Boolean(props.show))
     const [filledPassword, setFilledPassword] = useState(false)
     const [newPassword, setNewPassword] = useState({
@@ -14,8 +14,8 @@ export default function ChangePasswordFirst(props){
         validate: ''
     });
 
-    useEffect(()=>{
-        if(show===true){
+    useEffect(() => {
+        if (show === true) {
             setNewPassword({
                 password: '',
                 showPassword: false,
@@ -33,8 +33,8 @@ export default function ChangePasswordFirst(props){
         axios.post('api/profile', {
             newPassword: newPassword.password,
             oldPassword: '123456',
-        },{
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }, {
+            headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}
         })
             .then(function (response) {
                 setNewPassword({
@@ -52,7 +52,7 @@ export default function ChangePasswordFirst(props){
     //Handle close pop-up
     const handleClose = () => setShow(false);
     //Handle show/hide password
-    const handleNewPasswordButton = () =>{
+    const handleNewPasswordButton = () => {
         setNewPassword({
             ...newPassword,
             showPassword: !newPassword.showPassword,
@@ -64,46 +64,42 @@ export default function ChangePasswordFirst(props){
             ...newPassword,
             password: e.target.value
         })
-        if(newPassword.password!=='') setFilledPassword(true)
+        if (newPassword.password !== '') setFilledPassword(true)
     }
 
-    useEffect(()=>{
-        if(props.show) setShow(Boolean(true))
+    useEffect(() => {
+        if (props.show) setShow(Boolean(true))
     }, [props])
 
-    return(
+    return (
         <>
             <Modal
                 show={show}
                 backdrop="static"
                 keyboard={false}
             >
-                <Modal.Header >
-                
-                  
-                                <Modal.Title>Change password</Modal.Title>
-                     
-                
+                <Modal.Header>
+                    <Modal.Title id="pwChangePasswordHeader">Change password</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {
-                        newPassword.validate==='Your password has been changed successfully'
+                        newPassword.validate === 'Your password has been changed successfully'
                             ?
-                            <Container>
+                            <Container id='pwChangePasswordFirstContainer'>
                                 <Row>
                                     <p id='successAlert'>{newPassword.validate}</p>
                                 </Row>
                                 <Row>
                                     <Col align='right'>
                                         <Button onClick={handleClose}
-                                                id="cancelButton"
+                                                id="pwCancelButton"
                                                 variant="light">
                                             Close
                                         </Button>
                                     </Col>
                                 </Row>
                             </Container>
-                            : <Container>
+                            : <Container id='pwChangePasswordFirstContainer'>
                                 <Row>
                                     <p style={{marginBottom: "-1px"}}>This is the first time you logged in.</p>
                                     <p style={{marginBottom: "-1px"}}>You have to change your password to continue.</p>
@@ -116,10 +112,12 @@ export default function ChangePasswordFirst(props){
                                         </p>
                                     </Col>
                                     <Col md={8}>
-                                      
+
                                         <InputGroup>
-                                            <Form.Control id="newPasswordInput" type={newPassword.showPassword ? 'text': 'password'} onChange={handleNewPasswordInput}/>
-                                            <Button id="newPasswordButton" onClick={handleNewPasswordButton}>
+                                            <Form.Control id="pwNewPasswordInput"
+                                                          type={newPassword.showPassword ? 'text' : 'password'}
+                                                          onChange={handleNewPasswordInput}/>
+                                            <Button id="pwNewPasswordButton" onClick={handleNewPasswordButton}>
                                                 {newPassword.showPassword
                                                     ? <VisibilityOff/>
                                                     : <Visibility/>}
@@ -132,7 +130,7 @@ export default function ChangePasswordFirst(props){
                                         ? <></>
                                         : <Row>
                                             <Col md={{span: 8, offset: 4}}>
-                                                <p id='newPasswordError'>{newPassword.validate}</p>
+                                                <p id='pwNewPasswordError'>{newPassword.validate}</p>
                                             </Col>
                                         </Row>
 
@@ -141,7 +139,7 @@ export default function ChangePasswordFirst(props){
                                     <Col md={9}/>
                                     <Col md={3} align='right'>
                                         <Button onClick={handleSave}
-                                                id="saveButton"
+                                                id="pwSaveButton"
                                                 variant="light"
                                                 disabled={!filledPassword}>
                                             Save
