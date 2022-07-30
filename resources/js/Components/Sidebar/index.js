@@ -5,10 +5,40 @@ import './style.scss'
 import { useDispatch, useSelector } from "react-redux"
 import { updateTitleHeader } from "../../Actions"
 import nashtechlogo from "../../../assets/nashtech_logo.svg";
-import { Link } from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 
 
 export default function Sidebar() {
+    const location = useLocation()
+    const arrayPath = location.pathname.split('/')
+    const pathName = arrayPath[1]
+    let activePath = null
+    switch (pathName) {
+        case 'create-user':
+            activePath = '/manage-user'
+            break
+        case 'home':
+            activePath = '/home'
+            break
+        case 'manage-user':
+            activePath = '/manage-user'
+            break
+        case 'manage-asset':
+            activePath = '/manage-asset'
+            break
+        case 'manage-assignment':
+            activePath = '/manage-assignment'
+            break
+        case 'request-for-returning':
+            activePath = '/request-for-returning'
+            break
+        case 'report':
+            activePath = '/report'
+            break
+        default:
+            activePath = '/home'
+            break
+    }
     const [sidebarName, setSidebarName] = useState('Home')
     const dispatch = useDispatch()
     const data = useSelector(state => state.userReducer.userInfo);
@@ -59,7 +89,7 @@ export default function Sidebar() {
             <div className='row'>
                 <div className='col-lg-12'>
                     <div className='sidebar-select'>
-                        <ListGroup defaultActiveKey="/home">
+                        <ListGroup activeKey={activePath}>
                             {dataBindingGrid()}
                         </ListGroup>
                     </div>
