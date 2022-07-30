@@ -2324,17 +2324,17 @@ function Sidebar() {
   var dataBindingGrid = function dataBindingGrid() {
     return sidebarRoutes.map(function (item, index) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+        href: "/".concat(item),
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
           to: "/".concat(item),
           "data-name": item,
-          action: "true",
           onClick: function onClick(e) {
             return handleClickSidebar(e);
           },
           children: item.split('-').map(function (_char2) {
             return _char2.charAt(0).toUpperCase() + _char2.slice(1);
           }).join(" ")
-        }, index)
+        })
       }, index);
     });
   };
@@ -2364,7 +2364,7 @@ function Sidebar() {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "sidebar-select",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            defaultActiveKey: "#link1",
+            defaultActiveKey: "/home",
             children: dataBindingGrid()
           })
         })
@@ -2756,7 +2756,8 @@ var ManageUser = function ManageUser() {
     getApiUser();
   }, []);
 
-  var handleDisableUser = function handleDisableUser(id) {
+  var handleDisableUser = function handleDisableUser(e, id) {
+    e.stopPropagation();
     setDisableUser({
       show: true,
       id: id
@@ -3120,13 +3121,14 @@ var ManageUser = function ManageUser() {
       },
       children: "User List "
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)("div", {
+      id: "filter-search",
       className: "d-flex justify-content-between type-seach-create",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_15__["default"], {
         onSelect: function onSelect() {
           return handleFilter;
         },
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_15__["default"].Toggle, {
-          className: "filter-button d-flex align-items-center justity-content-center",
+          className: "filter-button d-flex align-items-center justity-content-center ",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("p", {
             className: "flex-grow-1 font-weight-bold mb-0",
             children: "Type"
@@ -3203,8 +3205,8 @@ var ManageUser = function ManageUser() {
           })
         })]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_21__["default"], {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_21__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
         id: "table-manage-user",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_22__["default"], {
           responsive: "md",
@@ -3246,8 +3248,8 @@ var ManageUser = function ManageUser() {
                     id: "editUserButton"
                   }), " ", "  ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_16__.FaRegTimesCircle, {
                     className: "delete-icon",
-                    onClick: function onClick() {
-                      return handleDisableUser(item.id);
+                    onClick: function onClick(e) {
+                      return handleDisableUser(e, item.id);
                     },
                     type: "button"
                   })]
@@ -3259,9 +3261,11 @@ var ManageUser = function ManageUser() {
             })
           })]
         })
-      }), total > 5 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(react_js_pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_21__["default"], {
+      children: total > 1 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(react_js_pagination__WEBPACK_IMPORTED_MODULE_5__["default"], {
         activePage: page,
-        itemsCountPerPage: 5,
+        itemsCountPerPage: 20,
         totalItemsCount: total,
         pageRangeDisplayed: 3,
         prevPageText: "Previous",
@@ -3275,7 +3279,7 @@ var ManageUser = function ManageUser() {
         onChange: function onChange(page) {
           return handlePageChange(page);
         }
-      }) : ""]
+      }) : ""
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_23__["default"], {
       show: modal,
       size: "lg",
@@ -4598,7 +4602,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".containermanageuser{\r\n    width: 1200px !important;\r\n    margin-left: 100px !important;\r\n}\r\ntable {\r\n    border-collapse: separate !important;\r\n    border-spacing: 0px 20px !important;\r\n    font-size: 16px !important;\r\n\r\n}\r\ntable > :not(caption) > * > *{\r\n    padding: 0px !important;\r\n}\r\n\r\n#oldPasswordButton{\r\n    background-color: #f5f5f5 !important;\r\n    border: 1px solid #ddd !important;\r\n    color: #000 !important;\r\n    margin-left: px ;\r\n\r\n    border-radius: 5px !important;\r\n\r\n}\r\n#newPasswordButton{\r\n    background-color: #f5f5f5 !important;\r\n    border: 1px solid #ddd !important;\r\n    color: #000 !important;\r\n    margin-left: 1px ;\r\n\r\n    border-radius: 5px !important;\r\n}\r\n\r\n.delete-icon{\r\n    color: rgb(220 53 69);\r\n}\r\n\r\n .td-without_border{\r\n    border-bottom: none !important;\r\n    border-bottom-width: 0px;\r\n}\r\na .page-link{\r\n    display: none !important;\r\n}\r\n\r\n.page-item .page-link{\r\n    color: #e73943 !important;\r\n}\r\n.page-item.disabled .page-link{\r\n    color: #8b9197 !important;\r\n}\r\n.page-item.active .page-link{\r\n    color: rgb(255, 255, 255) !important;\r\n    background-color: #e30c18 !important;\r\n}\r\n.pagination{\r\n    display: flex;\r\n    justify-content: flex-end;\r\n    margin-right: 0px;\r\n}\r\n.btn-filter .dropdown-toggle::after {\r\n    border: 1px solid #ddd !important;\r\n  }\r\n#btn-createnewuser{\r\n    background-color: rgb(220 53 69) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border: none;\r\n    width: 200px;\r\n    margin-left: 50px;\r\n    height: 38px;\r\n\r\n}\r\n.btn-primary{\r\n    background-color: rgb(220 53 69) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border: none;\r\n}\r\n.secondaryButton{\r\n    background-color: rgb(117, 117, 117) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border: none !important;\r\n}\r\n\r\n.filter-button {\r\n    width: 126px;\r\n    height: 40px;\r\n    color: black !important;\r\n    background-color: rgb(255, 255, 255) !important;\r\n    border: rgb(206 212 218) 1px solid !important;\r\n  }\r\n\r\n  .filter-button,\r\n  .filter-button:hover,\r\n  .filter-button.btn-check:focus + .btn,\r\n  .btn:focus {\r\n    border: var(--2px) solid rgb(255, 255, 255) ;\r\n    background-color: var(--bs-white);\r\n    color: var(--bs-black);\r\n  }\r\n\r\n  .filter-button .fb-icon {\r\n    border-left: 2px solid #ced4da;\r\n    padding-left: 5px;\r\n  }\r\n\r\n  button.filter-button.dropdown-toggle::after {\r\n    content: none;\r\n    align-items: center;\r\n  }\r\n\r\n\r\n  .search-bar{\r\n    margin-right: 40px;\r\n  }\r\n\r\n.form-check-input:checked{\r\n    background-color: rgb(220 53 69) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border-color: rgb(220 53 69) !important;\r\n}\r\ntable{\r\n\r\n    margin-top: 10px;\r\n}\r\nthead{\r\n    box-shadow: 0 5px 10px #ced4da !important;\r\n    padding: 50px !important;\r\n    letter-spacing: 0.1rem;\r\n}\r\n.table > :not(caption) > * > *{\r\n    padding: 20px !important;\r\n    border-bottom: none !important;\r\n}\r\ntr{\r\n    box-shadow: 0 5px 10px #ced4da !important;\r\n    padding: 50px !important;\r\n    letter-spacing: 0.1rem;\r\n    border-spacing: 20px;\r\n}\r\ntbody{\r\n    margin-top: 20px !important;\r\n\r\n}\r\n\r\n#search-create{\r\n    width: 500px;\r\n    height: 38px;\r\n}\r\n#form-search{\r\n    width: 300px;\r\n}\r\n\r\n#inputsearch{\r\n    margin-left: 40px;\r\n}\r\n#search-form{\r\n    width: 140px;\r\n}\r\n\r\n#table-manage-user{\r\n    height: 528px;\r\n    width: 1200px;\r\n}\r\n#img-nodata{\r\n    margin-left: 140px;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".containermanageuser{\r\n    width: 1200px !important;\r\n    margin-left: 100px !important;\r\n}\r\ntable {\r\n    border-collapse: separate !important;\r\n    border-spacing: 0px 20px !important;\r\n    font-size: 16px !important;\r\n\r\n}\r\ntable > :not(caption) > * > *{\r\n    padding: 0px !important;\r\n}\r\n\r\n#oldPasswordButton{\r\n    background-color: #f5f5f5 !important;\r\n    border: 1px solid #ddd !important;\r\n    color: #000 !important;\r\n    margin-left: px ;\r\n\r\n    border-radius: 5px !important;\r\n\r\n}\r\n#newPasswordButton{\r\n    background-color: #f5f5f5 !important;\r\n    border: 1px solid #ddd !important;\r\n    color: #000 !important;\r\n    margin-left: 1px ;\r\n\r\n    border-radius: 5px !important;\r\n}\r\n\r\n.delete-icon{\r\n    color: rgb(220 53 69);\r\n}\r\n\r\n .td-without_border{\r\n    border-bottom: none !important;\r\n    border-bottom-width: 0px;\r\n}\r\na .page-link{\r\n    display: none !important;\r\n}\r\n\r\n.page-item .page-link{\r\n    color: #e73943 !important;\r\n}\r\n.page-item.disabled .page-link{\r\n    color: #8b9197 !important;\r\n}\r\n.page-item.active .page-link{\r\n    color: rgb(255, 255, 255) !important;\r\n    background-color: #e30c18 !important;\r\n}\r\n.pagination{\r\n    display: flex;\r\n    justify-content: flex-end;\r\n    margin-right: 0px;\r\n}\r\n.btn-filter .dropdown-toggle::after {\r\n    border: 1px solid #ddd !important;\r\n  }\r\n#btn-createnewuser{\r\n    background-color: rgb(220 53 69) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border: none;\r\n    width: 200px;\r\n    margin-left: 50px;\r\n    height: 38px;\r\n\r\n}\r\n.btn-primary{\r\n    background-color: rgb(220 53 69) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border: none;\r\n}\r\n.secondaryButton{\r\n    background-color: rgb(117, 117, 117) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border: none !important;\r\n}\r\n\r\n.filter-button {\r\n    width: 126px;\r\n    height: 40px;\r\n    color: black !important;\r\n    background-color: rgb(255, 255, 255) !important;\r\n    border: rgb(206 212 218) 1px solid !important;\r\n  }\r\n\r\n  .filter-button,\r\n  .filter-button:hover,\r\n  .filter-button.btn-check:focus + .btn,\r\n  .btn:focus {\r\n    border: var(--2px) solid rgb(255, 255, 255) ;\r\n    background-color: var(--bs-white);\r\n    color: var(--bs-black);\r\n  }\r\n\r\n  .filter-button .fb-icon {\r\n    border-left: 2px solid #ced4da;\r\n    padding-left: 5px;\r\n  }\r\n\r\n  button.filter-button.dropdown-toggle::after {\r\n    content: none;\r\n    align-items: center;\r\n  }\r\n\r\n\r\n  .search-bar{\r\n    margin-right: 40px;\r\n  }\r\n\r\n.form-check-input:checked{\r\n    background-color: rgb(220 53 69) !important;\r\n    color: rgb(255, 255, 255) !important;\r\n    border-color: rgb(220 53 69) !important;\r\n}\r\ntable{\r\n\r\n    margin-top: 10px;\r\n}\r\nthead{\r\n    box-shadow: 0 5px 10px #ced4da !important;\r\n    padding: 50px !important;\r\n    letter-spacing: 0.1rem;\r\n}\r\n.table > :not(caption) > * > *{\r\n    padding: 20px !important;\r\n    border-bottom: none !important;\r\n}\r\ntr{\r\n    box-shadow: 0 5px 10px #ced4da !important;\r\n    padding: 50px !important;\r\n    letter-spacing: 0.1rem;\r\n    border-spacing: 20px;\r\n}\r\ntbody{\r\n    margin-top: 20px !important;\r\n\r\n}\r\n\r\n#search-create{\r\n    width: 500px;\r\n    height: 38px;\r\n}\r\n#form-search{\r\n    width: 300px;\r\n}\r\n\r\n#inputsearch{\r\n    margin-left: 40px;\r\n}\r\n#search-form{\r\n    width: 140px;\r\n}\r\n\r\n#table-manage-user{\r\n    width: 1200px;\r\n}\r\n#img-nodata{\r\n    margin-left: 140px;\r\n}\r\n#filter-search{\r\n    width: 1180px;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4790,7 +4794,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".sidebar .sidebar-wrap {\n  width: 460px;\n}\n.sidebar img {\n  padding: 20px;\n}\n.sidebar h4 {\n  margin-left: 40px;\n  color: #dc3545;\n}\n.sidebar .sidebar-select {\n  margin: 20px 80px 0 40px;\n}\n.sidebar .list-group {\n  border-radius: 0;\n}\n.sidebar .list-group-item {\n  width: 100%;\n  height: 100%;\n  padding-left: 24px;\n  font-size: 22px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  margin: 1px 0;\n  height: 60px;\n  border: none;\n  background: #ececec;\n}\n.sidebar .list-group-item a {\n  width: 100%;\n  height: 100%;\n  color: black;\n  text-decoration: none;\n}\n.sidebar .list-group-item:hover {\n  background: #dedede;\n}\n.sidebar .list-group-item:active,\n.sidebar .list-group-item:visited,\n.sidebar .list-group-item:focus {\n  background-color: #dc3545;\n  color: #ececec;\n}\n.sidebar .list-group-item.active {\n  color: #ececec;\n  background-color: #dc3545;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".sidebar .sidebar-wrap {\n  width: 460px;\n}\n.sidebar img {\n  padding: 20px;\n}\n.sidebar h4 {\n  margin-left: 40px;\n  color: #dc3545;\n}\n.sidebar .sidebar-select {\n  margin: 20px 80px 0 40px;\n}\n.sidebar .list-group {\n  border-radius: 0;\n}\n.sidebar .list-group-item {\n  width: 100%;\n  height: 100%;\n  padding-left: 24px;\n  font-size: 22px;\n  font-weight: 700;\n  display: flex;\n  align-items: center;\n  margin: 1px 0;\n  height: 60px;\n  border: none;\n  background: #ececec;\n}\n.sidebar .list-group-item a {\n  width: 100%;\n  height: 100%;\n  color: black;\n  text-decoration: none;\n}\n.sidebar .list-group-item:hover {\n  background: #dedede;\n}\n.sidebar .list-group-item:active,\n.sidebar .list-group-item:visited,\n.sidebar .list-group-item:focus {\n  background-color: #dc3545;\n  color: #ececec;\n}\n.sidebar .list-group-item.active {\n  color: #ececec;\n  background-color: #dc3545;\n}\n.sidebar .list-group-item.active a {\n  color: white;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

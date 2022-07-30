@@ -82,7 +82,8 @@ console.log(sort_create_at , "sort_create_at o day");
     getApiUser();
 
   }, []);
-  const handleDisableUser = (id) => {
+  const handleDisableUser = (e,id) => {
+    e.stopPropagation();
     setDisableUser({ show: true, id: id });
     console.log(disableUser);
     setTimeout(() => setDisableUser({show:false ,id:id}), 1);
@@ -441,7 +442,7 @@ console.log(sort_create_at , "sort_create_at o day");
                         onClick={(e) => handleOpenEditForm(e, item.id)} id='editUserButton'
                       />{" "}
                       {"  "}
-                      <FaRegTimesCircle className="delete-icon"  onClick={() => handleDisableUser(item.id)} type="button" />
+                      <FaRegTimesCircle className="delete-icon"  onClick={(e) => handleDisableUser(e,item.id)} type="button" />
                     </td>
                   </tr>
                 ))
@@ -451,7 +452,6 @@ console.log(sort_create_at , "sort_create_at o day");
             </tbody>
           </Table>
         </div>
-        {/* Sai lai la total lon hon 5 mowi sua lai dung AC quen doi ... dau total la so trang a em, con 20 la per page, total lon hon 1 thi hien ? */}
       </Row>
       <Row>
       {total > 1 ? (
