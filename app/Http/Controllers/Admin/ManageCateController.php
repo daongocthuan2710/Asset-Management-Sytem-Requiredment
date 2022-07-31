@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\ManageAssetService;
-use App\Services\ManageUserService;
+use App\Services\ManageCateService;
+
 use Illuminate\Http\Request;
 
-class ManageAssetController extends Controller
+class ManageCateController extends Controller
 {
-    private ManageUserService $manageAssetService;
-    public function __construct(ManageAssetService $manageAssetService)
+    private ManageCateService $manageCateService;
+    public function __construct(ManageCateService $manageCateService)
     {
-        $this->ManageAssetService = $manageAssetService;
+        $this->ManageCateService = $manageCateService;
     }
     /**
      * Display a listing of the resource.
@@ -21,8 +21,19 @@ class ManageAssetController extends Controller
      */
     public function index()
     {
-       //
+        //
     }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -32,7 +43,7 @@ class ManageAssetController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        return $this->ManageAssetService->store($input);
+        return $this->ManageCateService->store($input);
     }
 
     /**
@@ -47,26 +58,26 @@ class ManageAssetController extends Controller
     }
 
     /**
-     * Edit the specified resource in storage.
+     * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, int $id)
+    public function edit($id)
     {
-        return $this->ManageAssetService->edit($request, $id);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
-        return $this->ManageAssetService->update($request, $id);
+        //
     }
 
     /**

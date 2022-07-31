@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Asset;
+use App\Models\Category;
 use App\Repositories\ManageAssetRepository;
 use App\Services\BaseService;
 use App\Repositories\ManageUserRepository;
@@ -12,8 +14,9 @@ use Illuminate\Support\Facades\DB;
 class ManageAssetService extends BaseService
 {
     protected $ManageAssetRepository;
-    public function __construct(ManageAssetRepository $ManageAssetRepository)
+    public function __construct(Asset $assetModel, ManageAssetRepository $ManageAssetRepository)
     {
+        $this->assetModel = $assetModel;
         $this->manageAssetRepository = $ManageAssetRepository;
     }
 
@@ -25,6 +28,29 @@ class ManageAssetService extends BaseService
     {
         return $this->manageAssetRepository->manageUser($request);
     }
+
+    public function store($data)
+    {
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } else {
+            $asset = $this->assetModel->create($data);
+            $location = $sanctumUser->location;
+            $asset_code = $this->createNewAssetCode($data['category_id'], $asset->id);
+            $asset = $this->assetModel->find($asset->id);
+            $asset->asset_code = $asset_code;
+            $asset->location = $location;
+            $asset->category_id = $data['category_id'];
+            $asset->save();
+            return $asset;
+        }
+    }
+    private function createNewAssetCode($category_id, $id)
+    {
+        return sprintf('%s%06d', $category_id, $id);
+    }
+
     public function update($request, $id): \Illuminate\Http\JsonResponse
     {
         //check admin
@@ -81,4 +107,5 @@ class ManageAssetService extends BaseService
         //return asset
         return $this->manageAssetRepository->edit($request, $id);
     }
+
 }
