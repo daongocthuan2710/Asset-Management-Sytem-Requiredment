@@ -15,6 +15,17 @@ class ManageCateService extends BaseService
 
     public function getAll()
     {
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json([
+                'error' => 'Unauthorized'
+                ], 401);
+        } else {
+            $cate = $this->cateModel->all();
+            return response()->json([
+                'category' => $cate
+            ], 200);
+        }
     }
 
     public function store($data)
@@ -27,7 +38,9 @@ class ManageCateService extends BaseService
             $cate = $cate->find($cate->id);
             $cate->id = $data['id'];
             $cate->save();
-            return $cate;
+            return response()->json([
+                'category' => $cate
+            ], 201);
         }
     }
 }

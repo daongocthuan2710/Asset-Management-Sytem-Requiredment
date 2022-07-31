@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAssetRequest;
 use App\Services\ManageAssetService;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
@@ -27,12 +28,12 @@ class ManageAssetController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreAssetRequest $request)
     {
-        $input = $request->all();
-        return $this->ManageAssetService->store($input);
+            $input = $request->all();
+            return $this->ManageAssetService->store($input);
     }
 
     /**

@@ -43,7 +43,10 @@ class ManageAssetService extends BaseService
             $asset->location = $location;
             $asset->category_id = $data['category_id'];
             $asset->save();
-            return $asset;
+            return response()->json([
+                'message' => 'Create Asset Success',
+                'data' => $asset
+            ], 201);
         }
     }
     private function createNewAssetCode($category_id, $id)
@@ -107,5 +110,4 @@ class ManageAssetService extends BaseService
         //return asset
         return $this->manageAssetRepository->edit($request, $id);
     }
-
 }
