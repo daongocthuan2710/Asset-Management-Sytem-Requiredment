@@ -6,7 +6,7 @@ import { ManageUser } from "../TableManageUser";
 import CreateNewUser from "../CreateNewUser";
 // no khong hieu o khuc nay`
 import Test from "../Test";
-import ManageAsset from "../ManageAsset";
+import ManageAsset from "../TableManageAsset";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";

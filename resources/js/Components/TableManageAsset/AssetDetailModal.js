@@ -16,18 +16,18 @@ export default function AssetDetailModal({
             >
                 <Modal.Header className="w-100">
                     <Modal.Title id="contained-modal-title-vcenter" className="d-flex justify-content-betweeen align-items-center w-100 flex-grow-1">
-                        <h4 className="flex-grow-1"> Detailed User Information</h4>
+                        <h4 className="flex-grow-1"> Detailed Asset Information</h4>
                         <FaRegWindowClose onClick={() => setModal(false)} style={{ cursor: 'pointer' }} />
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="d-flex">
-                        <p className="w-25">Staff Code</p>
-                        <p className="w-75">{user.staff_code}</p>
+                        <p className="w-25">Asset Code</p>
+                        <p className="w-75">{user.asset_code}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Full Name</p>
-                        <p className="w-75">{user.full_name}</p>
+                        <p className="w-25">Asset Name</p>
+                        <p className="w-75">{user.name}</p>
                     </div>
                     <div className="d-flex">
                         <p className="w-25">Username</p>

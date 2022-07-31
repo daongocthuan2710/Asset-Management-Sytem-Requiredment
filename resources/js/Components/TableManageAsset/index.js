@@ -60,7 +60,6 @@ export default function ManageAsset() {
 
   React.useEffect(() => {
     getApiUser();
-
   }, []);
   const handleDisableUser = (e, id) => {
     e.stopPropagation();
