@@ -9,19 +9,19 @@ use Illuminate\Http\Request;
 
 class ManageAssetController extends Controller
 {
-    private ManageUserService $manageAssetService;
+    private ManageAssetService $_manageAssetService;
     public function __construct(ManageAssetService $manageAssetService)
     {
-        $this->ManageAssetService = $manageAssetService;
+        $this->_manageAssetService = $manageAssetService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       //
+        return $this->_manageAssetService->getAll($request);
     }
     /**
      * Store a newly created resource in storage.
@@ -42,7 +42,7 @@ class ManageAssetController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->_manageAssetService->getById($id);
     }
 
     /**
@@ -53,7 +53,7 @@ class ManageAssetController extends Controller
      */
     public function edit(Request $request, int $id)
     {
-        return $this->ManageAssetService->edit($request, $id);
+        return $this->_manageAssetService->edit($request, $id);
     }
 
     /**
@@ -65,7 +65,7 @@ class ManageAssetController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        return $this->ManageAssetService->update($request, $id);
+        return $this->_manageAssetService->update($request, $id);
     }
 
     /**
