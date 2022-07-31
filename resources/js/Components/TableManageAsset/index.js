@@ -69,7 +69,8 @@ export default function ManageAsset() {
   }
 
   const getApiUser = async ({
-    filter = undefined,
+    FilterByCategory = undefined,
+    FilterByState = undefined,
     search = undefined,
     page = 1,
     sort = undefined,
@@ -77,7 +78,7 @@ export default function ManageAsset() {
     let url = "api/asset";
     let array = [];
 
-    if (filter && filter !== "All") {
+    if (FilterByCategory && FilterByCategory !== "All") {
       array.push(`filter=${filter === "Admin" ? true : false}`);
     }
 

@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa"
 export default function AssetTable({
     data, Nodata, tableHeader,
-    handleSort, handleOpenEditForm, 
+    handleSort, handleOpenEditForm,
     handleGetUserById, handleDisableUser
 }) {
     return (
