@@ -60,6 +60,10 @@ class User extends Authenticatable
         'joined_date' => 'datetime',
     ];
 
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
 
     public function scopeSearch($query, $request)
     {

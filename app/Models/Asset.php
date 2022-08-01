@@ -11,7 +11,9 @@ class Asset extends Model
 
     protected $table = 'asset';
     protected $fillable = [
+        'asset_code',
         'name',
+        'category_id',
         'specification',
         'installed_date',
         'state',
@@ -20,5 +22,9 @@ class Asset extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
     }
 }
