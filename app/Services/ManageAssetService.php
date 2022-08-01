@@ -24,10 +24,6 @@ class ManageAssetService extends BaseService
     {
         return $this->manageAssetRepository->getAll();
     }
-    public function manageUser($request)
-    {
-        return $this->manageAssetRepository->manageUser($request);
-    }
     public function update($request, $id): \Illuminate\Http\JsonResponse
     {
         //check admin
@@ -92,16 +88,31 @@ class ManageAssetService extends BaseService
         } else {
             $asset = Asset::query()->findOrFail($id);
             $assignment = Assignment::where('asset_id', $id)->count();
-            if ($assignment > 0) {
-                return response()->json([
-                    'message' => "You can't do any actions on an asset has been assigned"
-                ], 400);
-            } else {
+            if ($assignment == 0) {
                 $asset->delete();
                 return response()->json([
                     'message' => 'Asset have been deleted',
-                ], 200);
+                ]);
+            } else {
+                return response()->json([
+                'message' => 'Cant delete asset',
+                ], 400);
             }
+        }
+    }
+    public function assignmentValid($id)
+    {
+        $assignment = Assignment::where('asset_id', $id)->count();
+        if ($assignment > 0) {
+            return response()->json([
+                'message' => "You can't do any actions on an asset has been assigned",
+                'valid' => true
+            ], 400);
+        } else {
+            return response()->json([
+                'message' => "Can delete",
+                'valid' => false
+            ]);
         }
     }
 }
