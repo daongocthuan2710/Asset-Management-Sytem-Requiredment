@@ -119,9 +119,6 @@ console.log(sort_create_at , "sort_create_at o day");
 
     console.log(sort_create_at);
 
-
-
-
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "Staff Code") {
@@ -275,12 +272,18 @@ console.log(sort_create_at , "sort_create_at o day");
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
+        if (i === 5) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
       }
       setSortArray(tempSortArray);
     }
 
     if (!value) {
       setSortArray([]);
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'asc';
       for (let i = 0; i < tempHeader.length; i++) {
         if (i != 5 && i != 2) {
           tempHeader[i].isSortASC = true;
@@ -288,6 +291,7 @@ console.log(sort_create_at , "sort_create_at o day");
         }
       }
     }
+
 
     setTableHeader(tempHeader);
 
