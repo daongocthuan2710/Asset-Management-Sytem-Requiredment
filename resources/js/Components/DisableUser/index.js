@@ -18,7 +18,7 @@ export default function DisableUser(props) {
     const handleDisableUser = async (e) => {
         try {
             const token = localStorage.getItem('token')
-            const headers = { headers: { Authorization: `Bearer ${token}` } };
+            const headers = {headers: {Authorization: `Bearer ${token}`}};
             await axios.get(`/api/disable/${props.id}`, headers);
             setShow(false)
             window.location.reload();
@@ -29,8 +29,9 @@ export default function DisableUser(props) {
     }
 
 
-
-    const handleClose = () => { setShow(false) };
+    const handleClose = () => {
+        setShow(false)
+    };
 
 
     return (
@@ -49,15 +50,21 @@ export default function DisableUser(props) {
                             <p>
                                 Do you want disable this user?
                             </p>
+                            <Button
+                                onClick={handleDisableUser}
+                                id="disableUserButton"
+                                variant="light">
+                                Disable
+                            </Button>
+                            <b>  </b>
+                            <Button
+                                onClick={handleClose}
+                                id="cancelDisableUserButton"
+                                variant="light">
+                                Cancel
+                            </Button>
                         </div>
                     </Modal.Body>
-                    <Modal.Footer>
-
-                        <div>
-                            <Button onClick={handleDisableUser} className="primaryButton">Disable</Button>
-                            <Button onClick={handleClose} className="secondaryButton">Cancel</Button>
-                        </div>
-                    </Modal.Footer>
                 </Modal>
                 :
                 <Modal
@@ -72,7 +79,8 @@ export default function DisableUser(props) {
                     <Modal.Body>
                         <div>
                             <p>
-                                There are valid assignments belonging to this user. Please close all assignments before disabling user.
+                                There are valid assignments belonging to this user. Please close all assignments before
+                                disabling user.
                             </p>
                         </div>
                     </Modal.Body>

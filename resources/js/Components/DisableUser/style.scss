@@ -17,13 +17,12 @@
     }
 }
 
-.modal-footer{
-    background: #FAFCFC;
+.modal-body{
     color: #4D5154;
     border-width: 0 !important;
     padding: 15px !important;
     div{
-        margin: 5px 15px;
+        margin: 5px 26px;
         .primaryButton{
             background: #E9424D;
             color: #FEFAFA;
@@ -35,8 +34,15 @@
             border-color: #E9424D;
             margin: 0 5px;
         }
-        p{
-            margin: 0 5px;
+        #disableUserButton{
+            background: #E9424D;
+            color: #FEFAFA;
+            border-width: 0;
+        }
+        #cancelDisableUserButton{
+            background: #FAFCFC;
+            color: #7e8183;
+            border-color: #7e8183;
         }
     }
 }
