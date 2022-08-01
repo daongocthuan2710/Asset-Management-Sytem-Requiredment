@@ -24,6 +24,7 @@ export default function ManageAsset() {
   const [sortArray, setSortArray] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
+  const [arrayState, setArrayState] = React.useState([]);
 
   const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -79,7 +80,16 @@ export default function ManageAsset() {
     let array = [];
 
     if (FilterByCategory && FilterByCategory !== "All") {
-      array.push(`filter=${filter === "Admin" ? true : false}`);
+      array.push(`filterByState=${FilterByCategory}`);
+    }
+
+    if (FilterByState) {
+      const numberValue = [];
+      FilterByState.forEach((item) => {
+        numberValue.push(item.value);
+      })
+      const stringFilter =  numberValue.toString();
+      array.push(`filterByState=${stringFilter}`);
     }
 
     if (search) {
@@ -98,10 +108,6 @@ export default function ManageAsset() {
     }
 
     console.log(sort_create_at);
-
-
-
-
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "Asset Code") {
@@ -142,8 +148,21 @@ export default function ManageAsset() {
     setTotal(response.data.meta.total);
     return response.data;
   };
-  const handleFilter = (value) => {
-    setFilter(value);
+  const handleFilter = (key, value) => {
+    const arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
+
+    const index = arrayStateTemp.findIndex((e) => e.value ===  value);
+
+    if (index === -1) {
+      arrayStateTemp.push({ key, value });
+    } else {
+      arrayStateTemp.splice(index, 1);
+    }
+    
+    console.log(arrayStateTemp);
+
+    setArrayState(arrayStateTemp);
+
     let temp_page;
     let temp_search;
     let temp_sort;
@@ -158,12 +177,10 @@ export default function ManageAsset() {
       temp_sort = [...sortArray];
     }
 
-
-
     setPage(1);
 
     getApiUser({
-      filter: value,
+      FilterByState: arrayStateTemp,
       page: temp_page,
       temp_search: temp_search,
       sort: temp_sort,
@@ -314,7 +331,7 @@ export default function ManageAsset() {
   return (
     <div className="containermanageuser">
       <DisableUser show={disableUser.show} id={disableUser.id} />
-      <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
+      <h5 style={{ color: "red", fontWeight: "bold" }}>Asset List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <FilterByCategory
           currentButton={currentButton}
@@ -355,4 +372,4 @@ export default function ManageAsset() {
       />
     </div>
   );
-};
+}
