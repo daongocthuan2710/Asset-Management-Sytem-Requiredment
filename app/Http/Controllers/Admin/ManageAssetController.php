@@ -80,6 +80,6 @@ class ManageAssetController extends Controller
     }
     public function canDestroy($id)
     {
-        return $this->ManageAssetService->assignmentValid($id);
+        return $this->manageAssetService->assignmentValid($id);
     }
 }

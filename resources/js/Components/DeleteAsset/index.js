@@ -10,10 +10,11 @@ export default function DeleteAsset(props) {
     const [show, setShow] = useState(Boolean(props.show));
     useEffect(async () => {
         if (props.show) setShow(Boolean(true));
-        const response = await axios.get(`/api/asset/${props.id}/can-delete`);
-        setHaveAssignment(response.data.disable);
+        // const response = await axios.get(`/api/asset/${props.id}/can-delete`);
+        const response = await axios.get('/api/asset/6/can-delete');
+        console.log(response.data)
+        setHaveAssignment(response.data.valid);
     }, [props.show])
-
 
     const handleDisableUser = async (e) => {
         try {
