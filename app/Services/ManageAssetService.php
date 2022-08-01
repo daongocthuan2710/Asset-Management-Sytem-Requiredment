@@ -6,28 +6,35 @@ use App\Models\Asset;
 use App\Models\Assignment;
 use App\Repositories\ManageAssetRepository;
 use App\Services\BaseService;
-use App\Repositories\ManageUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class ManageAssetService extends BaseService
 {
-    protected $ManageAssetRepository;
+    protected $manageAssetRepository;
     public function __construct(ManageAssetRepository $ManageAssetRepository, Assignment $assignment)
     {
         $this->assignment = $assignment;
         $this->manageAssetRepository = $ManageAssetRepository;
     }
 
-    public function getAll()
+    public function getAll($request)
     {
-        return $this->manageAssetRepository->getAll();
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->manageAssetRepository->getAll($request, $sanctumUser);
     }
-    public function manageUser($request)
+
+    public function getById($id)
     {
-        return $this->manageAssetRepository->manageUser($request);
+        return $this->manageAssetRepository->getById($id);
     }
+
     public function update($request, $id): \Illuminate\Http\JsonResponse
     {
         //check admin
