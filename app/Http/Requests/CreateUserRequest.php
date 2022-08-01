@@ -31,8 +31,8 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'alpha', 'max:64', new LatinName()],
-            'last_name' => ['required', 'string', 'alpha', 'max:64', new LatinName()],
+            'first_name' => ['required', 'string', 'max:128', new LatinName()],
+            'last_name' => ['required', 'string', 'max:128', new LatinName()],
             'date_of_birth' => ['required', 'date', new Over18()],
             'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
             'admin' => ['required', 'bool', Rule::in([0, 1])],
