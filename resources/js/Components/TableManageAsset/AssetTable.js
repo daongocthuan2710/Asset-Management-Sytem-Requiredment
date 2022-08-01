@@ -9,7 +9,7 @@ import {
 export default function AssetTable({
     data, Nodata, tableHeader,
     handleSort, handleOpenEditForm,
-    handleGetUserById, handleDisableUser
+    handleGetUserById, handleDeleteAsset
 }) {
     return (
         <Table responsive="md">
@@ -49,7 +49,7 @@ export default function AssetTable({
                                     onClick={(e) => handleOpenEditForm(e, item.id)} id='editUserButton'
                                 />{" "}
                                 {"  "}
-                                <FaRegTimesCircle className="delete-icon" onClick={(e) => handleDisableUser(e, item.id)} type="button" />
+                                <FaRegTimesCircle className="delete-icon" onClick={(e) => handleDeleteAsset(e, item.id)} type="button" />
                             </td>
                         </tr>
                     ))

@@ -76,6 +76,6 @@ class ManageAssetController extends Controller
      */
     public function destroy($id)
     {
-        return $this->ManageAssetService->disable($id);
+        return $this->manageAssetService->disable($id);
     }
 }

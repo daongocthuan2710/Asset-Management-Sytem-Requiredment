@@ -15,6 +15,7 @@ import AssetTable from "./AssetTable";
 import FilterByCategory from "./FilterByCategory";
 import SearchCreate from "./SearchCreate";
 import AssetDetailModal from "./AssetDetailModal";
+import DeleteAsset from "../DeleteAsset";
 
 export default function ManageAsset() {
   const [currentButton, setFilter] = React.useState("All");
@@ -22,7 +23,7 @@ export default function ManageAsset() {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
+  const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([]);
 
@@ -62,11 +63,12 @@ export default function ManageAsset() {
   React.useEffect(() => {
     getApiUser();
   }, []);
-  const handleDisableUser = (e, id) => {
+
+  const handleDeleteAsset = (e, id) => {
     e.stopPropagation();
-    setDisableUser({ show: true, id: id });
-    console.log(disableUser);
-    setTimeout(() => setDisableUser({ show: false, id: id }), 1);
+    setDeleteAsset({ show: true, id: id });
+    console.log(deleteAsset);
+    setTimeout(() => setDeleteAsset({ show: false, id: id }), 1);
   }
 
   const getApiUser = async ({
@@ -158,7 +160,7 @@ export default function ManageAsset() {
     } else {
       arrayStateTemp.splice(index, 1);
     }
-    
+
     console.log(arrayStateTemp);
 
     setArrayState(arrayStateTemp);
@@ -330,7 +332,7 @@ export default function ManageAsset() {
 
   return (
     <div className="containermanageuser">
-      <DisableUser show={disableUser.show} id={disableUser.id} />
+      <DeleteAsset show={deleteAsset.show} id={deleteAsset.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>Asset List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <FilterByCategory
@@ -354,7 +356,7 @@ export default function ManageAsset() {
             handleSort={handleSort}
             handleOpenEditForm={handleOpenEditForm}
             handleGetUserById={handleGetUserById}
-            handleDisableUser={handleDisableUser}
+            handleDeleteAsset={handleDeleteAsset}
           />
         </div>
       </Row>
