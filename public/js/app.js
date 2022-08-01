@@ -3102,7 +3102,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function FilterByCategory(_ref) {
   var currentButton = _ref.currentButton,
-      handleFilter = _ref.handleFilter;
+      handleFilter = _ref.handleFilter,
+      arrayState = _ref.arrayState;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["default"], {
       onSelect: function onSelect() {
@@ -3124,9 +3125,9 @@ function FilterByCategory(_ref) {
             id: "checkbox-all",
             className: "mx-4 font-weight-bold",
             label: "All",
-            checked: currentButton === "3",
+            checked: currentButton === "All",
             onChange: function onChange() {
-              return handleFilter("All, 3");
+              return handleFilter("All", "3");
             },
             eventKey: "3"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
@@ -3134,9 +3135,13 @@ function FilterByCategory(_ref) {
             id: "checkbox-admin",
             className: "mx-4 my-2 font-weight-bold",
             label: "Assigned",
-            checked: currentButton === "2",
+            checked: arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "2";
+            }) !== -1 && arrayState[arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "2";
+            })].value === "2",
             onChange: function onChange() {
-              return handleFilter("Assigned", "1");
+              return handleFilter("Assigned", "2");
             },
             eventKey: "2"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
@@ -3144,9 +3149,13 @@ function FilterByCategory(_ref) {
             id: "checkbox-staff",
             className: "mx-4 font-weight-bold",
             label: "Available",
-            checked: currentButton === "1",
+            checked: arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "1";
+            }) !== -1 && arrayState[arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "1";
+            })].value === "1",
             onChange: function onChange() {
-              return handleFilter("Available", "2");
+              return handleFilter("Available", "1");
             },
             eventkey: "1"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
@@ -3154,9 +3163,13 @@ function FilterByCategory(_ref) {
             id: "checkbox-staff",
             className: "mx-4 font-weight-bold",
             label: "Not Available",
-            checked: currentButton === "-1",
+            checked: arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "0";
+            }) !== -1 && arrayState[arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "0";
+            })].value === "0",
             onChange: function onChange() {
-              return handleFilter("-1");
+              return handleFilter("Not Available", "0");
             },
             eventkey: "0"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
@@ -3164,9 +3177,13 @@ function FilterByCategory(_ref) {
             id: "checkbox-staff",
             className: "mx-4 font-weight-bold",
             label: "Waiting for recycling",
-            checked: currentButton === "Waiting for recycling",
+            checked: arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "-1";
+            }) !== -1 && arrayState[arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "-1";
+            })].value === "-1",
             onChange: function onChange() {
-              return handleFilter("-1");
+              return handleFilter("Waiting for recycling", "-1");
             },
             eventkey: "-1"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
@@ -3174,9 +3191,13 @@ function FilterByCategory(_ref) {
             id: "checkbox-staff",
             className: "mx-4 font-weight-bold",
             label: "Recycled",
-            checked: currentButton === "Recycled",
+            checked: arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "-2";
+            }) !== -1 && arrayState[arrayState.length > 0 && arrayState.findIndex(function (item) {
+              return item.value === "-2";
+            })].value === "-2",
             onChange: function onChange() {
-              return handleFilter("-2");
+              return handleFilter("Recycled", "-2");
             },
             eventkey: "-2"
           })]
@@ -3463,13 +3484,15 @@ function ManageAsset() {
                 array.push("filterByState=".concat(FilterByCategory));
               }
 
-              if (FilterByState) {
-                numberValue = [];
-                FilterByState.forEach(function (item) {
-                  numberValue.push(item.value);
-                });
-                stringFilter = numberValue.toString();
-                array.push("filterByState=".concat(stringFilter));
+              if (FilterByState.length > 0) {
+                if (FilterByState && FilterByState !== "3") {
+                  numberValue = [];
+                  FilterByState.forEach(function (item) {
+                    numberValue.push(item.value);
+                  });
+                  stringFilter = numberValue.toString();
+                  array.push("filterByState=".concat(stringFilter));
+                }
               }
 
               if (search) {
@@ -3521,7 +3544,8 @@ function ManageAsset() {
               notiflix_build_notiflix_loading_aio__WEBPACK_IMPORTED_MODULE_3__.Loading.dots({
                 clickToClose: true,
                 svgSize: "100px",
-                svgColor: "rgb(220 53 69)"
+                svgColor: "rgb(220 53 69)",
+                backgroundColor: "rgba(255, 255, 255, 0.44)"
               });
               _context.next = 15;
               return axios__WEBPACK_IMPORTED_MODULE_4___default().get(url, {
@@ -3812,8 +3836,9 @@ function ManageAsset() {
       className: "d-flex justify-content-between type-seach-create",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_17__.jsx)(_FilterByCategory__WEBPACK_IMPORTED_MODULE_13__["default"], {
         currentButton: currentButton,
-        handleFilter: handleFilter
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_17__.jsx)("div", {
+        handleFilter: handleFilter,
+        arrayState: arrayState
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_16__.jsx)("div", {
         id: "search-create",
         className: "d-flex search-create",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_17__.jsx)(_SearchCreate__WEBPACK_IMPORTED_MODULE_14__["default"], {

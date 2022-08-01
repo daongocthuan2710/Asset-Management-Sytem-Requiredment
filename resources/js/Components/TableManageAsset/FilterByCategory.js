@@ -7,7 +7,8 @@ import {
 } from 'react-icons/fa';
 export default function FilterByCategory({
     currentButton,
-    handleFilter
+    handleFilter,
+    arrayState
 }) {
     return (
         <>
@@ -26,17 +27,18 @@ export default function FilterByCategory({
                             id="checkbox-all"
                             className="mx-4 font-weight-bold"
                             label="All"
-                            checked={currentButton === "3"}
-                            onChange={() => handleFilter("All, 3")}
+                            checked={currentButton === "All"}
+                            onChange={() => handleFilter("All", "3")}
                             eventKey="3"
                         />
-                        <Form.Check
+                        <Form.Check 
                             type="checkbox"
                             id="checkbox-admin"
                             className="mx-4 my-2 font-weight-bold"
                             label="Assigned"
-                            checked={currentButton === "2"}
-                            onChange={() => handleFilter("Assigned", "1")}
+                            checked={arrayState.length >0 && arrayState.findIndex(item => item.value === "2") !== -1 && arrayState[arrayState.length >0 && arrayState.findIndex(item => item.value === "2")].value === "2"}
+
+                            onChange={() => handleFilter("Assigned", "2")}
                             eventKey="2"
                         />
                         <Form.Check
@@ -44,8 +46,8 @@ export default function FilterByCategory({
                             id="checkbox-staff"
                             className="mx-4 font-weight-bold"
                             label="Available"
-                            checked={currentButton === "1"}
-                            onChange={() => handleFilter("Available", "2")}
+                            checked={arrayState.length >0 && arrayState.findIndex(item => item.value === "1") !== -1 && arrayState[arrayState.length >0 && arrayState.findIndex(item => item.value === "1")].value === "1"}
+                            onChange={() => handleFilter("Available", "1")}
                             eventkey="1"
                         />
                         <Form.Check
@@ -53,8 +55,8 @@ export default function FilterByCategory({
                             id="checkbox-staff"
                             className="mx-4 font-weight-bold"
                             label="Not Available"
-                            checked={currentButton === "-1"}
-                            onChange={() => handleFilter("-1")}
+                            checked={arrayState.length >0 && arrayState.findIndex(item => item.value === "0") !== -1 && arrayState[arrayState.length >0 && arrayState.findIndex(item => item.value === "0")].value === "0"}
+                            onChange={() => handleFilter("Not Available", "0")}
                             eventkey="0"
                         />        
                         <Form.Check
@@ -62,8 +64,8 @@ export default function FilterByCategory({
                             id="checkbox-staff"
                             className="mx-4 font-weight-bold"
                             label="Waiting for recycling"
-                            checked={currentButton === "Waiting for recycling"}
-                            onChange={() => handleFilter("-1")}
+                            checked={arrayState.length >0 && arrayState.findIndex(item => item.value === "-1") !== -1 && arrayState[arrayState.length >0 && arrayState.findIndex(item => item.value === "-1")].value === "-1"}
+                            onChange={() => handleFilter("Waiting for recycling", "-1")}
                             eventkey="-1"
                         />       
                          <Form.Check
@@ -71,8 +73,8 @@ export default function FilterByCategory({
                             id="checkbox-staff"
                             className="mx-4 font-weight-bold"
                             label="Recycled"
-                            checked={currentButton === "Recycled"}
-                            onChange={() => handleFilter("-2")}
+                            checked={arrayState.length >0 && arrayState.findIndex(item => item.value === "-2") !== -1 && arrayState[arrayState.length >0 && arrayState.findIndex(item => item.value === "-2")].value === "-2"}
+                            onChange={() => handleFilter("Recycled", "-2")}
                             eventkey="-2"
                         />               
 
