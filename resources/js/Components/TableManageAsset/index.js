@@ -83,13 +83,15 @@ export default function ManageAsset() {
       array.push(`filterByState=${FilterByCategory}`);
     }
 
-    if (FilterByState) {
+    if (FilterByState.length > 0){
+      if (FilterByState && FilterByState !== "3") {
       const numberValue = [];
       FilterByState.forEach((item) => {
         numberValue.push(item.value);
       })
       const stringFilter =  numberValue.toString();
       array.push(`filterByState=${stringFilter}`);
+    }
     }
 
     if (search) {
@@ -137,6 +139,7 @@ export default function ManageAsset() {
       clickToClose: true,
       svgSize: "100px",
       svgColor: "rgb(220 53 69)",
+      backgroundColor: "rgba(255, 255, 255, 0.44)"
     });
     const response = await axios.get(url, {
       headers: {
@@ -150,7 +153,6 @@ export default function ManageAsset() {
   };
   const handleFilter = (key, value) => {
     const arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
-
     const index = arrayStateTemp.findIndex((e) => e.value ===  value);
 
     if (index === -1) {
@@ -336,6 +338,7 @@ export default function ManageAsset() {
         <FilterByCategory
           currentButton={currentButton}
           handleFilter={handleFilter}
+          arrayState={arrayState}
         />
         <div id="search-create" className="d-flex search-create">
           <SearchCreate

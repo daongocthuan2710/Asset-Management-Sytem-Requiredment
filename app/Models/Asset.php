@@ -45,11 +45,14 @@ class Asset extends Model
             });
     }
 
-    public function scopeFilterByState($querry, $request)
+    public function scopeFilterByState($query, $request)
     {
-        return $querry
-            ->when($request->has('filterByState'), function ($query) use ($request) {
-                $filterByState = explode(',', $request->query('filterByState'));
+        $filterByState = explode(',', $request->query('filterByState'));
+        if (in_array(3, $filterByState)) {
+            return $query;
+        }
+        return $query
+            ->when($request->has('filterByState'), function ($query) use ($filterByState) {
                 foreach ($filterByState as $key => $value) {
                     if ($key === 0) $query->where("state", "=", $value);
                     $query->orWhere("state", "=", $value);
