@@ -46,7 +46,7 @@ class ManageAssetService extends BaseService
             return $this->checkPermission($request, $id);
         }
         //return asset
-        return $this->_manageAssetRepository->edit($request, $id);
+        return $this->manageAssetRepository->edit($request, $id);
     }
     public function checkPermission($request, $id): ?\Illuminate\Http\JsonResponse
     {
