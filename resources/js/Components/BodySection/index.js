@@ -10,6 +10,7 @@ import ManageAsset from "../TableManageAsset";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";
+import { ManageAssigment } from "../TableManageAssignment";
 
 export default function BodySection() {
     const userEditReducer = useSelector((state) => state.userEditReducer.value);
@@ -36,7 +37,7 @@ export default function BodySection() {
                         <CreateNewUser />
                     </Route>
                     <Route path="/manage-assignment">
-                        <Test />
+                        <ManageAssigment />
                     </Route>
                     <Route path="/request-for-returning">
                         <Test />
