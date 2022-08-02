@@ -72,7 +72,12 @@ class ManageUserRepository extends BaseRepository
         ->orderBy('staff_code')
         ->orderBy('joined_date')
         ->orderBy('admin');
-        return UserResource::collection($data->paginate(config('app.limit')));
+
+        if (!$request->has('lazy-load')) {
+            return UserResource::collection($data->paginate(config('app.limit')));
+        } else {
+            return UserResource::collection($data->get());
+        }
     }
 
     public function edit($request, $id)

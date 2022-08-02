@@ -40,7 +40,11 @@ class ManageAssetRepository extends BaseRepository
             $data->orderBy('name', 'asc');
         }
 
-        return AssetResource::collection($data->paginate(config('app.limit')));
+        if (!$request->has('lazy-load')) {
+            return AssetResource::collection($data->paginate(config('app.limit')));
+        } else {
+            return AssetResource::collection($data->get());
+        }
     }
 
     public function getById($id)
