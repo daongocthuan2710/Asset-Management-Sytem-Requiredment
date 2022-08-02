@@ -78,7 +78,7 @@ export default function EditAssetForm() {
                         const data = {
                             assetId: assetId,
                             displayValue: false,
-                            sort_at: "sortByEditUser",
+                            sort_at: "sortByEditAsset",
                         };
                         dispatch(getAssetEdit(data));
                     }, 1500);

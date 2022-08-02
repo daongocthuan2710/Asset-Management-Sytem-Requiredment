@@ -143,8 +143,8 @@ class EditUserTest extends TestCase
     {
         $id = 1;
         $body = [
-            'date_of_birth' => '2010-02-20',
-            'joined_date' => '2009-07-09',
+            'date_of_birth' => '2000-02-20',
+            'joined_date' => '1999-07-09',
             'gender' => false,
             'admin' => false,
         ];
