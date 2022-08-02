@@ -24,6 +24,7 @@ class EditAssetResource extends JsonResource
             'specification' => $this->specification,
             'installed_date' => $this->installed_date,
             'state' => $this->state,
+            'id' => $this->id
         ];
     }
 }

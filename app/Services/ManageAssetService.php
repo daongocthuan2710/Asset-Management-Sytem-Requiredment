@@ -52,20 +52,20 @@ class ManageAssetService extends BaseService
     {
         $sanctumUser = auth('sanctum')->user();
         if (!$sanctumUser || !$sanctumUser->admin) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
         //check asset
         $asset = DB::table('asset')->where('id', $id)->first();
         if (!$asset) {
-            return response()->json(['error' => 'Asset not found'], 404);
+            return response()->json(['message' => 'Asset not found'], 404);
         }
         //check admin location
         if ($sanctumUser->location != $asset->location) {
-            return response()->json(['error' => 'You do not have permission to access this asset'], 401);
+            return response()->json(['message' => 'You do not have permission to access this asset'], 401);
         }
         //check asset state
         if ($asset->state === 2) {
-            return response()->json(['error' => 'Asset is assigned'], 422);
+            return response()->json(['message' => 'Asset is assigned'], 422);
         }
         return null;
     }
