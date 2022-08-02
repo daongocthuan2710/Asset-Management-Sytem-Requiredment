@@ -45,7 +45,9 @@ class Asset extends Model
             ->when($request->has('filterByCategory'), function ($query) use ($request) {
                 $filterByCategory = explode(',', $request->query('filterByCategory'));
                 foreach ($filterByCategory as $key => $value) {
-                    if ($key === 0) $query->where("category_id", "=", $value);
+                    if ($key === 0) {
+                        $query->where("category_id", "=", $value);
+                    }
                     $query->orWhere("category_id", "=", $value);
                 }
             });
@@ -60,7 +62,9 @@ class Asset extends Model
         return $query
             ->when($request->has('filterByState'), function ($query) use ($filterByState) {
                 foreach ($filterByState as $key => $value) {
-                    if ($key === 0) $query->where("state", "=", $value);
+                    if ($key === 0) {
+                        $query->where("state", "=", $value);
+                    }
                     $query->orWhere("state", "=", $value);
                 }
             });

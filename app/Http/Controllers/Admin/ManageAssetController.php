@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateAssetRequest;
 use App\Services\ManageAssetService;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
@@ -63,7 +64,7 @@ class ManageAssetController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateAssetRequest $request, int $id)
     {
         return $this->manageAssetService->update($request, $id);
     }

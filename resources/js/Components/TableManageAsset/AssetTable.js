@@ -1,16 +1,57 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import React from 'react';
+import { getAssetEdit } from "../../Actions/asset.action";
+import { useDispatch } from "react-redux";
+import assetEditReducer from "../../Reducers/asset.reducer";
+import Swal from "sweetalert2";
 import {
     FaAngleDown,
     FaAngleUp,
     FaPencilAlt,
     FaRegTimesCircle,
-} from "react-icons/fa"
+} from "react-icons/fa";
+
 export default function AssetTable({
     data, Nodata, tableHeader,
     handleSort, handleOpenEditForm,
     handleGetUserById, handleDeleteAsset
 }) {
+
+    const dispatch = useDispatch();
+    async function handleOpenEditAssetForm(e, assetId = "") {
+      e.stopPropagation();
+      const data = {
+        assetId: assetId,
+        displayValue: true,
+        sort_at:''
+    }
+      const response = await dispatch(getAssetEdit(data));
+      handleShowMessage(response);
+    }
+
+    function handleShowMessage(response) {
+        const message = response.data == undefined ? response.message : response.data.message;
+        const code = response.code;
+        switch (code) {
+          case 200:
+            {
+              //
+            }
+            break;
+          case 422:
+            {
+              Swal.fire({
+                position: "center",
+                icon: "info",
+                title: message,
+                showConfirmButton: false,
+                timer: 2000,
+              });
+            }
+            break;
+        }
+      }
     return (
         <Table responsive="md">
             <thead>
@@ -32,7 +73,7 @@ export default function AssetTable({
                                 </th>
                             );
                         })
-                        : ""}
+                        :''}
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +87,7 @@ export default function AssetTable({
                             <td>{item.state.name}</td>
                             <td className="td-without_border">
                                 <FaPencilAlt
-                                    onClick={(e) => handleOpenEditForm(e, item.id)} id='editUserButton'
+                                    onClick={(e) => handleOpenEditAssetForm(e, item.id)} id='editUserButton'
                                 />{" "}
                                 {"  "}
                                 <FaRegTimesCircle className="delete-icon" onClick={(e) => handleDeleteAsset(e, item.id)} type="button" />
