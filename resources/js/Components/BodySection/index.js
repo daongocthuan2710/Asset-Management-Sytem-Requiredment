@@ -10,6 +10,7 @@ import ManageAsset from "../ManageAsset";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";
+import CreateNewAsset from "../CreateNewAsset";
 
 export default function BodySection() {
     const userEditReducer = useSelector((state) => state.userEditReducer.value);
@@ -31,6 +32,9 @@ export default function BodySection() {
                     </Route>
                     <Route path="/manage-asset">
                         <ManageAsset />
+                    </Route>
+                    <Route path="/create-asset">
+                        <CreateNewAsset />
                     </Route>
                     <Route path="/create-user">
                         <CreateNewUser />
