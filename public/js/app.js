@@ -4266,38 +4266,43 @@ var ManageUser = function ManageUser() {
       temp_search = currentSearch;
     }
 
-    var tempSortArray = JSON.parse(JSON.stringify(sortArray));
+    var tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     var tempHeader = JSON.parse(JSON.stringify(tableHeader));
-    var index = tempSortArray.findIndex(function (item) {
-      return item.key === key;
-    });
     var indexHeader = tempHeader.findIndex(function (item) {
       return item.name === key;
     });
 
-    if (index === -1 && value) {
-      tempSortArray.push({
-        key: key,
-        value: "desc"
-      });
+    if (value) {
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
+
+      for (var i = 0; i < tempHeader.length; i++) {
+        if (i != indexHeader && i != 5 && i != 2) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+      }
+
+      setSortArray(tempSortArray);
     }
 
-    if (index !== -1 && !value) {
-      tempSortArray.splice(index, 1);
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
-    }
+    if (!value) {
+      setSortArray([]);
 
-    if (index !== -1 && value) {
-      tempSortArray[index].value = "desc";
-      tempHeader[indexHeader].isSortASC = false;
-      tempHeader[indexHeader].isSortDESC = true;
+      for (var _i2 = 0; _i2 < tempHeader.length; _i2++) {
+        if (_i2 != 5 && _i2 != 2) {
+          tempHeader[_i2].isSortASC = true;
+          tempHeader[_i2].isSortDESC = false;
+        }
+      }
     }
 
     setTableHeader(tempHeader);
-    setSortArray(tempSortArray);
     getApiUser({
       filter: temp_filter,
       search: currentSearch,

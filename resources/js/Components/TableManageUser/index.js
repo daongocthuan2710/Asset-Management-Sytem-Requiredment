@@ -119,9 +119,6 @@ console.log(sort_create_at , "sort_create_at o day");
 
     console.log(sort_create_at);
 
-
-
-
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "Staff Code") {
@@ -255,33 +252,48 @@ console.log(sort_create_at , "sort_create_at o day");
       temp_search = currentSearch;
     }
 
-    const tempSortArray = JSON.parse(JSON.stringify(sortArray));
+    const tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     const tempHeader = JSON.parse(JSON.stringify(tableHeader));
 
-    const index = tempSortArray.findIndex((item) => item.key === key);
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
-    if (index === -1 && value) {
-      tempSortArray.push({
-        key: key,
-        value: "desc",
-      });
+ 
+    if (value) {
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
+      for (let i = 0; i < tempHeader.length; i++) {
+        if (i != indexHeader && i != 5 && i != 2) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+        if (i === 5) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+      }
+      setSortArray(tempSortArray);
     }
-    if (index !== -1 && !value) {
-      tempSortArray.splice(index, 1);
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
+
+    if (!value) {
+      setSortArray([]);
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'asc';
+      for (let i = 0; i < tempHeader.length; i++) {
+        if (i != 5 && i != 2) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+      }
     }
-    if (index !== -1 && value) {
-      tempSortArray[index].value = "desc";
-      tempHeader[indexHeader].isSortASC = false;
-      tempHeader[indexHeader].isSortDESC = true;
-    }
+
+
     setTableHeader(tempHeader);
-    setSortArray(tempSortArray);
 
     getApiUser({
       filter: temp_filter,
