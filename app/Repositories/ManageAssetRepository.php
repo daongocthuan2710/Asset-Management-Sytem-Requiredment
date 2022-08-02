@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Resources\AssetResource;
+use App\Http\Resources\EditAssetResource;
 use App\Http\Resources\UserResource;
 use App\Models\Asset;
 use App\Repositories\BaseRepository;
@@ -53,14 +54,7 @@ class ManageAssetRepository extends BaseRepository
     {
         try {
             $asset = $this->query->find($id);
-            $category = DB::table('category')->where('id', $asset->category_id)->first();
-            return response()->json([
-                'name' => $asset->name,
-                'category' => $category->name,
-                'specification' => $asset->specification,
-                'installed_date' => $asset->installed_date,
-                'state' => $asset->state,
-            ], 200);
+            return response()->json(new EditAssetResource($asset), 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error'

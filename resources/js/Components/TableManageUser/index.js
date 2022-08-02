@@ -42,12 +42,11 @@ export const ManageUser = () => {
 
    const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
-);  
+);
 
 const sort_create_at = useSelector(
   (state) => state.userEditReducer.sort_update_at
-);  
-console.log(sort_create_at , "sort_create_at o day");
+);
 
 
   const [tableHeader, setTableHeader] = React.useState([
@@ -117,7 +116,6 @@ console.log(sort_create_at , "sort_create_at o day");
       array.push('sortByCreateUser');
     }
 
-    console.log(sort_create_at);
 
     if (sort) {
       sort.forEach((item) => {
@@ -175,7 +173,7 @@ console.log(sort_create_at , "sort_create_at o day");
       temp_sort = [...sortArray];
     }
 
-    
+
 
     setPage(1);
 
@@ -261,7 +259,7 @@ console.log(sort_create_at , "sort_create_at o day");
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
- 
+
     if (value) {
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'desc';
@@ -337,7 +335,7 @@ console.log(sort_create_at , "sort_create_at o day");
   const [user, setUser] = React.useState([]);
 
   const handleGetUserById = async (userId) => {
-    const response =  await userService.getUserById(userId); 
+    const response =  await userService.getUserById(userId);
     setModal(true);
     console.log(response);
     setUser(response.data.data);
