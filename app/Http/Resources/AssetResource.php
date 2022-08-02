@@ -41,7 +41,8 @@ class AssetResource extends JsonResource
                 'code' => $this->state,
                 'name' => $stateName
             ],
-            'location' => $this->location
+            'location' => $this->location,
+            'id' => $this->id
         ];
     }
 }

@@ -38,23 +38,19 @@ export default function EditForm() {
 
     async function handleUpdateUserInfo(e) {
         e.preventDefault();
-        const userId = userEditInfo.id;
-        const date_of_birth = e.target.form[2].value;
-        const gender = e.target.form[4].checked ? 1 : 0;
-        const joined_date = e.target.form[5].value;
-        const type = e.target.form[6].value === "Admin" ? 1 : 0;
+        const data = {
+            userId: userEditInfo.id,
+            date_of_birth: e.target.form[2].value,
+            gender: e.target.form[4].checked ? 1 : 0,
+            joined_date: e.target.form[5].value,
+            type: e.target.form[6].value === "Admin" ? 1 : 0
+        };
 
-        const response = await UserService.updateUserInfo(
-            userId,
-            date_of_birth,
-            gender,
-            joined_date,
-            type
-        );
+        const response = await UserService.updateUserInfo(data);
 
         const message = response.data == undefined ? response.message : response.data.message;
         const code = response.code;
-        handleShowMessage(code, message, userId);
+        handleShowMessage(code, message, userEditInfo.id);
     }
 
     function handleShowMessage(code, message, userId) {
@@ -80,39 +76,7 @@ export default function EditForm() {
         }
     }
 
-    const handleDateOfBirthCheck = (e)=>{
-        setDate(e);
-        if (new Date(e).getFullYear() > (new Date().getFullYear()-18)) {
-            setDateOfBirthError({error: true, message: "User is under 18. Please select a different date"})
-            setDisableSubmit(true)
-        }
-        else {
-            setDateOfBirthError({error:false,message:""});
-            if(joinedDateError.error === false)  setDisableSubmit(false)
-        }
-    }
 
-    const handleJoinDateCheck = (e)=>{
-        setJoinDate(e)
-        if (e<date) {
-            setJoinedDateError({
-                error: true,
-                message: "Joined date is not later than Date of Birth. Please select a different date"
-            })
-            setDisableSubmit(true)
-        }
-        else if(new Date(e).getDay() === 0 || new Date(e).getDay() === 6) {
-            setJoinedDateError({
-                error: true,
-                message: "Joined date is Saturday or Sunday. Please select a different date" + new Date(e).getDay()
-            })
-            setDisableSubmit(true)
-        }
-        else {
-            setJoinedDateError({error: false, message: ""})
-            if(dateOfBirthError.error === false)  setDisableSubmit(false)
-        }
-    }
 
     return (
         <>
@@ -127,7 +91,10 @@ export default function EditForm() {
                     <Col md={8}></Col>
                 </Row>
                 <Row>
-                    <Form className="fs-5">
+                    <Form className="fs-5"
+                                                            onChange={(e) =>
+                                            handleJoinDateCheck(e.target.value)
+                                        }>
                         <Form.Group className="mb-3" controlId="firstNameForm">
                             <Row>
                                 <Col md={4}>
@@ -223,9 +190,6 @@ export default function EditForm() {
                                         value={joinDate}
                                         placeholder="Due Join Date"
                                         className="fs-5"
-                                        onChange={(e) =>
-                                            handleJoinDateCheck(e.target.value)
-                                        }
                                         isInvalid={joinedDateError.error}
                                     />
                                     <Form.Control.Feedback type="invalid">{joinedDateError.message}</Form.Control.Feedback>
@@ -259,7 +223,7 @@ export default function EditForm() {
                                     onClick={handleUpdateUserInfo}
                                     disabled={disableSubmit}
                                 >
-                                    Submit
+                                    Save
                                 </Button>
                                 <b>  </b>
                                 <Button
