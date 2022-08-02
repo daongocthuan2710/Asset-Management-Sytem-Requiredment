@@ -12,19 +12,21 @@ import DisableUser from "../DisableUser";
 import userService from "../../Services/user.service";
 import CustomPagination from "./CustomPagination";
 import AssetTable from "./AssetTable";
-import FilterByCategory from "./FilterByCategory";
+import FilterByState from "./FilterByState";
 import SearchCreate from "./SearchCreate";
 import AssetDetailModal from "./AssetDetailModal";
+import FilterByCategory from "./FilterByCategory";
+import _ from "lodash";
 
 export default function ManageAsset() {
-  const [currentButton, setFilter] = React.useState("All");
+  const [currentButton, setFilter] = React.useState(["3"]);
   const [currentSearch, setCurrentSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
-  const [arrayState, setArrayState] = React.useState([]);
+  const [arrayState, setArrayState] = React.useState([{key: 'All', value: '3'}]);
 
   const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -60,14 +62,19 @@ export default function ManageAsset() {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    getApiUser();
+    getApiUser({
+      FilterByState: arrayState,
+ 
+    });
   }, []);
+
   const handleDisableUser = (e, id) => {
     e.stopPropagation();
     setDisableUser({ show: true, id: id });
     console.log(disableUser);
     setTimeout(() => setDisableUser({ show: false, id: id }), 1);
   }
+
 
   const getApiUser = async ({
     FilterByCategory = undefined,
@@ -83,15 +90,21 @@ export default function ManageAsset() {
       array.push(`filterByState=${FilterByCategory}`);
     }
 
-    if (FilterByState.length > 0){
-      if (FilterByState && FilterByState !== "3") {
-      const numberValue = [];
-      FilterByState.forEach((item) => {
-        numberValue.push(item.value);
-      })
-      const stringFilter =  numberValue.toString();
-      array.push(`filterByState=${stringFilter}`);
-    }
+    // if (!FilterByState){
+    //   array.push(`filterByState=${FilterByState}`);
+    // }
+
+    if (FilterByState) {
+      if (FilterByState.length > 0){
+        if (FilterByState && FilterByState !== "3") {
+        const numberValue = [];
+        FilterByState.forEach((item) => {
+          numberValue.push(item.value);
+        })
+        const stringFilter =  numberValue.toString();
+        array.push(`filterByState=${stringFilter}`);
+      }
+      }
     }
 
     if (search) {
@@ -151,17 +164,28 @@ export default function ManageAsset() {
     setTotal(response.data.meta.total);
     return response.data;
   };
-  const handleFilter = (key, value) => {
-    const arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
-    const index = arrayStateTemp.findIndex((e) => e.value ===  value);
 
+  // const handleFilterCategory = (id) => {
+  
+  // }
+
+  const handleFilter = (key, value) => {
+    let arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
+    if (key !== 'All') {
+      const findIndex = arrayStateTemp.findIndex((item) => item.key === 'All');
+      if (findIndex !== -1) {
+        arrayStateTemp.splice(findIndex, 1);
+      }
+    }
+    const index = arrayStateTemp.findIndex((e) => e.value ===  value);
     if (index === -1) {
       arrayStateTemp.push({ key, value });
     } else {
       arrayStateTemp.splice(index, 1);
+      if (arrayStateTemp.length === 0) {
+        arrayStateTemp.push({ key: 'All', value: '3' });
+      }
     }
-    
-    console.log(arrayStateTemp);
 
     setArrayState(arrayStateTemp);
 
@@ -189,14 +213,13 @@ export default function ManageAsset() {
     });
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = (e, value) => {
     e.preventDefault();
+  
     let temp_filter;
     let temp_page;
     let temp_sort;
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
-    }
+
     if (temp_page >= 1) {
       temp_page = page;
     }
@@ -206,7 +229,7 @@ export default function ManageAsset() {
 
     getApiUser({
       filter: temp_filter,
-      search: currentSearch,
+      search: value,
       page: temp_page,
       sort: temp_sort,
     });
@@ -254,33 +277,41 @@ export default function ManageAsset() {
       temp_search = currentSearch;
     }
 
-    const tempSortArray = JSON.parse(JSON.stringify(sortArray));
+    const tempSortArray = [];
     const tempHeader = JSON.parse(JSON.stringify(tableHeader));
-
-    const index = tempSortArray.findIndex((item) => item.key === key);
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
-    if (index === -1 && value) {
-      tempSortArray.push({
-        key: key,
-        value: "desc",
-      });
+    if (value) {
+      tempSortArray.push({ key, value });
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
+      for (let i = 0; i < tempHeader.length; i++) {
+        if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+      }
+      setSortArray(tempSortArray);
     }
-    if (index !== -1 && !value) {
-      tempSortArray.splice(index, 1);
+
+    if (!value) {
+      tempSortArray.push({ key, value });
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'asc';
       tempHeader[indexHeader].isSortASC = true;
       tempHeader[indexHeader].isSortDESC = false;
+      for (let i = 0; i < tempHeader.length; i++) {
+        if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = false;
+          tempHeader[i].isSortDESC = true;
+        }
+      }
     }
-    if (index !== -1 && value) {
-      tempSortArray[index].value = "desc";
-      tempHeader[indexHeader].isSortASC = false;
-      tempHeader[indexHeader].isSortDESC = true;
-    }
+
     setTableHeader(tempHeader);
-    setSortArray(tempSortArray);
 
     getApiUser({
       filter: temp_filter,
@@ -335,11 +366,12 @@ export default function ManageAsset() {
       <DisableUser show={disableUser.show} id={disableUser.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>Asset List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
-        <FilterByCategory
+        <FilterByState
           currentButton={currentButton}
           handleFilter={handleFilter}
           arrayState={arrayState}
         />
+        <FilterByCategory handleFilter={handleFilterCategory}/>
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}

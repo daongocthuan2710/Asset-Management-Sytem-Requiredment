@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ManageAssetController;
+use App\Http\Controllers\Admin\ManageCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -36,4 +37,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::resource('/profile', ProfileController::class);
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
+    Route::get('category', [ManageCategoryController::class, 'index']);
 });
