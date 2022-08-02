@@ -10,4 +10,14 @@ class Assignment extends Model
     use HasFactory;
 
     protected $table = 'assignment';
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
