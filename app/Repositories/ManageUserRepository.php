@@ -59,7 +59,6 @@ class ManageUserRepository extends BaseRepository
         $data = $this->query
         ->where('location', $sanctumUser->location)
         ->where('state', '!=', -1)
-        ->where('id' ,'!=', $sanctumUser->id)
         ->search($request)
         ->filter($request)
         ->sortByFullName($request)
@@ -73,8 +72,8 @@ class ManageUserRepository extends BaseRepository
         ->orderBy('joined_date')
         ->orderBy('admin');
 
-        if (!$request->has('lazy-load')) {
-            return UserResource::collection($data->paginate(config('app.limit')));
+        if (!$request->has('no-paginate')) {
+            return UserResource::collection($data->where('id', '!=', $sanctumUser->id)->paginate(config('app.limit')));
         } else {
             return UserResource::collection($data->get());
         }
