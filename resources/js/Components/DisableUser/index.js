@@ -44,10 +44,10 @@ export default function DisableUser(props) {
                     keyboard={false}
                 >
                     <Modal.Header>
-                        <Modal.Title>Are you sure?</Modal.Title>
+                        <Modal.Title id='modalText'>Are you sure?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div>
+                        <div id='modalText'>
                             <p>
                                 Do you want disable this user?
                             </p>
@@ -74,10 +74,10 @@ export default function DisableUser(props) {
                     keyboard={false}
                 >
                     <Modal.Header>
-                        <Modal.Title>Can not disable user</Modal.Title>
+                        <Modal.Title id='modalText'>Can not disable user</Modal.Title>
                         <FaRegWindowClose onClick={handleClose} style={{ cursor: 'pointer' }} />
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body id='modalText'>
                         <div>
                             <p>
                                 There are valid assignments belonging to this user. Please close all assignments before

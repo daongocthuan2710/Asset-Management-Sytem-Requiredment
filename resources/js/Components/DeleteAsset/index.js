@@ -43,10 +43,10 @@ export default function DeleteAsset(props) {
                     keyboard={false}
                 >
                     <Modal.Header>
-                        <Modal.Title>Are you sure?</Modal.Title>
+                        <Modal.Title id='modalText'>Are you sure?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div>
+                        <div id='modalText'>
                             <p>
                                 Do you want delete this asset?
                             </p>
@@ -73,11 +73,11 @@ export default function DeleteAsset(props) {
                     keyboard={false}
                 >
                     <Modal.Header>
-                        <Modal.Title>Can not delete asset</Modal.Title>
+                        <Modal.Title id='modalText'>Can not delete asset</Modal.Title>
                         <FaRegWindowClose onClick={handleClose} style={{ cursor: 'pointer' }} />
                     </Modal.Header>
                     <Modal.Body>
-                        <div>
+                        <div id='modalText'>
                             <p>
                                 Cannot delete this asset because it belongs to one or more historical assignments.
                             </p>
