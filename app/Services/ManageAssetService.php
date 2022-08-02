@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class ManageAssetService extends BaseService
 {
-    protected $_manageAssetRepository;
+    protected $manageAssetRepository;
     public function __construct(ManageAssetRepository $ManageAssetRepository)
     {
-        $this->_manageAssetRepository = $ManageAssetRepository;
+        $this->manageAssetRepository = $ManageAssetRepository;
     }
 
     public function getAll($request)
@@ -24,12 +24,12 @@ class ManageAssetService extends BaseService
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->_manageAssetRepository->getAll($request, $sanctumUser);
+        return $this->manageAssetRepository->getAll($request, $sanctumUser);
     }
 
     public function getById($id)
     {
-        return $this->_manageAssetRepository->getById($id);
+        return $this->manageAssetRepository->getById($id);
     }
 
     public function update($request, $id): \Illuminate\Http\JsonResponse
@@ -38,7 +38,7 @@ class ManageAssetService extends BaseService
             return $this->checkPermission($request, $id);
         }
         //update asset
-        return $this->_manageAssetRepository->update($request, $id);
+        return $this->manageAssetRepository->update($request, $id);
     }
     public function edit($request, $id): \Illuminate\Http\JsonResponse
     {

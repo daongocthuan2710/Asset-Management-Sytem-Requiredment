@@ -1,3 +1,4 @@
+import React from "react";
 import { Modal } from "react-bootstrap";
 import { FaRegWindowClose } from "react-icons/fa"
 import moment from "moment";

@@ -1,5 +1,5 @@
+import React from "react";
 import Table from "react-bootstrap/Table";
-import React from 'react';
 import { getAssetEdit } from "../../Actions/asset.action";
 import { useDispatch } from "react-redux";
 import assetEditReducer from "../../Reducers/asset.reducer";
