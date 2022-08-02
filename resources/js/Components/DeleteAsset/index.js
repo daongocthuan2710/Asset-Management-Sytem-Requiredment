@@ -4,10 +4,22 @@ import './style.scss';
 import axios from 'axios';
 import {Link} from "react-router-dom";
 import {FaRegWindowClose} from "react-icons/fa";
+import {useDispatch} from "react-redux";
+import {getAssetEdit} from "../../Actions/asset.action";
 
 export default function DeleteAsset(props) {
     const [haveAssignment, setHaveAssignment] = useState(false);
     const [show, setShow] = useState(Boolean(props.show));
+    const dispatch = useDispatch();
+
+    async function handleOpenEditAssetForm() {
+        const data = {
+            assetId: props.id,
+            displayValue: true,
+            sort_at:''
+        }
+        await dispatch(getAssetEdit(data));
+    }
 
     useEffect(async () => {
         axios.get(`/api/asset/${props.id}/can-delete`).then(res => {
@@ -85,7 +97,7 @@ export default function DeleteAsset(props) {
                                 Cannot delete this asset because it belongs to one or more historical assignments.
                             </p>
                             <p>
-                                If this asset is not able to be use anymore, please update its state in <Link>Edit Asset page</Link>.
+                                If this asset is not able to be use anymore, please update its state in <Link onClick={handleOpenEditAssetForm}>Edit Asset page</Link>.
                             </p>
                         </div>
                     </Modal.Body>
