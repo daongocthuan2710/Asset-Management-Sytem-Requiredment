@@ -13,7 +13,8 @@ import {
 export default function FilterByCategory({
     currentButton,
     handleFilter,
-    arrayState
+    arrayState,
+    filterCategory
 }) 
 
 {
@@ -28,6 +29,19 @@ export default function FilterByCategory({
        console.log(response.data.data);
        console.log("data data");
        setCategory(response.data.data);
+    }
+
+    const checkId = (id) => {
+        if (filterCategory.length > 0) {
+            const index = filterCategory.findIndex((e) => e === id);
+            if (index !== -1 && filterCategory[index] === id) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
   
     return (    
@@ -48,7 +62,7 @@ export default function FilterByCategory({
                             id="checkbox-all"
                             className="mx-4 my-2 font-weight-bold"
                             label={item.name}
-                            checked={true}
+                            checked={checkId(item.id)}
                             onChange={() => handleFilter(item.id)}
                             eventKey={item.id}
                         />

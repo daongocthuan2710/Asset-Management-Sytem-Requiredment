@@ -24,6 +24,7 @@ export default function ManageAsset() {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
+  const [filterCategory, setFilterCategory] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([{key: 'All', value: '3'}]);
@@ -64,7 +65,6 @@ export default function ManageAsset() {
   React.useEffect(() => {
     getApiUser({
       FilterByState: arrayState,
- 
     });
   }, []);
 
@@ -86,8 +86,13 @@ export default function ManageAsset() {
     let url = "api/asset";
     let array = [];
 
-    if (FilterByCategory && FilterByCategory !== "All") {
-      array.push(`filterByState=${FilterByCategory}`);
+    if (FilterByCategory) {
+      if (FilterByCategory.length > 0) {
+        array.push(`FilterByCategory=${FilterByCategory}`);
+      }
+      else {
+        array.push('');
+      }
     }
 
     // if (!FilterByState){
@@ -165,11 +170,51 @@ export default function ManageAsset() {
     return response.data;
   };
 
-  // const handleFilterCategory = (id) => {
-  
-  // }
+  const handleFilterCategory = (id) => {
+    setPage(1);
+    const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
 
+    const index = tempFilterCategory.findIndex((e) => e === id);
+    if (index === -1) {
+      tempFilterCategory.push(id);
+    } else {
+      tempFilterCategory.splice(index, 1);
+    }
+
+    setFilterCategory(tempFilterCategory);
+
+    let temp_filter_state;
+    let temp_search;
+    let temp_sort;
+    let temp_page;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
+    }
+
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
+    }
+
+    getApiUser({
+      FilterByState: temp_filter_state,
+      FilterByCategory: tempFilterCategory,
+      page: temp_page,
+      sort: temp_sort,
+      search: temp_search
+    });
+  };
   const handleFilter = (key, value) => {
+    setPage(1);
+
     let arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
     if (key !== 'All') {
       const findIndex = arrayStateTemp.findIndex((item) => item.key === 'All');
@@ -192,15 +237,22 @@ export default function ManageAsset() {
     let temp_page;
     let temp_search;
     let temp_sort;
-    if (temp_search) {
+    let temp_filter_category;
+
+    if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
-    if (temp_page >= 1) {
-      temp_page = page;
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
     }
+
     if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
     }
 
     setPage(1);
@@ -208,73 +260,98 @@ export default function ManageAsset() {
     getApiUser({
       FilterByState: arrayStateTemp,
       page: temp_page,
-      temp_search: temp_search,
+      search: temp_search,
       sort: temp_sort,
+      FilterByCategory: temp_filter_category,
     });
   };
-
   const handleSearch = (e, value) => {
+    setPage(1);
     e.preventDefault();
+    setCurrentSearch(value);
   
-    let temp_filter;
+    let temp_filter_state;
     let temp_page;
+    let temp_filter_category;
     let temp_sort;
 
-    if (temp_page >= 1) {
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (page >= 1) {
       temp_page = page;
     }
+
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
     if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
     getApiUser({
-      filter: temp_filter,
+      FilterByState: temp_filter_state,
       search: value,
       page: temp_page,
       sort: temp_sort,
+      FilterByCategory: temp_filter_category,
     });
   };
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
-    console.log(page);
 
-    let temp_filter;
+    let temp_filter_state;
     let temp_search;
+    let temp_filter_category;
     let temp_sort;
 
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
 
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
     if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
     getApiUser({
-      filter: temp_filter,
+      FilterByState: temp_filter_state,
       search: temp_search,
       page: pageNumber,
       sort: temp_sort,
+      FilterByCategory: temp_filter_category,
     });
   };
   const handleSort = (key, value) => {
-    let temp_filter;
+    setPage(1);
+    let temp_filter_state;
     let temp_page;
     let temp_search;
+    let temp_filter_category;
 
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
 
-    if (temp_page >= 1) {
+    if (page >= 1) {
       temp_page = page;
     }
-    if (temp_search) {
+
+    if (currentSearch !== "") {
       temp_search = currentSearch;
+    }
+
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
     }
 
     const tempSortArray = [];
@@ -314,10 +391,11 @@ export default function ManageAsset() {
     setTableHeader(tempHeader);
 
     getApiUser({
-      filter: temp_filter,
-      search: currentSearch,
-      page: page,
+      FilterByState: temp_filter_state,
+      search: temp_search,
+      page: temp_page,
       sort: tempSortArray,
+      FilterByCategory: temp_filter_category,
     });
   };
 
@@ -371,7 +449,7 @@ export default function ManageAsset() {
           handleFilter={handleFilter}
           arrayState={arrayState}
         />
-        <FilterByCategory handleFilter={handleFilterCategory}/>
+        <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory} />
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}
