@@ -8,22 +8,25 @@ import {FaRegWindowClose} from "react-icons/fa";
 export default function DeleteAsset(props) {
     const [haveAssignment, setHaveAssignment] = useState(false);
     const [show, setShow] = useState(Boolean(props.show));
+
     useEffect(async () => {
-        if (props.show) setShow(Boolean(true));
-        // const response = await axios.get(`/api/asset/${props.id}/can-delete`);
-        const response = await axios.get('/api/asset/6/can-delete');
-        console.log(response.data)
-        setHaveAssignment(response.data.valid);
+        axios.get(`/api/asset/${props.id}/can-delete`).then(res => {
+            setHaveAssignment(res.data.valid);
+            if (props.show) setShow(Boolean(true));
+        }).catch(err => {
+            setHaveAssignment(err.response.data.valid);
+            if (props.show) setShow(Boolean(true));
+        })
     }, [props.show])
 
     const handleDisableUser = async (e) => {
         try {
-            // const token = localStorage.getItem('token')
-            // const headers = {headers: {Authorization: `Bearer ${token}`}};
-            // await axios.delete(`/api/${props.id}`, headers);
-            // setShow(false)
+            const token = localStorage.getItem('token')
+            const headers = {headers: {Authorization: `Bearer ${token}`}};
+            await axios.delete(`/api/asset/${props.id}`, headers);
+            setShow(false)
             setShow(false);
-            // window.location.reload();
+            window.location.reload();
         } catch (e) {
             const error = new Error("Something went wrong");
             throw error;

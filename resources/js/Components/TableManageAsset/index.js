@@ -66,7 +66,6 @@ export default function ManageAsset() {
 
   const handleDeleteAsset = (e, id) => {
     e.stopPropagation();
-    id = 6;
     setDeleteAsset({ show: true, id: id });
     setTimeout(() => setDeleteAsset({ show: false, id: id }), 1);
   }
