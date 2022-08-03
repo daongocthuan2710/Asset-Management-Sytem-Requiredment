@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAssetRequest;
+use App\Http\Requests\CreateAssetRequest;
 use App\Http\Requests\UpdateAssetRequest;
 use App\Services\ManageAssetService;
 use App\Services\ManageUserService;
@@ -31,7 +31,7 @@ class ManageAssetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreAssetRequest $request)
+    public function store(CreateAssetRequest $request)
     {
             $input = $request->all();
             return $this->manageAssetService->store($input);
