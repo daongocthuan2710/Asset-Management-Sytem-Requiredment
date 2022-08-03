@@ -21,6 +21,8 @@ class ManageAssetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index(Request $request)
     {
         return $this->manageAssetService->getAll($request);
@@ -31,10 +33,16 @@ class ManageAssetController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
+
+    public function search($keyword)
+    {
+        return $this->manageAssetService->search($keyword);
+    }
+
     public function store(CreateAssetRequest $request)
     {
-            $input = $request->all();
-            return $this->manageAssetService->store($input);
+        $input = $request->all();
+        return $this->manageAssetService->store($input);
     }
 
     /**

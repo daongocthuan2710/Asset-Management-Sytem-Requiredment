@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('asset_id', false, true);
             $table->integer('assigned_by', false, true)->nullable();
             $table->integer('staff_id', false, true);
-            $table->date('assigned_date');
+            $table->date('assigned_date')->nullable();
             $table->string('note')->nullable();
             $table->integer('state');
             //-1 : decline, 0 : waiting for acceptance, 1: accepted

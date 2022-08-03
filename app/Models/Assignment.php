@@ -10,7 +10,14 @@ class Assignment extends Model
     use HasFactory;
 
     protected $table = 'assignment';
-
+    protected $fillable = [
+        'asset_id',
+        'staff_id',
+        'note',
+        'assigned_date',
+        'assigned_by',
+        'state'
+    ];
     public function asset()
     {
         return $this->belongsTo(Asset::class);

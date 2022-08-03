@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ManageAssetController;
 use App\Http\Controllers\Admin\ManageCateController;
+use App\Http\Controllers\Admin\ManageAssignmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -25,13 +26,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('/user', ManageUserController::class);
+Route::get('/user/search/{keyword}', [ManageUserController::class, 'search']);
 Route::post('/user/store', [ManageUserController::class, 'store']);
 Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
 
 // Route::resource('/login', AuthenticationController::class);
+Route::resource('/assignment', ManageAssignmentController::class);
 Route::resource('/category', ManageCateController::class);
 Route::resource('/asset', ManageAssetController::class);
+Route::get('/asset/search/{keyword}', [ManageAssetController::class, 'search']);
 Route::get('/asset/{id}/can-delete', [ManageAssetController::class, 'canDestroy']);
 Route::post('/login', [AuthenticationController::class, 'index']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
