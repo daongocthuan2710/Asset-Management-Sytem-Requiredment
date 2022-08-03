@@ -15,6 +15,8 @@ class ManageAssetService extends BaseService
 {
     protected $manageAssetRepository;
     protected $assetModel;
+    protected $assignment;
+
     public function __construct(ManageAssetRepository $ManageAssetRepository, Assignment $assignment, Asset $assetModel)
     {
         $this->assignment = $assignment;
@@ -22,29 +24,24 @@ class ManageAssetService extends BaseService
         $this->manageAssetRepository = $ManageAssetRepository;
     }
 
-    public function manageUser($request)
-    {
-        return $this->manageAssetRepository->manageUser($request);
-    }
-
     public function search($keyword)
     {
-        //check admin
         $sanctumUser = auth('sanctum')->user();
         if (!$sanctumUser || !$sanctumUser->admin) {
             return response()->json(['error' => 'Unauthorized'], 401);
         } else {
-            $location = $sanctumUser->location;
-            $assets = $this->assetModel->select('asset.*')->where('asset.location', $location)->where('asset.state', 1);
+            $assets = $this->assetModel->select('asset.*')->where('asset.state', 1);
             if ($keyword !== null) {
                 $keyword = strtoupper($keyword);
                 $assets->where(function ($q) use ($keyword) {
-                    return $q->whereRaw("UPPER(name) LIKE '%" . $keyword . "%'")->orWhere('asset_code', 'like', "%$keyword%");
+                    return $q
+                        ->whereRaw("UPPER(name) LIKE '%" . $keyword . "%'")
+                        ->orWhere('asset_code', 'like', "%$keyword%");
                 });
             }
             return response()->json([
                 'assets' => $assets->get()
-            ], 200);
+            ]);
         }
     }
 

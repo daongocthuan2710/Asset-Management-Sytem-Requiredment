@@ -35,7 +35,9 @@ class ManageUserService extends BaseService
             if ($keyword !== null) {
                 $keyword = strtoupper($keyword);
                 $users->where(function ($q) use ($keyword) {
-                    return $q->whereRaw("UPPER(concat(first_name, ' ', last_name)) LIKE '%" . $keyword . "%'")->orWhere('staff_code', 'like', "%$keyword%");
+                    return $q
+                        ->whereRaw("UPPER(concat(first_name, ' ', last_name)) LIKE '%" . $keyword . "%'")
+                        ->orWhere('staff_code', 'like', "%$keyword%");
                 });
             }
             return response()->json([

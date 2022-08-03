@@ -11,7 +11,6 @@ use App\Repositories\ManageAssignmentRepository;
 use App\Services\BaseService;
 use App\Repositories\ManageUserRepository;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Hash;
 
 class ManageAssignmentService extends BaseService
@@ -20,8 +19,12 @@ class ManageAssignmentService extends BaseService
     protected $userModel;
     protected $assetModel;
     protected $assignmentModel;
-    public function __construct(ManageAssignmentRepository $ManageAssignmentRepository, Asset $assetModel, User $userModel, Assignment $assignmentModel)
-    {
+    public function __construct(
+        ManageAssignmentRepository $ManageAssignmentRepository,
+        Asset $assetModel,
+        User $userModel,
+        Assignment $assignmentModel
+    ) {
         $this->assetModel = $assetModel;
         $this->userModel = $userModel;
         $this->assignmentModel = $assignmentModel;
@@ -34,7 +37,6 @@ class ManageAssignmentService extends BaseService
     }
     public function store($data)
     {
-        //check admin
         $sanctumUser = auth('sanctum')->user();
         if (!$sanctumUser || !$sanctumUser->admin) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -44,12 +46,12 @@ class ManageAssignmentService extends BaseService
                     "staff_id" => $data["staff_id"],
                     "asset_id" => $data["asset_id"],
                     "note" => $data["note"],
-                    "state" => 1
+                    "assigned_date" => $data["assigned_date"],
+                    "state" => 0
                 ]
             );
             $assignment = $this->assignmentModel->find($assignment->id);
             $assignment->assigned_by = $sanctumUser->id;
-            $assignment->assigned_date = Carbon::today();
             $assignment->save();
             $asset = $this->assetModel->find($data['asset_id']);
             $asset->state = 2;
