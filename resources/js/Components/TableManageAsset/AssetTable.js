@@ -14,7 +14,7 @@ import {
 export default function AssetTable({
     data, Nodata, tableHeader,
     handleSort, handleOpenEditForm,
-    handleGetUserById, handleDisableUser
+    handleGetUserById, handleDeleteAsset
 }) {
     const sort_at = useSelector(
         (state) => state.assetEditReducer.sort_at
@@ -100,7 +100,7 @@ export default function AssetTable({
                                     onClick={(e) => handleOpenEditAssetForm(e, item.id)} id='editUserButton'
                                 />{" "}
                                 {"  "}
-                                <FaRegTimesCircle className="delete-icon" onClick={(e) => handleDisableUser(e, item.id)} type="button" />
+                                <FaRegTimesCircle className="delete-icon" onClick={(e) => handleDeleteAsset(e, item.id)} type="button" />
                             </td>
                         </tr>
                     ))

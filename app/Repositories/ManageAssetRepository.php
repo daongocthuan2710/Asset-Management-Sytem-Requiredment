@@ -25,7 +25,6 @@ class ManageAssetRepository extends BaseRepository
     {
         $data = $this->query
             ->where('location', $sanctumUser->location)
-            ->where('state', '!=', -1)
             ->search($request)
             ->filterByCategory($request)
             ->filterByState($request)
@@ -40,7 +39,11 @@ class ManageAssetRepository extends BaseRepository
             $data->orderBy('name', 'asc');
         }
 
-        return AssetResource::collection($data->paginate(config('app.limit')));
+        if (!$request->has('no-paginate')) {
+            return AssetResource::collection($data->paginate(config('app.limit')));
+        } else {
+            return AssetResource::collection($data->where('state', 1)->get());
+        }
     }
 
     public function getById($id)

@@ -73,10 +73,14 @@ class ManageAssetController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|void
      */
     public function destroy($id)
     {
-        //
+        return $this->manageAssetService->disable($id);
+    }
+    public function canDestroy($id)
+    {
+        return $this->manageAssetService->assignmentValid($id);
     }
 }

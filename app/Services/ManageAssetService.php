@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Asset;
+use App\Models\Assignment;
 use App\Repositories\ManageAssetRepository;
 use App\Services\BaseService;
 use Illuminate\Http\Request;
@@ -11,8 +13,9 @@ use Illuminate\Support\Facades\DB;
 class ManageAssetService extends BaseService
 {
     protected $manageAssetRepository;
-    public function __construct(ManageAssetRepository $ManageAssetRepository)
+    public function __construct(ManageAssetRepository $ManageAssetRepository, Assignment $assignment)
     {
+        $this->assignment = $assignment;
         $this->manageAssetRepository = $ManageAssetRepository;
     }
 
@@ -47,6 +50,41 @@ class ManageAssetService extends BaseService
         }
         //return asset
         return $this->manageAssetRepository->edit($request, $id);
+    }
+    public function disable($id)
+    {
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } else {
+            $asset = Asset::query()->findOrFail($id);
+            $assignment = Assignment::where('asset_id', $id)->count();
+            if ($assignment == 0) {
+                $asset->delete();
+                return response()->json([
+                    'message' => 'Asset have been deleted',
+                ]);
+            } else {
+                return response()->json([
+                'message' => 'Cant delete asset',
+                ], 400);
+            }
+        }
+    }
+    public function assignmentValid($id)
+    {
+        $assignment = Assignment::where('asset_id', $id)->count();
+        if ($assignment > 0) {
+            return response()->json([
+                'message' => "You can't do any actions on an asset has been assigned",
+                'valid' => true
+            ], 400);
+        } else {
+            return response()->json([
+                'message' => "Can delete",
+                'valid' => false
+            ]);
+        }
     }
     public function checkPermission($request, $id): ?\Illuminate\Http\JsonResponse
     {
