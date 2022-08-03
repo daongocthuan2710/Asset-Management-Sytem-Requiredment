@@ -40,4 +40,3 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/profile', ProfileController::class);
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
 });
-
