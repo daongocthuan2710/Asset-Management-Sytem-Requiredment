@@ -1,12 +1,24 @@
+/* eslint-disable react/display-name */
 import React from "react";
-import { Container, Row, Col, Button, Form, Dropdown, DropdownButton, Link } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Form,
+  Dropdown,
+  DropdownButton,
+  Link,
+} from "react-bootstrap";
 import axios from "../../Services/base.service";
 import "./style.css";
 import { useHistory } from "react-router-dom";
 import { getUserCreate } from "../../Actions/user.action";
 import { useDispatch } from "react-redux";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
-import { TiTick, TiTimes } from "react-icons/ti"
+import { TiTick, TiTimes } from "react-icons/ti";
+import { getAssetEdit } from "../../Actions/asset.action";
+
 const CreateNewAsset = () => {
   let history = useHistory();
   const [name, setName] = React.useState("");
@@ -19,20 +31,17 @@ const CreateNewAsset = () => {
   const [enabled, setEnabled] = React.useState(true);
   const [categoryList, setCategoryList] = React.useState([]);
 
-  
   const getCategory = async () => {
     const token = localStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${token}` } };
-    respone = await axios
-      .get("/category", headers)
-      .then(function (response) {
-        setCategoryList(response.data.category);
-      })
-  }
+    await axios.get("/category", headers).then(function (response) {
+      setCategoryList(response.data.category);
+    });
+  };
   React.useEffect(() => {
-    getCategory()
-  }, [])
-  
+    getCategory();
+  }, []);
+
   React.useEffect(() => {
     setEnabled(true);
     if (
@@ -60,19 +69,22 @@ const CreateNewAsset = () => {
     await axios
       .post("/asset", data, headers)
       .then(function (response) {
-        console.log('response', response);
-        //     dispatch(getUserCreate('sortByCreateUser', response.status));
+        dispatch({
+          type: 'GET_MESSAGE',
+          payload: {
+              sort_at: 'sortByCreateAsset'
+          },
+      })
         history.push("/manage-asset");
       })
       .catch(function (error) {
-        console.log('error', error);
+        console.log("error", error);
       });
-
-    console.log(data);
   };
 
   const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <Form.Control
+    readOnly
       value={category}
       ref={ref}
       onClick={(e) => {
@@ -83,8 +95,7 @@ const CreateNewAsset = () => {
   ));
 
   const CustomMenu = React.forwardRef(
-    ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
-
+    ({ children, style, className, "aria-labelledby": labeledBy }, ref) => {
       const [newCategoryName, setNewCategoryName] = React.useState("");
       const [newCategoryId, setNewCategoryId] = React.useState("");
       const [add, setAdd] = React.useState(false);
@@ -98,98 +109,113 @@ const CreateNewAsset = () => {
       });
 
       React.useEffect(() => {
-        let checkId = categoryList.find(o => o.id === newCategoryId);
-        if(checkId!==undefined) {
-          setCategoryIdError({error: true,message:"Prefix is already existed. Please enter a different prefix"})
+        let checkId = categoryList.find((o) => o.id === newCategoryId);
+        if (checkId !== undefined) {
+          setCategoryIdError({
+            error: true,
+            message:
+              "Prefix is already existed. Please enter a different prefix",
+          });
+        } else {
+          setCategoryIdError({ error: false, message: "" });
         }
-        else{setCategoryIdError({error: false,message:""})}
-        let checkName = categoryList.find(o => o.name === newCategoryName);
-        if(checkName!==undefined) {
-          setCategoryNameError({error: true,message:"Category is already existed. Please enter a different category"})
+        let checkName = categoryList.find((o) => o.name === newCategoryName);
+        if (checkName !== undefined) {
+          setCategoryNameError({
+            error: true,
+            message:
+              "Category is already existed. Please enter a different category",
+          });
+        } else {
+          setCategoryNameError({ error: false, message: "" });
         }
-        else{setCategoryNameError({error: false,message:""})}
-      }, [newCategoryId, newCategoryName])
+      }, [newCategoryId, newCategoryName]);
 
       const handleSubmitCategory = async () => {
-        const data = { "id": newCategoryId, "name": newCategoryName };
-        console.log('data', data);
+        const data = { id: newCategoryId, name: newCategoryName };
         const token = localStorage.getItem("token");
         const headers = { headers: { Authorization: `Bearer ${token}` } };
-        await axios.post('/category', data, headers)
-          .then((response) => {
-            getCategory()
-            console.log(response)
-          });
-      }
+        await axios.post("/category", data, headers).then((response) => {
+          getCategory();
+        });
+      };
       return (
-
         <div
           ref={ref}
           style={style}
           className={className}
           aria-labelledby={labeledBy}
-
         >
           <ul className="list-unstyled">
             {React.Children.toArray(children).filter(
-              (child) => child.props.children,
+              (child) => child.props.children
             )}
           </ul>
           <hr></hr>
 
-
-          {!add ?
-            <a className="mx-3 my-2 w-auto text-danger" type="button" onClick={() => setAdd(true)}>Add new category</a>
-
-
-            : <Form
-              className="mx-3 my-2 w-auto"
+          {!add ? (
+            <a
+              className="mx-3 my-2 w-auto text-danger"
+              type="button"
+              onClick={() => setAdd(true)}
             >
+              Add new category
+            </a>
+          ) : (
+            <Form className="mx-3 my-2 w-auto">
               <Row>
-
                 <Col>
                   <Form.Control
                     isInvalid={categoryNameError.error}
                     required
                     placeholder=""
                     value={newCategoryName}
-                    onChange={(e) => { setNewCategoryName(e.target.value) }} ></Form.Control>
-                    <Form.Control.Feedback type="invalid">
-                  {categoryNameError.message}
-                </Form.Control.Feedback>
+                    onChange={(e) => {
+                      setNewCategoryName(e.target.value);
+                    }}
+                  ></Form.Control>
+                  <Form.Control.Feedback type="invalid">
+                    {categoryNameError.message}
+                  </Form.Control.Feedback>
                 </Col>
                 <Col md={4}>
-
                   <Form.Control
-                  isInvalid={categoryIdError.error}
+                    isInvalid={categoryIdError.error}
                     maxLength="2"
                     placeholder=""
                     value={newCategoryId}
-                    onChange={(e) => { setNewCategoryId(e.target.value) }}
+                    onChange={(e) => {
+                      setNewCategoryId(e.target.value);
+                    }}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                  {categoryIdError.message}
-                </Form.Control.Feedback>
+                    {categoryIdError.message}
+                  </Form.Control.Feedback>
                 </Col>
                 <Col sm={1}>
-
-                  <TiTick className="h4 text-danger" type="button" onClick={handleSubmitCategory} />
+                  <TiTick
+                    className="h4 text-danger"
+                    type="button"
+                    onClick={handleSubmitCategory}
+                  />
                 </Col>
                 <Col sm={2}>
-
-                  <TiTimes className="h4" type="button" onClick={() => setAdd(false)} />
+                  <TiTimes
+                    className="h4"
+                    type="button"
+                    onClick={() => setAdd(false)}
+                  />
                 </Col>
               </Row>
-            </Form>}
-
+            </Form>
+          )}
         </div>
       );
-    },
+    }
   );
   return (
     <>
-
       <Container id="containerFormCreate">
         <h4>
           <b>Create New Asset</b>
@@ -222,7 +248,10 @@ const CreateNewAsset = () => {
                 {/* {categoryList.map((item, index) => (
                       <Dropdown.Item key={index} value={item.id} onClick={() => setCategory(item.name)}>{item.name} */}
                 <Dropdown>
-                  <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                  <Dropdown.Toggle
+                    as={CustomToggle}
+                    id="dropdown-custom-components"
+                  >
                     Custom toggle
                   </Dropdown.Toggle>
 
@@ -233,16 +262,15 @@ const CreateNewAsset = () => {
                         key={index}
                         value={item.id}
                         onClick={() => {
-                          setCategory(item.name)
-                          setCategoryId(item.id)
-                        }
-                        }>
+                          setCategory(item.name);
+                          setCategoryId(item.id);
+                        }}
+                      >
                         {item.name}
-                      </Dropdown.Item>))}
-
+                      </Dropdown.Item>
+                    ))}
                   </Dropdown.Menu>
                 </Dropdown>
-
               </Col>
             </Row>
           </Form.Group>
@@ -275,13 +303,11 @@ const CreateNewAsset = () => {
                   type="date"
                   onChange={(e) => setInstalledDate(e.target.value)}
                 />
-             
               </Col>
             </Row>
           </Form.Group>
 
           <br></br>
-
 
           <Form.Group controlId="formState">
             <Row>

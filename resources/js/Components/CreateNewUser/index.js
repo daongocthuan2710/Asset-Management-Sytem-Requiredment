@@ -86,15 +86,12 @@ const CreateNewUser = () => {
     await axios
       .post("/user/store", data, headers)
       .then(function (response) {
-        console.log('response', response);
         dispatch(getUserCreate('sortByCreateUser', response.status));
         history.push("/manage-user");
       })
       .catch(function () {
         setMess("First name or last name has invalid characters");
       });
-
-    console.log('headers', headers);
   };
 
   return (

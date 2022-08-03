@@ -20,6 +20,7 @@ import DeleteAsset from "../DeleteAsset";
 import FilterByCategory from "./FilterByCategory";
 import _ from "lodash";
 import assetEditReducer from "../../Reducers/asset.reducer";
+import assetGetMessageReducer from "../../Reducers/getMessageTopSort.reducer";
 
 export default function ManageAsset() {
   const [currentButton, setFilter] = React.useState(["3"]);
@@ -33,9 +34,6 @@ export default function ManageAsset() {
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
 
-  const sort_update_at = useSelector(
-    (state) => state.userEditReducer.sort_update_at
-  );
 
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -43,6 +41,11 @@ export default function ManageAsset() {
   const sort_at = useSelector(
     (state) => state.assetEditReducer.sort_at
   );
+  const sort_at_get_mesage = useSelector(
+    (state) => state.assetGetMessageReducer.sort_at
+  );
+  console.log(sort_at ," tao la sort aray");
+  console.log(sort_at_get_mesage ," tao la sort_at_get_mesage");
 
   const [tableHeader, setTableHeader] = React.useState([
     {
@@ -101,10 +104,18 @@ export default function ManageAsset() {
       }
     }
     
+    console.log(sort ," tao la sort aray 2");
 
-    // if (!FilterByState){
-    //   array.push(`filterByState=${FilterByState}`);
-    // }
+    if(sort_at === 'sortByEditAsset'){
+      array.push('sortByEditAsset');
+  }
+    if(sort_at_get_mesage=== 'sortByCreateAsset'){
+      array.push('sortByCreateAsset');
+  }
+
+
+ 
+
 
     if (FilterByState) {
       if (FilterByState.length > 0) {
@@ -126,14 +137,6 @@ export default function ManageAsset() {
     if (page) {
       array.push(`page=${page}`);
     }
-    if (sort_update_at === 'sortByEditAsset') {
-      array.push('sortByEditAsset');
-
-    }
-    if (sort_create_at === 'sortByCreateAsset') {
-      array.push('sortByCreateAsset');
-    }
-
     console.log(sort_create_at);
     if (sort) {
       sort.forEach((item) => {
@@ -151,9 +154,7 @@ export default function ManageAsset() {
         }
       });
     }
-    if(sort_at === 'sortByEditAsset'){
-          array.push('sortByEditAsset');
-        }
+
     for (let i = 0; i < array.length; i++) {
       if (i === 0) {
         url += "?" + array[i];
@@ -453,12 +454,18 @@ export default function ManageAsset() {
       <DeleteAsset show={deleteAsset.show} id={deleteAsset.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>Asset List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
+      <div className="d-flex ml-2">
         <FilterByState
           currentButton={currentButton}
           handleFilter={handleFilter}
           arrayState={arrayState}
         />
-        <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory} />
+        <div id="secondFilterAsset">
+        <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory}  />
+          
+        </div>
+      </div>
+        
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}

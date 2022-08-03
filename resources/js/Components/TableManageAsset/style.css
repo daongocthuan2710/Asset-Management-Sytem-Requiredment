@@ -165,3 +165,7 @@ tbody{
 #filter-search{
     width: 1180px;
 }
+
+#secondFilterAsset{
+    margin-left: 20px;
+}
