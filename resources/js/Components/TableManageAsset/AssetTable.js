@@ -96,11 +96,23 @@ export default function AssetTable({
                             <td>{item.category.name}</td>
                             <td>{item.state.name}</td>
                             <td className="td-without_border">
-                                <FaPencilAlt
-                                    onClick={(e) => handleOpenEditAssetForm(e, item.id)} id='editUserButton'
-                                />{" "}
-                                {"  "}
-                                <FaRegTimesCircle className="delete-icon" onClick={(e) => handleDeleteAsset(e, item.id)} type="button" />
+                                {item.state.code !== 2 ?
+                                    <>
+                                        <FaPencilAlt
+                                            onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton'
+                                        />{" "}
+                                        {"  "}
+                                        <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2 }
+                                                          onClick={(e) => handleDeleteAsset(e, item.id)} type="button"/>
+                                    </>
+                                    :
+                                    <>
+                                        <FaPencilAlt color='gray'/>{" "}
+                                        {"  "}
+                                        <FaRegTimesCircle color='gray'/>
+                                    </>
+
+                                }
                             </td>
                         </tr>
                     ))

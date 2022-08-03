@@ -4101,6 +4101,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
+
 function AssetTable(_ref) {
   var data = _ref.data,
       Nodata = _ref.Nodata,
@@ -4212,20 +4213,30 @@ function AssetTable(_ref) {
             children: item.category.name
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
             children: item.state.name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("td", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("td", {
             className: "td-without_border",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaPencilAlt, {
-              onClick: function onClick(e) {
-                return handleOpenEditAssetForm(e, item.id);
-              },
-              id: "editUserButton"
-            }), " ", "  ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaRegTimesCircle, {
-              className: "delete-icon",
-              onClick: function onClick(e) {
-                return handleDeleteAsset(e, item.id);
-              },
-              type: "button"
-            })]
+            children: item.state.code !== 2 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaPencilAlt, {
+                onClick: function onClick(e) {
+                  return handleOpenEditAssetForm(e, item.id);
+                },
+                "aria-disabled": item.state.code !== 2,
+                id: "editUserButton"
+              }), " ", "  ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaRegTimesCircle, {
+                className: "delete-icon",
+                "aria-disabled": item.state.code !== 2,
+                onClick: function onClick(e) {
+                  return handleDeleteAsset(e, item.id);
+                },
+                type: "button"
+              })]
+            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaPencilAlt, {
+                color: "gray"
+              }), " ", "  ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaRegTimesCircle, {
+                color: "gray"
+              })]
+            })
           })]
         }, item.id);
       }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("img", {

@@ -59,6 +59,7 @@ class Asset extends Model
     public function scopeFilterByState($query, $request)
     {
         $filterByState = explode(',', $request->query('filterByState'));
+        //3 mean all state
         if (in_array(3, $filterByState)) {
             return $query;
         }
