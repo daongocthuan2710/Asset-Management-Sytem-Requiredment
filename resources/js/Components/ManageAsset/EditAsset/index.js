@@ -36,7 +36,7 @@ export default function EditAssetForm() {
     function handleCloseEditForm(e) {
         e.preventDefault();
         const data = {
-            assetId: "",
+            assetId: assetEditInfo.id,
             displayValue: false,
             sort_at: "",
         };

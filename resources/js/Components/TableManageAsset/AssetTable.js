@@ -61,6 +61,7 @@ export default function AssetTable({
             }
             break;
         }
+        
       }
     return (
         <Table responsive="md">
