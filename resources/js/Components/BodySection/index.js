@@ -6,13 +6,16 @@ import { ManageUser } from "../TableManageUser";
 import CreateNewUser from "../CreateNewUser";
 // no khong hieu o khuc nay`
 import Test from "../Test";
-import ManageAsset from "../ManageAsset";
+import ManageAsset from "../TableManageAsset";
+import assetEditReducer from "../../Reducers/asset.reducer";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";
 import CreateNewAsset from "../CreateNewAsset";
+import EditAssetForm from "../ManageAsset/EditAsset";
 
 export default function BodySection() {
+    const assetEditReducer = useSelector((state) => state.assetEditReducer.value);
     const userEditReducer = useSelector((state) => state.userEditReducer.value);
     return (
         <div className="body-section">
@@ -31,7 +34,7 @@ export default function BodySection() {
                         {userEditReducer ? <EditForm /> : <ManageUser />}
                     </Route>
                     <Route path="/manage-asset">
-                        <ManageAsset />
+                        {assetEditReducer ? <EditAssetForm /> :<ManageAsset />}
                     </Route>
                     <Route path="/create-asset">
                         <CreateNewAsset />

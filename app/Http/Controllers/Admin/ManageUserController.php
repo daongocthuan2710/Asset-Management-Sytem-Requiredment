@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
@@ -43,7 +44,7 @@ class ManageUserController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateUserRequest $request, int $id)
     {
         return $this->ManageUserService->update($request, $id);
     }
