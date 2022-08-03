@@ -47,7 +47,7 @@ export default function EditAssetForm() {
         e.preventDefault();
         const data = {
             assetId: assetEditInfo.id,
-            name: e.target.form[0].checked ? 1 : 0,
+            name: e.target.form[0].value,
             specification: e.target.form[2].value,
             installed_date: e.target.form[3].value,
             state: Number(
@@ -78,7 +78,7 @@ export default function EditAssetForm() {
                         const data = {
                             assetId: assetId,
                             displayValue: false,
-                            sort_at: "sortByEditUser",
+                            sort_at: "sortByEditAsset",
                         };
                         dispatch(getAssetEdit(data));
                     }, 1500);
@@ -121,7 +121,7 @@ export default function EditAssetForm() {
                                 <Col md={8}>
                                     <Form.Control
                                         type="input"
-                                        value={assetEditInfo.name || ""}
+                                        defaultValue={assetEditInfo.name || ""}
                                         className="fs-5"
                                     />
                                 </Col>
@@ -185,7 +185,7 @@ export default function EditAssetForm() {
                                 <Col md={8}>
                                     <Form.Control
                                         type="date"
-                                        value={
+                                        defaultValue={
                                             assetEditInfo.installed_date || ""
                                         }
                                         placeholder="Due Join Date"

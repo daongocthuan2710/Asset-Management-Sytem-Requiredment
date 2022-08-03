@@ -259,7 +259,7 @@ const sort_create_at = useSelector(
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
- 
+
     if (value) {
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'desc';

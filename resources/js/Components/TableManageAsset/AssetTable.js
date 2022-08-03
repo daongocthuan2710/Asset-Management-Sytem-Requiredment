@@ -1,7 +1,7 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { getAssetEdit } from "../../Actions/asset.action";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import assetEditReducer from "../../Reducers/asset.reducer";
 import Swal from "sweetalert2";
 import {
@@ -16,6 +16,17 @@ export default function AssetTable({
     handleSort, handleOpenEditForm,
     handleGetUserById, handleDeleteAsset
 }) {
+    const sort_at = useSelector(
+        (state) => state.assetEditReducer.sort_at
+      );
+    //   console.log('sort_at',sort_at);
+    //   if(sort_at === 'sortByEditAsset'){
+    //     array.push('sortByEditUser');
+
+    //   }
+    //   if(sort_at ===  'sortByCreateAsset'){
+    //     array.push('sortByCreateUser');
+    //   }
 
     const dispatch = useDispatch();
     async function handleOpenEditAssetForm(e, assetId = "") {
