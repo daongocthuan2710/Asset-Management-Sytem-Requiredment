@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.gif";
 import DisableUser from "../DisableUser";
 import userService from "../../Services/user.service";
+import assetService from "../../Services/asset.service";
 import CustomPagination from "./CustomPagination";
 import AssetTable from "./AssetTable";
 import FilterByState from "./FilterByState";
@@ -27,7 +28,7 @@ export default function ManageAsset() {
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
-  const [arrayState, setArrayState] = React.useState([{key: 'All', value: '3'}]);
+  const [arrayState, setArrayState] = React.useState([{ key: 'All', value: '3' }]);
 
   const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -100,15 +101,15 @@ export default function ManageAsset() {
     // }
 
     if (FilterByState) {
-      if (FilterByState.length > 0){
+      if (FilterByState.length > 0) {
         if (FilterByState && FilterByState !== "3") {
-        const numberValue = [];
-        FilterByState.forEach((item) => {
-          numberValue.push(item.value);
-        })
-        const stringFilter =  numberValue.toString();
-        array.push(`filterByState=${stringFilter}`);
-      }
+          const numberValue = [];
+          FilterByState.forEach((item) => {
+            numberValue.push(item.value);
+          })
+          const stringFilter = numberValue.toString();
+          array.push(`filterByState=${stringFilter}`);
+        }
       }
     }
 
@@ -222,7 +223,7 @@ export default function ManageAsset() {
         arrayStateTemp.splice(findIndex, 1);
       }
     }
-    const index = arrayStateTemp.findIndex((e) => e.value ===  value);
+    const index = arrayStateTemp.findIndex((e) => e.value === value);
     if (index === -1) {
       arrayStateTemp.push({ key, value });
     } else {
@@ -269,7 +270,7 @@ export default function ManageAsset() {
     setPage(1);
     e.preventDefault();
     setCurrentSearch(value);
-  
+
     let temp_filter_state;
     let temp_page;
     let temp_filter_category;
@@ -432,8 +433,8 @@ export default function ManageAsset() {
   }
   const [user, setUser] = React.useState([]);
 
-  const handleGetUserById = async (userId) => {
-    const response = await userService.getUserById(userId);
+  const handleGetUserById = async (assetId) => {
+    const response = await assetService.getAssetById(assetId);
     setModal(true);
     console.log(response);
     setUser(response.data.data);
