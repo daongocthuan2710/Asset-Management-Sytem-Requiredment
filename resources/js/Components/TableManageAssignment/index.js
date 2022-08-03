@@ -1,76 +1,78 @@
 import React from "react";
 import "./style.scss";
 import "./style.css";
-import Table from "react-bootstrap/Table";
 import { Loading } from "notiflix/build/notiflix-loading-aio";
-import moment from "moment";
-
-import {
-  FaAngleDown,
-  FaAngleUp,
-  FaPencilAlt,
-  FaRegTimesCircle,
-  FaFilter,
-  FaSearch,
-  FaRegWindowClose
-} from "react-icons/fa";
-import Pagination from "react-js-pagination";
 import Row from "react-bootstrap/Row";
-import Dropdown from "react-bootstrap/Dropdown";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import { Button } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
-import { useDispatch,useSelector } from "react-redux";
-import userEditReducer from "../../Reducers/userEdit.reducer";
+import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.gif";
-import { Link } from "react-router-dom";
-import DisableUser from "../DisableUser";
-import Modal from 'react-bootstrap/Modal';
-import userService from "../../Services/user.service";
+import assetService from "../../Services/asset.service";
+import CustomPagination from "./CustomPagination";
+import AssignmentTable from "./AssignmentTable";
+import FilterByState from "./FilterByState";
+import SearchCreate from "./SearchCreate";
+import AssignmentDetailModal from "./AssignmentDetailModal";
+import DeleteAsset from "../DeleteAsset";
+import FilterByCategory from "./FilterByCategory";
+import _ from "lodash";
 
-export const ManageAssigment = () => {
-  const [currentButton, setFilter] = React.useState("All");
+export default function ManageAssignment() {
+  const [currentButton, setFilter] = React.useState(["3"]);
   const [currentSearch, setCurrentSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
+  const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
+  const [filterCategory, setFilterCategory] = React.useState([]);
   const [modal, setModal] = React.useState(false);
+  const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
 
-   const sort_update_at = useSelector(
+
+  const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
-);  
-
-const sort_create_at = useSelector(
-  (state) => state.userEditReducer.sort_update_at
-);  
-console.log(sort_create_at , "sort_create_at o day");
-
+  );
+  const sort_at = useSelector(
+    (state) => state.assetEditReducer.sort_at
+  );
+  const sort_at_get_mesage = useSelector(
+    (state) => state.assetGetMessageReducer.sort_at
+  );
 
   const [tableHeader, setTableHeader] = React.useState([
     {
-      name: "Staff Code",
+      name: "No.",
       isSortASC: true,
       isSortDESC: false,
     },
     {
-      name: "Fullname",
+      name: "Asset Code",
       isSortASC: true,
       isSortDESC: false,
     },
     {
-      name: "Username",
-    },
-    {
-      name: "Joined Date",
+      name: "Asset Name",
       isSortASC: true,
       isSortDESC: false,
     },
     {
-      name: "Type",
+      name: "Assigned to",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Assigned by",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Assigned Date",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "State",
       isSortASC: true,
       isSortDESC: false,
     },
@@ -79,27 +81,56 @@ console.log(sort_create_at , "sort_create_at o day");
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    getApiUser();
-
+    getApiAssignment({
+      FilterByState: arrayState,
+    });
   }, []);
-  const handleDisableUser = (e,id) => {
+
+  const handleDeleteAsset = (e, id) => {
     e.stopPropagation();
-    setDisableUser({ show: true, id: id });
-    console.log(disableUser);
-    setTimeout(() => setDisableUser({show:false ,id:id}), 1);
+    setDeleteAsset({ show: true, id: id });
+    setTimeout(() => setDeleteAsset({ show: false, id: id }), 1);
   }
 
-  const getApiUser = async ({
-    filter = undefined,
+
+  const getApiAssignment = async ({
+    FilterByCategory = undefined,
+    FilterByState = undefined,
     search = undefined,
     page = 1,
     sort = undefined,
   } = {}) => {
-    let url = "api/manageUser";
+    let url = "api/asset";
     let array = [];
 
-    if (filter && filter !== "All") {
-      array.push(`filter=${filter === "Admin" ? true : false}`);
+    if (FilterByCategory) {
+      if (FilterByCategory.length > 0) {
+        array.push(`filterByCategory=${FilterByCategory}`);
+      }
+      else {
+        array.push('');
+      }
+    }
+
+    if (sort_at === 'sortByEditAssignment') {
+      array.push('sortByEditAssignment');
+    }
+    if (sort_at_get_mesage === 'sortByCreateAssignment') {
+      array.push('sortByCreateAssignment');
+    }
+
+
+    if (FilterByState) {
+      if (FilterByState.length > 0) {
+        if (FilterByState && FilterByState !== "3") {
+          const numberValue = [];
+          FilterByState.forEach((item) => {
+            numberValue.push(item.value);
+          })
+          const stringFilter = numberValue.toString();
+          array.push(`filterByState=${stringFilter}`);
+        }
+      }
     }
 
     if (search) {
@@ -109,29 +140,29 @@ console.log(sort_create_at , "sort_create_at o day");
     if (page) {
       array.push(`page=${page}`);
     }
-    if(sort_update_at === 'sortByEditUser'){
-      array.push('sortByEditUser');
-
-    }
-    if(sort_create_at ===  'sortByCreateUser'){
-      array.push('sortByCreateUser');
-    }
-
     console.log(sort_create_at);
-
     if (sort) {
       sort.forEach((item) => {
-        if (item.key === "Staff Code") {
-          array.push(`sortByStaffCode=${item.value}`);
+        if (item.key === "No.") {
+          array.push(`sortByAssetCode=${item.value}`);
         }
-        if (item.key === "Fullname") {
-          array.push(`sortByFullName=${item.value}`);
+        if (item.key === "Asset Code") {
+          array.push(`sortByAssetCode=${item.value}`);
         }
-        if (item.key === "Joined Date") {
-          array.push(`sortByJoinedDate=${item.value}`);
+        if (item.key === "Asset Name") {
+          array.push(`sortByName=${item.value}`);
         }
-        if (item.key === "Type") {
-          array.push(`sortByType=${item.value}`);
+        if (item.key === "Assigned to") {
+          array.push(`sortByCategory=${item.value}`);
+        }
+        if (item.key === "Assigned by") {
+          array.push(`sortByState=${item.value}`);
+        }
+        if (item.key === "Assigned Date") {
+          array.push(`sortByState=${item.value}`);
+        }
+        if (item.key === "State") {
+          array.push(`sortByState=${item.value}`);
         }
       });
     }
@@ -148,6 +179,7 @@ console.log(sort_create_at , "sort_create_at o day");
       clickToClose: true,
       svgSize: "100px",
       svgColor: "rgb(220 53 69)",
+      backgroundColor: "rgba(255, 255, 255, 0.44)"
     });
     const response = await axios.get(url, {
       headers: {
@@ -159,120 +191,204 @@ console.log(sort_create_at , "sort_create_at o day");
     setTotal(response.data.meta.total);
     return response.data;
   };
-  const handleFilter = (value) => {
-    setFilter(value);
-    let temp_page;
-    let temp_search;
-    let temp_sort;
-    if (temp_search) {
-      temp_search = currentSearch;
-    }
 
-    if (temp_page >= 1) {
-      temp_page = page;
-    }
-    if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
-    }
-
-    
-
+  const handleFilterCategory = (id) => {
     setPage(1);
+    const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
 
-    getApiUser({
-      filter: value,
-      page: temp_page,
-      temp_search: temp_search,
-      sort: temp_sort,
-    });
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    let temp_filter;
-    let temp_page;
-    let temp_sort;
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
-    }
-    if (temp_page >= 1) {
-      temp_page = page;
-    }
-    if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+    const index = tempFilterCategory.findIndex((e) => e === id);
+    if (index === -1) {
+      tempFilterCategory.push(id);
+    } else {
+      tempFilterCategory.splice(index, 1);
     }
 
-    getApiUser({
-      filter: temp_filter,
-      search: currentSearch,
-      page: temp_page,
-      sort: temp_sort,
-    });
-  };
-  const handlePageChange = (pageNumber) => {
-    setPage(pageNumber);
-    console.log(page);
+    setFilterCategory(tempFilterCategory);
 
-    let temp_filter;
+    let temp_filter_state;
     let temp_search;
     let temp_sort;
+    let temp_page;
 
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
+    }
+
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
-    if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
-    }
-
-    getApiUser({
-      filter: temp_filter,
-      search: temp_search,
-      page: pageNumber,
+    getApiAssignment({
+      FilterByState: temp_filter_state,
+      FilterByCategory: tempFilterCategory,
+      page: temp_page,
       sort: temp_sort,
+      search: temp_search
     });
   };
-  const handleSort = (key, value) => {
-    let temp_filter;
+  const handleFilter = (key, value) => {
+    setPage(1);
+
+    let arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
+    if (key !== 'All') {
+      const findIndex = arrayStateTemp.findIndex((item) => item.key === 'All');
+      if (findIndex !== -1) {
+        arrayStateTemp.splice(findIndex, 1);
+      }
+    }
+    const index = arrayStateTemp.findIndex((e) => e.value === value);
+    if (index === -1) {
+      arrayStateTemp.push({ key, value });
+    } else {
+      arrayStateTemp.splice(index, 1);
+      if (arrayStateTemp.length === 0) {
+        arrayStateTemp.push({ key: 'All', value: '3' });
+      }
+    }
+
+    setArrayState(arrayStateTemp);
+
     let temp_page;
     let temp_search;
+    let temp_sort;
+    let temp_filter_category;
 
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
-    }
-
-    if (temp_page >= 1) {
-      temp_page = page;
-    }
-    if (temp_search) {
+    if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
-    const tempSortArray = [{
-      key: '',
-      value: ''
-    }];
-    const tempHeader = JSON.parse(JSON.stringify(tableHeader));
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
 
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
+    }
+
+    setPage(1);
+
+    getApiAssignment({
+      FilterByState: arrayStateTemp,
+      page: temp_page,
+      search: temp_search,
+      sort: temp_sort,
+      FilterByCategory: temp_filter_category,
+    });
+  };
+  const handleSearch = (e, value) => {
+    setPage(1);
+    e.preventDefault();
+    setCurrentSearch(value);
+
+    let temp_filter_state;
+    let temp_page;
+    let temp_filter_category;
+    let temp_sort;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
+    }
+
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    getApiAssignment({
+      FilterByState: temp_filter_state,
+      search: value,
+      page: temp_page,
+      sort: temp_sort,
+      FilterByCategory: temp_filter_category,
+    });
+  };
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+
+    let temp_filter_state;
+    let temp_search;
+    let temp_filter_category;
+    let temp_sort;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
+    }
+
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    getApiAssignment({
+      FilterByState: temp_filter_state,
+      search: temp_search,
+      page: pageNumber,
+      sort: temp_sort,
+      FilterByCategory: temp_filter_category,
+    });
+  };
+  const handleSort = (key, value) => {
+    setPage(1);
+    let temp_filter_state;
+    let temp_page;
+    let temp_search;
+    let temp_filter_category;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
+    }
+
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
+    }
+
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
+    const tempSortArray = [];
+    const tempHeader = JSON.parse(JSON.stringify(tableHeader));
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
- 
     if (value) {
+      tempSortArray.push({ key, value });
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 5 && i != 2) {
-          tempHeader[i].isSortASC = true;
-          tempHeader[i].isSortDESC = false;
-        }
-        if (i === 5) {
+        if (i != indexHeader && i != 4) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -281,25 +397,27 @@ console.log(sort_create_at , "sort_create_at o day");
     }
 
     if (!value) {
-      setSortArray([]);
+      tempSortArray.push({ key, value });
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'asc';
+      tempHeader[indexHeader].isSortASC = true;
+      tempHeader[indexHeader].isSortDESC = false;
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != 5 && i != 2) {
-          tempHeader[i].isSortASC = true;
-          tempHeader[i].isSortDESC = false;
+        if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = false;
+          tempHeader[i].isSortDESC = true;
         }
       }
     }
 
-
     setTableHeader(tempHeader);
 
-    getApiUser({
-      filter: temp_filter,
-      search: currentSearch,
-      page: page,
+    getApiAssignment({
+      FilterByState: temp_filter_state,
+      search: temp_search,
+      page: temp_page,
       sort: tempSortArray,
+      FilterByCategory: temp_filter_category,
     });
   };
 
@@ -334,206 +452,65 @@ console.log(sort_create_at , "sort_create_at o day");
         break;
     }
   }
-  const [user, setUser] = React.useState([]);
+  const [assignment, setAssignment] = React.useState([]);
 
-  const handleGetUserById = async (userId) => {
-    const response =  await userService.getUserById(userId); 
+  const handleGetAssignmentById = async (assetId) => {
+    const response = await assetService.getAssetById(assetId);
     setModal(true);
     console.log(response);
-    setUser(response.data.data);
+    setAssignment(response.data.data);
   }
 
   return (
     <div className="containermanageuser">
-      <DisableUser show={disableUser.show} id={disableUser.id} />
-      <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
+      <DeleteAsset show={deleteAsset.show} id={deleteAsset.id} />
+      <h5 style={{ color: "red", fontWeight: "bold" }}>Assignment List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
-        <Dropdown onSelect={() => handleFilter}>
-          <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center ">
-            <p className="flex-grow-1 font-weight-bold mb-0">Type</p>
-            <div className="fb-icon">
-              <FaFilter />
-            </div>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Form>
-              <Form.Check
-                type="checkbox"
-                id="checkbox-all"
-                className="mx-4 font-weight-bold"
-                label="All"
-                checked={currentButton === "All"}
-                onChange={() => handleFilter("All")}
-                eventKey="All"
-              />
-              <Form.Check
-                type="checkbox"
-                id="checkbox-admin"
-                className="mx-4 my-2 font-weight-bold"
-                label="Admin"
-                checked={currentButton === "Admin"}
-                onChange={() => handleFilter("Admin")}
-                eventKey="Admin"
-              />
-              <Form.Check
-                type="checkbox"
-                id="checkbox-staff"
-                className="mx-4 font-weight-bold"
-                label="Staff"
-                checked={currentButton === "Staff"}
-                onChange={() => handleFilter("Staff")}
-                eventkey="Staff"
-              />
-            </Form>
-          </Dropdown.Menu>
-        </Dropdown>
+        <div className="d-flex ml-2">
+          <FilterByState
+            currentButton={currentButton}
+            handleFilter={handleFilter}
+            arrayState={arrayState}
+          />
+          <div id="secondFilterAsset">
+            <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory} />
+
+          </div>
+        </div>
 
         <div id="search-create" className="d-flex search-create">
-          <Form id="form-search" onSubmit={(e) => handleSearch(e)}>
-            <InputGroup className="search-bar mb-1">
-              <Form.Control
-                placeholder="Search"
-                aria-label="Text input with dropdown button"
-                value={currentSearch}
-                onChange={(e) => setCurrentSearch(e.target.value)}
-              />
-              <InputGroup.Text
-                id="basic-addon2"
-                onClick={(e) => handleSearch(e)}
-              >
-                {" "}
-                <FaSearch />
-              </InputGroup.Text>
-            </InputGroup>
-          </Form>
-          <Link to="/create-user">
-          <Button id="btn-createnewuser" className="btn-createnewuser" >
-            Create new user
-          </Button>
-          </Link>
-
+          <SearchCreate
+            currentSearch={currentSearch}
+            handleSearch={handleSearch}
+            setCurrentSearch={setCurrentSearch}
+          />
         </div>
       </div>
       <Row>
         <div id="table-manage-user">
-          <Table responsive="md">
-            <thead>
-              <tr>
-                {data.length > 0
-                  ? tableHeader.map((item, index) => {
-                      return (
-                        <th
-                          key={index}
-                          onClick={() => {
-                            if (item.name !== "Username") {
-                              handleSort(item.name, item.isSortASC);
-                            }
-                          }}
-                        >
-                          {item.name}&nbsp;
-                          {item.isSortASC && <FaAngleDown />}
-                          {item.isSortDESC && <FaAngleUp />}
-                        </th>
-                      );
-                    })
-                  : ""}
-              </tr>
-            </thead>
-            <tbody>
-              {data.length > 0 ? (
-                data.length > 0 &&
-                data.map((item) => (
-                  <tr key={item.id} onClick={() => handleGetUserById(item.id)}>
-                    <td>{item.staff_code}</td>
-                    <td>{item.full_name}</td>
-                    <td>{item.username}</td>
-                    <td>{item.joined_date}</td>
-                    <td>{item.admin == true ? "Admin" : "Staff"}</td>
-                    <td className="td-without_border">
-                      <FaPencilAlt
-                        onClick={(e) => handleOpenEditForm(e, item.id)} id='editUserButton'
-                      />{" "}
-                      {"  "}
-                      <FaRegTimesCircle className="delete-icon"  onClick={(e) => handleDisableUser(e,item.id)} type="button" />
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <img id="img-nodata"src={Nodata}></img>
-              )}
-            </tbody>
-          </Table>
+          <AssignmentTable
+            data={data}
+            tableHeader={tableHeader}
+            Nodata={Nodata}
+            handleSort={handleSort}
+            handleOpenEditForm={handleOpenEditForm}
+            handleGetAssignmentById={handleGetAssignmentById}
+            handleDeleteAsset={handleDeleteAsset}
+          />
         </div>
       </Row>
       <Row>
-      {total > 1 ? (
-          <Pagination
-            activePage={page}
-            itemsCountPerPage={20}
-            totalItemsCount={total}
-            pageRangeDisplayed={3}
-            prevPageText="Previous"
-            nextPageText="Next"
-            itemClass="page-item"
-            linkClass="page-link"
-            linkClassPrev="page-prev"
-            linkClassNext="page-next"
-            activeLinkClass="pagination-active"
-            hideFirstLastPages={true}
-            onChange={(page) => handlePageChange(page)}
-          />
-        ) : (
-          ""
-        )}
+        <CustomPagination
+          total={total}
+          page={page}
+          handlePageChange={handlePageChange}
+        />
       </Row>
-      <Modal
-      show={modal}
-      size="lg"
-      onHide={() => setModal(false)}
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header className="w-100">
-        <Modal.Title id="contained-modal-title-vcenter" className="d-flex justify-content-betweeen align-items-center w-100 flex-grow-1">
-          <h4 className="flex-grow-1"> Detailed User Information</h4>
-          <FaRegWindowClose onClick={() => setModal(false)} style={{ cursor: 'pointer' }} />
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-          <div className="d-flex">
-            <p className="w-25">Staff Code</p>
-            <p className="w-75">{user.staff_code}</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Full Name</p>
-            <p className="w-75">{user.full_name}</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Username</p>
-            <p className="w-75">{user.username}</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Date of Birth</p>
-            <p className="w-75">{moment(user.birthday).format('DD/MM/YYYY') }</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Gender</p>
-            <p className="w-75">{user.gender}</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Joined Date</p>
-            <p className="w-75">{user.joined_date}</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Type</p>
-            <p className="w-75">{user.admin ? 'Admin' : 'Staff'}</p>
-          </div>
-          <div className="d-flex">
-            <p className="w-25">Location</p>
-            <p className="w-75">{user.location}</p>
-          </div>
-      </Modal.Body>
-    </Modal>
+      <AssignmentDetailModal
+        modal={modal}
+        assignment={assignment}
+        setModal={setModal}
+      />
     </div>
   );
-};
+}
