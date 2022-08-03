@@ -65,18 +65,18 @@ class GetEditAssetTest extends TestCase
             ->assertStatus(401);
     }
 
-    public function test_assigned_asset(): void
-    {
-        $id = 1; //an assigned asset in HN
-        Sanctum::actingAs(User::factory()->create([
-            'admin' => true,
-            'location' => 'HN', //admin in HN
-            'staff_code' => 'SD2001',
-            'base_username' => 'user',
-        ]));
-        $this->json('GET', "api/asset/$id/edit")
-            ->assertStatus(422);
-    }
+    // public function test_assigned_asset(): void
+    // {
+    //     $id = 1; //an assigned asset in HN
+    //     Sanctum::actingAs(User::factory()->create([
+    //         'admin' => true,
+    //         'location' => 'HN', //admin in HN
+    //         'staff_code' => 'SD2001',
+    //         'base_username' => 'user',
+    //     ]));
+    //     $this->json('GET', "api/asset/$id/edit")
+    //         ->assertStatus(422);
+    // }
 
     public function test_success_get_edit(): void
     {
