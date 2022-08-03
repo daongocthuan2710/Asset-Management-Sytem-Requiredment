@@ -3,9 +3,11 @@
 namespace App\Repositories;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\EditAssignmentResource;
 use App\Http\Resources\NewUserResource;
 use App\Http\Resources\UserResource;
 use App\Models\Asset;
+use App\Models\Assignment;
 use App\Repositories\BaseRepository;
 use App\Models\User;
 use App\Rules\JoinedDateWeekend;
@@ -28,7 +30,8 @@ class ManageAssignmentRepository extends BaseRepository
 
     public function edit($request, $id)
     {
-        //
+        $assignment = Assignment::query()->findOrFail($id);
+        return response()->json(new EditAssignmentResource($assignment), 200);
     }
 
     public function update($request, $id)
