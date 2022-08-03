@@ -65,7 +65,7 @@ class Asset extends Model
         return $query
             ->when($request->has('filterByState'), function ($query) use ($filterByState) {
                 foreach ($filterByState as $key => $value) {
-                    $query->orWhere("state", "=", $value);
+                    $query->orWhere("state", $value);
                 }
             });
     }
