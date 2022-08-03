@@ -18,6 +18,7 @@ import SearchCreate from "./SearchCreate";
 import AssetDetailModal from "./AssetDetailModal";
 import FilterByCategory from "./FilterByCategory";
 import _ from "lodash";
+import assetEditReducer from "../../Reducers/asset.reducer";
 
 export default function ManageAsset() {
   const [currentButton, setFilter] = React.useState(["3"]);
@@ -28,7 +29,7 @@ export default function ManageAsset() {
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
-  const [arrayState, setArrayState] = React.useState([{ key: 'All', value: '3' }]);
+  const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
 
   const sort_update_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -36,6 +37,9 @@ export default function ManageAsset() {
 
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
+  );
+  const sort_at = useSelector(
+    (state) => state.assetEditReducer.sort_at
   );
 
   const [tableHeader, setTableHeader] = React.useState([
@@ -95,6 +99,7 @@ export default function ManageAsset() {
         array.push('');
       }
     }
+    
 
     // if (!FilterByState){
     //   array.push(`filterByState=${FilterByState}`);
@@ -145,7 +150,9 @@ export default function ManageAsset() {
         }
       });
     }
-
+    if(sort_at === 'sortByEditAsset'){
+          array.push('sortByEditAsset');
+        }
     for (let i = 0; i < array.length; i++) {
       if (i === 0) {
         url += "?" + array[i];

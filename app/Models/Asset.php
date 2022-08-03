@@ -119,7 +119,7 @@ class Asset extends Model
     public function scopeSortByCreateAsset($querry, $request)
     {
         return $querry
-            ->when($request->has('sortBCreateAsset'), function ($query) use ($request) {
+            ->when($request->has('sortByCreateAsset'), function ($query) use ($request) {
                 $query
                     ->orderBy("created_at", 'desc');
             });
