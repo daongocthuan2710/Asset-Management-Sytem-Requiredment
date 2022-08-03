@@ -88,7 +88,7 @@ export default function ManageAsset() {
 
     if (FilterByCategory) {
       if (FilterByCategory.length > 0) {
-        array.push(`FilterByCategory=${FilterByCategory}`);
+        array.push(`filterByCategory=${FilterByCategory}`);
       }
       else {
         array.push('');

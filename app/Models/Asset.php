@@ -33,11 +33,14 @@ class Asset extends Model
             });
     }
 
-    public function scopeFilterByCategory($querry, $request)
+    public function scopeFilterByCategory($query, $request)
     {
-        return $querry
-            ->when($request->has('filterByCategory'), function ($query) use ($request) {
-                $filterByCategory = explode(',', $request->query('filterByCategory'));
+        $filterByCategory = explode(',', $request->query('filterByCategory'));
+        if (in_array(3, $filterByCategory)) {
+            return $query;
+        }
+        return $query
+            ->when($request->has('filterByCategory'), function ($query) use ($filterByCategory) {
                 foreach ($filterByCategory as $key => $value) {
                     if ($key === 0) {
                         $query->where("category_id", "=", $value);
