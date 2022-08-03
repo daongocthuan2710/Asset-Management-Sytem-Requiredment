@@ -34,7 +34,7 @@ class ManageAssetController extends Controller
     public function store(StoreAssetRequest $request)
     {
             $input = $request->all();
-            return $this->ManageAssetService->store($input);
+            return $this->manageAssetService->store($input);
     }
 
     /**

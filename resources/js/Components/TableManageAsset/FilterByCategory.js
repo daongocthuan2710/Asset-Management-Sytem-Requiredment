@@ -25,10 +25,10 @@ export default function FilterByCategory({
     const token = localStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${token}` } };
     const getApiCategory = async () => {
-    const response = await axios.get("api/category", headers);
-       console.log(response.data.data);
-       console.log("data data");
-       setCategory(response.data.data);
+    await axios.get("/api/category", headers)
+    .then(function (response) {
+        setCategory(response.data.category);
+      })
     }
 
     const checkId = (id) => {

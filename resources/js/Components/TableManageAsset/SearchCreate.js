@@ -33,7 +33,7 @@ export default function SearchCreate({
                     </InputGroup.Text>
                 </InputGroup>
             </Form>
-            <Link to="/create-user">
+            <Link to="/create-asset">
                 <Button id="btn-createnewuser" className="btn-createnewuser" >
                     Create new Asset
                 </Button>
