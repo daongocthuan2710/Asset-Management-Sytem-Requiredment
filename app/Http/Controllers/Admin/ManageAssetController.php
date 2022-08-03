@@ -3,35 +3,38 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateAssetRequest;
+use App\Http\Requests\UpdateAssetRequest;
 use App\Services\ManageAssetService;
 use App\Services\ManageUserService;
 use Illuminate\Http\Request;
 
 class ManageAssetController extends Controller
 {
-    private ManageUserService $manageAssetService;
+    private ManageAssetService $manageAssetService;
     public function __construct(ManageAssetService $manageAssetService)
     {
-        $this->ManageAssetService = $manageAssetService;
+        $this->manageAssetService = $manageAssetService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       //
+        return $this->manageAssetService->getAll($request);
     }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateAssetRequest $request)
     {
-        //
+            $input = $request->all();
+            return $this->manageAssetService->store($input);
     }
 
     /**
@@ -42,7 +45,7 @@ class ManageAssetController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->manageAssetService->getById($id);
     }
 
     /**
@@ -53,7 +56,7 @@ class ManageAssetController extends Controller
      */
     public function edit(Request $request, int $id)
     {
-        return $this->ManageAssetService->edit($request, $id);
+        return $this->manageAssetService->edit($request, $id);
     }
 
     /**
@@ -63,19 +66,23 @@ class ManageAssetController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, int $id)
+    public function update(UpdateAssetRequest $request, int $id)
     {
-        return $this->ManageAssetService->update($request, $id);
+        return $this->manageAssetService->update($request, $id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse|void
      */
     public function destroy($id)
     {
-        //
+        return $this->manageAssetService->disable($id);
+    }
+    public function canDestroy($id)
+    {
+        return $this->manageAssetService->assignmentValid($id);
     }
 }

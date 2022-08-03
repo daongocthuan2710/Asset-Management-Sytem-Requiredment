@@ -49,7 +49,6 @@ class CreateUserRequest extends FormRequest
     }
     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator)
     {
-
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [

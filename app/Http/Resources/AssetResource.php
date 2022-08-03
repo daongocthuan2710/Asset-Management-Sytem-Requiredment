@@ -14,6 +14,37 @@ class AssetResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $stateName = $this->state;
+        switch ($stateName) {
+            case -2:
+                $stateName = 'Recycled';
+                break;
+            case -1:
+                $stateName = 'Waiting for recycling';
+                break;
+            case 0:
+                $stateName = 'Not available';
+                break;
+            case 1:
+                $stateName = 'Available';
+                break;
+            default:
+                $stateName = 'Assigned';
+                break;
+        }
+        $installedDate = date("d/m/Y", strtotime($this->installed_date));
+        return [
+            'asset_code' => $this->asset_code,
+            'category' => new CategoryResource($this->category),
+            'name' => $this->name,
+            'state' => [
+                'code' => $this->state,
+                'name' => $stateName
+            ],
+            'location' => $this->location,
+            'id' => $this->id,
+            'installed_date' => $installedDate,
+            'specification' => $this->specification
+        ];
     }
 }

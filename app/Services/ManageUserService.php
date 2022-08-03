@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Repositories\ManageUserRepository;
