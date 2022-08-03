@@ -11,26 +11,29 @@ export default function SearchCreate({
     currentSearch,
     handleSearch, setCurrentSearch
 }) {
+
+    const [currentSearchValue, setCurrentSearchValue] = React.useState('');
+
     return (
         <>
-            <Form id="form-search" onSubmit={(e) => handleSearch(e)}>
+            <Form id="form-search" onSubmit={(e) => handleSearch(e, currentSearchValue)}>
                 <InputGroup className="search-bar mb-1">
                     <Form.Control
                         placeholder="Search"
                         aria-label="Text input with dropdown button"
-                        value={currentSearch}
-                        onChange={(e) => setCurrentSearch(e.target.value)}
+                        value={currentSearchValue}
+                        onChange={(e) => setCurrentSearchValue(e.target.value)}
                     />
                     <InputGroup.Text
                         id="basic-addon2"
-                        onClick={(e) => handleSearch(e)}
+                        onClick={(e) => handleSearch(e, currentSearchValue)}
                     >
                         {" "}
                         <FaSearch />
                     </InputGroup.Text>
                 </InputGroup>
             </Form>
-            <Link to="/create-user">
+            <Link to="/create-asset">
                 <Button id="btn-createnewuser" className="btn-createnewuser" >
                     Create new Asset
                 </Button>

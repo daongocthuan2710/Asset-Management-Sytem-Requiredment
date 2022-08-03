@@ -95,6 +95,8 @@ class CreateUserTest extends TestCase
         $body = [
             "first_name" => "Huynh",
             "last_name" => "Avenger Avenger Avenger Avenger
+                 Avenger Avenger Avenger Avenger Avenger
+                 Avenger Avenger Avenger Avenger
                  Avenger Avenger Avenger Avenger Avenger",
             "date_of_birth" => "31-12-2000",
             "joined_date" => "11-06-2001",

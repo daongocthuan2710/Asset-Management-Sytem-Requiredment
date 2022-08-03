@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Table } from "react-bootstrap";
 import { FaRegWindowClose } from "react-icons/fa"
 import moment from "moment";
 export default function AssetDetailModal({
@@ -31,28 +31,59 @@ export default function AssetDetailModal({
                         <p className="w-75">{user.name}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Username</p>
-                        <p className="w-75">{user.username}</p>
+                        <p className="w-25">Category</p>
+                        <p className="w-75">{user.category && user.category.name}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Date of Birth</p>
-                        <p className="w-75">{moment(user.birthday).format('DD/MM/YYYY')}</p>
+                        <p className="w-25">Installed Date</p>
+                        <p className="w-75">{user.installed_date}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Gender</p>
-                        <p className="w-75">{user.gender}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p className="w-25">Joined Date</p>
-                        <p className="w-75">{user.joined_date}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p className="w-25">Type</p>
-                        <p className="w-75">{user.admin ? 'Admin' : 'Staff'}</p>
+                        <p className="w-25">State</p>
+                        <p className="w-75">{user.state && user.state.name}</p>
                     </div>
                     <div className="d-flex">
                         <p className="w-25">Location</p>
                         <p className="w-75">{user.location}</p>
+                    </div>
+                    <div className="d-flex">
+                        <p className="w-25">Specification</p>
+                        <p className="w-75">{user.specification}</p>
+                    </div>
+                    <div className="d-flex">
+                        <p className="w-25">History</p>
+                        <p className="w-75">
+                            {
+                                user.history ? (
+                                    <Table bordered hover id="asset-history">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Assigned to</th>
+                                                <th>Assigned by</th>
+                                                <th>Returned date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                ) : (
+                                    <span>No Data</span>
+                                )
+                            }
+                        </p>
                     </div>
                 </Modal.Body>
             </Modal>

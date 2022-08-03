@@ -32,7 +32,7 @@ class AssetResource extends JsonResource
                 $stateName = 'Assigned';
                 break;
         }
-
+        $installedDate = date("d/m/Y", strtotime($this->installed_date));
         return [
             'asset_code' => $this->asset_code,
             'category' => new CategoryResource($this->category),
@@ -42,7 +42,9 @@ class AssetResource extends JsonResource
                 'name' => $stateName
             ],
             'location' => $this->location,
-            'id' => $this->id
+            'id' => $this->id,
+            'installed_date' => $installedDate,
+            'specification' => $this->specification
         ];
     }
 }

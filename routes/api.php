@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ManageAssetController;
 use App\Http\Controllers\Admin\ManageAssignmentController;
+use App\Http\Controllers\Admin\ManageCateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -31,6 +32,7 @@ Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
 
 // Route::resource('/login', AuthenticationController::class);
+Route::resource('/category', ManageCateController::class);
 Route::resource('/asset', ManageAssetController::class);
 Route::get('/asset/{id}/can-delete', [ManageAssetController::class, 'canDestroy']);
 Route::post('/login', [AuthenticationController::class, 'index']);
@@ -40,4 +42,3 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/profile', ProfileController::class);
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
 });
-
