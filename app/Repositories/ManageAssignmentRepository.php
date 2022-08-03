@@ -20,10 +20,17 @@ class ManageAssignmentRepository extends BaseRepository
 
     public function getAll($request, $sanctumUser)
     {
-        $data = $this->query->get();
-        
+        $data = $this->query
+            ->search($request)
+            ->sortByNo($request)
+            ->sortByAssetCode($request)
+            ->sortByAssetName($request)
+            ->sortByAssignedTo($request)
+            ->sortByAssignedBy($request)
+            ->sortByAssignedDate($request)
+            ->sortByAssignedState($request);
 
-        return AssignmentResource::collection($data);
-        
+
+        return AssignmentResource::collection($data->paginate(config('app.limit')));
     }
 }
