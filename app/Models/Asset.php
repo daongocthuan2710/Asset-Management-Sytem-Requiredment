@@ -41,33 +41,22 @@ class Asset extends Model
 
     public function scopeFilterByCategory($query, $request)
     {
-        $filterByCategory = explode(',', $request->query('filterByCategory'));
-        if (in_array(3, $filterByCategory)) {
-            return $query;
-        }
         return $query
-            ->when($request->has('filterByCategory'), function ($query) use ($filterByCategory) {
-                foreach ($filterByCategory as $key => $value) {
-                    if ($key === 0) {
-                        $query->where("category_id", "=", $value);
-                    }
-                    $query->orWhere("category_id", "=", $value);
-                }
+            ->when($request->has('filterByCategory'), function ($query) use ($request) {
+                $filterByCategory = explode(',', $request->query('filterByCategory'));
+                $query->whereIn("category_id", $filterByCategory);
             });
     }
 
     public function scopeFilterByState($query, $request)
     {
         $filterByState = explode(',', $request->query('filterByState'));
-        //3 mean all state
         if (in_array(3, $filterByState)) {
             return $query;
         }
         return $query
             ->when($request->has('filterByState'), function ($query) use ($filterByState) {
-                foreach ($filterByState as $key => $value) {
-                    $query->orWhere("state", $value);
-                }
+                $query->whereIn("state", $filterByState);
             });
     }
 
