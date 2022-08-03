@@ -10,29 +10,42 @@ import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.gif";
 import DisableUser from "../DisableUser";
 import userService from "../../Services/user.service";
+import assetService from "../../Services/asset.service";
 import CustomPagination from "./CustomPagination";
 import AssetTable from "./AssetTable";
-import FilterByCategory from "./FilterByCategory";
+import FilterByState from "./FilterByState";
 import SearchCreate from "./SearchCreate";
 import AssetDetailModal from "./AssetDetailModal";
+import DeleteAsset from "../DeleteAsset";
+import FilterByCategory from "./FilterByCategory";
+import _ from "lodash";
+import assetEditReducer from "../../Reducers/asset.reducer";
+import assetGetMessageReducer from "../../Reducers/getMessageTopSort.reducer";
 
 export default function ManageAsset() {
-  const [currentButton, setFilter] = React.useState("All");
+  const [currentButton, setFilter] = React.useState(["3"]);
   const [currentSearch, setCurrentSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
+  const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
+  const [filterCategory, setFilterCategory] = React.useState([]);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
-  const [arrayState, setArrayState] = React.useState([]);
+  const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
 
-  const sort_update_at = useSelector(
-    (state) => state.userEditReducer.sort_update_at
-  );
 
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
   );
+  const sort_at = useSelector(
+    (state) => state.assetEditReducer.sort_at
+  );
+  const sort_at_get_mesage = useSelector(
+    (state) => state.assetGetMessageReducer.sort_at
+  );
+  console.log(sort_at ," tao la sort aray");
+  console.log(sort_at_get_mesage ," tao la sort_at_get_mesage");
 
   const [tableHeader, setTableHeader] = React.useState([
     {
@@ -60,14 +73,17 @@ export default function ManageAsset() {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    getApiUser();
+    getApiUser({
+      FilterByState: arrayState,
+    });
   }, []);
-  const handleDisableUser = (e, id) => {
+
+  const handleDeleteAsset = (e, id) => {
     e.stopPropagation();
-    setDisableUser({ show: true, id: id });
-    console.log(disableUser);
-    setTimeout(() => setDisableUser({ show: false, id: id }), 1);
+    setDeleteAsset({ show: true, id: id });
+    setTimeout(() => setDeleteAsset({ show: false, id: id }), 1);
   }
+
 
   const getApiUser = async ({
     FilterByCategory = undefined,
@@ -79,19 +95,39 @@ export default function ManageAsset() {
     let url = "api/asset";
     let array = [];
 
-    if (FilterByCategory && FilterByCategory !== "All") {
-      array.push(`filterByState=${FilterByCategory}`);
+    if (FilterByCategory) {
+      if (FilterByCategory.length > 0) {
+        array.push(`filterByCategory=${FilterByCategory}`);
+      }
+      else {
+        array.push('');
+      }
     }
+    
+    console.log(sort ," tao la sort aray 2");
 
-    if (FilterByState.length > 0){
-      if (FilterByState && FilterByState !== "3") {
-      const numberValue = [];
-      FilterByState.forEach((item) => {
-        numberValue.push(item.value);
-      })
-      const stringFilter =  numberValue.toString();
-      array.push(`filterByState=${stringFilter}`);
-    }
+    if(sort_at === 'sortByEditAsset'){
+      array.push('sortByEditAsset');
+  }
+    if(sort_at_get_mesage=== 'sortByCreateAsset'){
+      array.push('sortByCreateAsset');
+  }
+
+
+ 
+
+
+    if (FilterByState) {
+      if (FilterByState.length > 0) {
+        if (FilterByState && FilterByState !== "3") {
+          const numberValue = [];
+          FilterByState.forEach((item) => {
+            numberValue.push(item.value);
+          })
+          const stringFilter = numberValue.toString();
+          array.push(`filterByState=${stringFilter}`);
+        }
+      }
     }
 
     if (search) {
@@ -101,14 +137,6 @@ export default function ManageAsset() {
     if (page) {
       array.push(`page=${page}`);
     }
-    if (sort_update_at === 'sortByEditAsset') {
-      array.push('sortByEditAsset');
-
-    }
-    if (sort_create_at === 'sortByCreateAsset') {
-      array.push('sortByCreateAsset');
-    }
-
     console.log(sort_create_at);
     if (sort) {
       sort.forEach((item) => {
@@ -151,32 +179,90 @@ export default function ManageAsset() {
     setTotal(response.data.meta.total);
     return response.data;
   };
-  const handleFilter = (key, value) => {
-    const arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
-    const index = arrayStateTemp.findIndex((e) => e.value ===  value);
 
+  const handleFilterCategory = (id) => {
+    setPage(1);
+    const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
+
+    const index = tempFilterCategory.findIndex((e) => e === id);
+    if (index === -1) {
+      tempFilterCategory.push(id);
+    } else {
+      tempFilterCategory.splice(index, 1);
+    }
+
+    setFilterCategory(tempFilterCategory);
+
+    let temp_filter_state;
+    let temp_search;
+    let temp_sort;
+    let temp_page;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
+    }
+
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
+    }
+
+    getApiUser({
+      FilterByState: temp_filter_state,
+      FilterByCategory: tempFilterCategory,
+      page: temp_page,
+      sort: temp_sort,
+      search: temp_search
+    });
+  };
+  const handleFilter = (key, value) => {
+    setPage(1);
+
+    let arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
+    if (key !== 'All') {
+      const findIndex = arrayStateTemp.findIndex((item) => item.key === 'All');
+      if (findIndex !== -1) {
+        arrayStateTemp.splice(findIndex, 1);
+      }
+    }
+    const index = arrayStateTemp.findIndex((e) => e.value === value);
     if (index === -1) {
       arrayStateTemp.push({ key, value });
     } else {
       arrayStateTemp.splice(index, 1);
+      if (arrayStateTemp.length === 0) {
+        arrayStateTemp.push({ key: 'All', value: '3' });
+      }
     }
-    
-    console.log(arrayStateTemp);
 
     setArrayState(arrayStateTemp);
 
     let temp_page;
     let temp_search;
     let temp_sort;
-    if (temp_search) {
+    let temp_filter_category;
+
+    if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
-    if (temp_page >= 1) {
-      temp_page = page;
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
     }
+
     if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
+    if (page >= 1) {
+      temp_page = page;
     }
 
     setPage(1);
@@ -184,109 +270,142 @@ export default function ManageAsset() {
     getApiUser({
       FilterByState: arrayStateTemp,
       page: temp_page,
-      temp_search: temp_search,
+      search: temp_search,
       sort: temp_sort,
+      FilterByCategory: temp_filter_category,
     });
   };
-
-  const handleSearch = (e) => {
+  const handleSearch = (e, value) => {
+    setPage(1);
     e.preventDefault();
-    let temp_filter;
+    setCurrentSearch(value);
+
+    let temp_filter_state;
     let temp_page;
+    let temp_filter_category;
     let temp_sort;
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
-    if (temp_page >= 1) {
+
+    if (page >= 1) {
       temp_page = page;
     }
+
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
     if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
     getApiUser({
-      filter: temp_filter,
-      search: currentSearch,
+      FilterByState: temp_filter_state,
+      search: value,
       page: temp_page,
       sort: temp_sort,
+      FilterByCategory: temp_filter_category,
     });
   };
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
-    console.log(page);
 
-    let temp_filter;
+    let temp_filter_state;
     let temp_search;
+    let temp_filter_category;
     let temp_sort;
 
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
 
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
+
     if (sortArray.length > 0) {
-      temp_sort = [...sortArray];
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
     getApiUser({
-      filter: temp_filter,
+      FilterByState: temp_filter_state,
       search: temp_search,
       page: pageNumber,
       sort: temp_sort,
+      FilterByCategory: temp_filter_category,
     });
   };
   const handleSort = (key, value) => {
-    let temp_filter;
+    setPage(1);
+    let temp_filter_state;
     let temp_page;
     let temp_search;
+    let temp_filter_category;
 
-    if (currentButton !== "All") {
-      temp_filter = currentButton;
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
 
-    if (temp_page >= 1) {
+    if (page >= 1) {
       temp_page = page;
     }
-    if (temp_search) {
+
+    if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
-    const tempSortArray = JSON.parse(JSON.stringify(sortArray));
-    const tempHeader = JSON.parse(JSON.stringify(tableHeader));
+    if (filterCategory.length > 0) {
+      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    }
 
-    const index = tempSortArray.findIndex((item) => item.key === key);
+    const tempSortArray = [];
+    const tempHeader = JSON.parse(JSON.stringify(tableHeader));
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
-    if (index === -1 && value) {
-      tempSortArray.push({
-        key: key,
-        value: "desc",
-      });
+    if (value) {
+      tempSortArray.push({ key, value });
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
+      for (let i = 0; i < tempHeader.length; i++) {
+        if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+      }
+      setSortArray(tempSortArray);
     }
-    if (index !== -1 && !value) {
-      tempSortArray.splice(index, 1);
+
+    if (!value) {
+      tempSortArray.push({ key, value });
+      tempSortArray[0].key = key;
+      tempSortArray[0].value = 'asc';
       tempHeader[indexHeader].isSortASC = true;
       tempHeader[indexHeader].isSortDESC = false;
+      for (let i = 0; i < tempHeader.length; i++) {
+        if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = false;
+          tempHeader[i].isSortDESC = true;
+        }
+      }
     }
-    if (index !== -1 && value) {
-      tempSortArray[index].value = "desc";
-      tempHeader[indexHeader].isSortASC = false;
-      tempHeader[indexHeader].isSortDESC = true;
-    }
+
     setTableHeader(tempHeader);
-    setSortArray(tempSortArray);
 
     getApiUser({
-      filter: temp_filter,
-      search: currentSearch,
-      page: page,
+      FilterByState: temp_filter_state,
+      search: temp_search,
+      page: temp_page,
       sort: tempSortArray,
+      FilterByCategory: temp_filter_category,
     });
   };
 
@@ -323,8 +442,8 @@ export default function ManageAsset() {
   }
   const [user, setUser] = React.useState([]);
 
-  const handleGetUserById = async (userId) => {
-    const response = await userService.getUserById(userId);
+  const handleGetUserById = async (assetId) => {
+    const response = await assetService.getAssetById(assetId);
     setModal(true);
     console.log(response);
     setUser(response.data.data);
@@ -332,14 +451,21 @@ export default function ManageAsset() {
 
   return (
     <div className="containermanageuser">
-      <DisableUser show={disableUser.show} id={disableUser.id} />
+      <DeleteAsset show={deleteAsset.show} id={deleteAsset.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>Asset List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
-        <FilterByCategory
+      <div className="d-flex ml-2">
+        <FilterByState
           currentButton={currentButton}
           handleFilter={handleFilter}
           arrayState={arrayState}
         />
+        <div id="secondFilterAsset">
+        <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory}  />
+          
+        </div>
+      </div>
+        
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}
@@ -357,7 +483,7 @@ export default function ManageAsset() {
             handleSort={handleSort}
             handleOpenEditForm={handleOpenEditForm}
             handleGetUserById={handleGetUserById}
-            handleDisableUser={handleDisableUser}
+            handleDeleteAsset={handleDeleteAsset}
           />
         </div>
       </Row>

@@ -44,13 +44,13 @@ export default function EditForm() {
         const joined_date = e.target.form[5].value;
         const type = e.target.form[6].value === "Admin" ? 1 : 0;
 
-        const response = await UserService.updateUserInfo(
-            userId,
-            date_of_birth,
-            gender,
-            joined_date,
-            type
-        );
+        const response = await UserService.updateUserInfo({
+            'userId' : userId,
+            'date_of_birth' : date_of_birth,
+            'gender' : gender,
+            'joined_date' : joined_date,
+            'type' : type
+        });
 
         const message = response.data == undefined ? response.message : response.data.message;
         const code = response.code;
@@ -61,14 +61,14 @@ export default function EditForm() {
         setShowModal(true)
         switch (code) {
             case 200:
-                {
-                    setModalHeader("Success")
-                    setModalBody(message)
-                    setTimeout(
-                        () => {const displayValue = false;
+            {
+                setModalHeader("Success")
+                setModalBody(message)
+                setTimeout(
+                    () => {const displayValue = false;
                         dispatch(getUserEdit(displayValue, userId,'sortByEditUser'))},
-                        1500);
-                }
+                    1500);
+            }
                 break;
             case 422:
                 setModalHeader('Failed!')
@@ -197,7 +197,7 @@ export default function EditForm() {
                                                         selectedRadio == labelName
                                                     }
                                                     onChange={() =>
-                                                       { setSelectedRadio(labelName)
+                                                    { setSelectedRadio(labelName)
                                                         setDisableSubmit(false)}
                                                     }
                                                 />

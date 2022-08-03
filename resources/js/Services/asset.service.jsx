@@ -13,8 +13,8 @@ class AssetService {
         return response;
     }
 
-    async updateAssetInfo(assetId, date_of_birth, gender, joined_date, type) {
-        const endpoint = `/asset/${assetId}/?date_of_birth=${date_of_birth}&gender=${gender}&joined_date=${joined_date}&admin=${type}`;
+    async updateAssetInfo(data) {
+        const endpoint = `/asset/${data.assetId}?installed_date=${data.installed_date}&name=${data.name}&specification=${data.specification}&state=${data.state}`;
         const response = await Repository.put(endpoint);
         return response;
     }

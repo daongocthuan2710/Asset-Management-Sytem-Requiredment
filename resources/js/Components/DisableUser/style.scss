@@ -1,42 +1,17 @@
-.modal-backdrop{
-    background: rgba(255,255,255 , 20) !important;
-}
-.modal-content{
-    border-color: #8d8f91 !important;
-    border-width: 1px !important;
-}
-.modal-header{
-    background: #EFF1F5;
-    color: #CF283D;
-    border-color: #8d8f91 !important;
-    padding: 15px !important;
-    .modal-title{
-        padding: 0 20px;
-        font-weight: 700;
-        font-size: 20px;
-    }
-}
-
-.modal-footer{
-    background: #FAFCFC;
-    color: #4D5154;
-    border-width: 0 !important;
-    padding: 15px !important;
+.modal-body{
     div{
-        margin: 5px 15px;
-        .primaryButton{
+        #disableUserButton{
             background: #E9424D;
             color: #FEFAFA;
-            margin: 0 5px;
+            border-width: 0;
         }
-        .secondaryButton{
+        #cancelDisableUserButton{
             background: #FAFCFC;
-            color: #E9424D;
-            border-color: #E9424D;
-            margin: 0 5px;
-        }
-        p{
-            margin: 0 5px;
+            color: #7e8183;
+            border-color: #7e8183;
         }
     }
+}
+#modalText{
+    padding-left: 26px;
 }

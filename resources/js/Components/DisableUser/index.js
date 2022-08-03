@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal } from "react-bootstrap";
 import './style.scss';
 import axios from 'axios';
+import {FaRegWindowClose} from "react-icons/fa";
 
 export default function DisableUser(props) {
 
@@ -18,7 +19,7 @@ export default function DisableUser(props) {
     const handleDisableUser = async (e) => {
         try {
             const token = localStorage.getItem('token')
-            const headers = { headers: { Authorization: `Bearer ${token}` } };
+            const headers = {headers: {Authorization: `Bearer ${token}`}};
             await axios.get(`/api/disable/${props.id}`, headers);
             setShow(false)
             window.location.reload();
@@ -29,8 +30,9 @@ export default function DisableUser(props) {
     }
 
 
-
-    const handleClose = () => { setShow(false) };
+    const handleClose = () => {
+        setShow(false)
+    };
 
 
     return (
@@ -42,22 +44,28 @@ export default function DisableUser(props) {
                     keyboard={false}
                 >
                     <Modal.Header>
-                        <Modal.Title>Are you sure?</Modal.Title>
+                        <Modal.Title id='modalText'>Are you sure?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div>
+                        <div id='modalText'>
                             <p>
                                 Do you want disable this user?
                             </p>
+                            <Button
+                                onClick={handleDisableUser}
+                                id="disableUserButton"
+                                variant="light">
+                                Disable
+                            </Button>
+                            <b>  </b>
+                            <Button
+                                onClick={handleClose}
+                                id="cancelDisableUserButton"
+                                variant="light">
+                                Cancel
+                            </Button>
                         </div>
                     </Modal.Body>
-                    <Modal.Footer>
-
-                        <div>
-                            <Button onClick={handleDisableUser} className="primaryButton">Disable</Button>
-                            <Button onClick={handleClose} className="secondaryButton">Cancel</Button>
-                        </div>
-                    </Modal.Footer>
                 </Modal>
                 :
                 <Modal
@@ -66,13 +74,14 @@ export default function DisableUser(props) {
                     keyboard={false}
                 >
                     <Modal.Header>
-                        <Modal.Title>Can not disable user</Modal.Title>
-                        <Button onClick={handleClose}>X</Button>
+                        <Modal.Title id='modalText'>Can not disable user</Modal.Title>
+                        <FaRegWindowClose onClick={handleClose} style={{ cursor: 'pointer' }} />
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body id='modalText'>
                         <div>
                             <p>
-                                There are valid assignments belonging to this user. Please close all assignments before disabling user.
+                                There are valid assignments belonging to this user. Please close all assignments before
+                                disabling user.
                             </p>
                         </div>
                     </Modal.Body>

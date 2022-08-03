@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\NewUserResource;
 use App\Http\Resources\UserResource;
 use App\Repositories\BaseRepository;
@@ -58,7 +59,7 @@ class ManageUserRepository extends BaseRepository
         $data = $this->query
         ->where('location', $sanctumUser->location)
         ->where('state', '!=', -1)
-        ->where('id' ,'!=', $sanctumUser->id)
+        ->where('id', '!=', $sanctumUser->id)
         ->search($request)
         ->filter($request)
         ->sortByFullName($request)
@@ -105,19 +106,6 @@ class ManageUserRepository extends BaseRepository
         $sanctumUser = auth('sanctum')->user();
         if (!$sanctumUser || !$sanctumUser->admin) {
             return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        //check validate
-        $validator = Validator::make($request->all(), [
-            'date_of_birth' => 'date|required',
-            'gender' => 'boolean|required',
-            'joined_date' => 'date|required',
-            'admin' => 'boolean|required'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validations fails',
-                'error' => $validator->errors()
-            ], 422);
         }
         $user = $this->query->find($id);
         //check user exist

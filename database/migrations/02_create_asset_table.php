@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('category_id', 2)->nullable();
             $table->string('specification')->nullable();
-            $table->date('installed_date');
+            $table->date('installed_date');                                                             
             $table->integer('state')->default(1);
             //0 : not available, 1 : available, 2 : assigned
-            //-1 : waiting for recycling, -2 : recycled
+            //-1 : waiting for recycling, -2 : recycled                         
             $table->string('location')->nullable();
 
             // Foreign Key
