@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
-class StoreAssetRequest extends FormRequest
+class CreateAssetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,10 +29,10 @@ class StoreAssetRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string', 'required', new LatinName()],
+            'name' => ['string', 'required', 'max:128', new LatinName()],
             'category_id' => ['string', 'required', 'exists:category,id'],
             'installed_date' => ['date','required'],
-            'specification' => ['string','required'],
+            'specification' => ['string','required','max:128'],
             'state' => ['integer', 'required', Rule::in([0, 1])],
             //0 : not available, 1 : available
         ];
