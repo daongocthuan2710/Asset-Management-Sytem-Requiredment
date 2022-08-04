@@ -32,7 +32,6 @@ class ManageAssignmentRepository extends BaseRepository
             ->sortByAssignedDate($request)
             ->sortByAssignedState($request);
 
-
         return AssignmentResource::collection($data->paginate(config('app.limit')));
     }
 }
