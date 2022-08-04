@@ -66,22 +66,23 @@ const CreateNewAssignment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
-      user: user.id,
-      asset: asset.id,
+      staff_id: user.id,
+      asset_id: asset.id,
       assigned_date: assignedDate,
       note: note,
     };
-    // const token = localStorage.getItem("token");
-    // const headers = { headers: { Authorization: `Bearer ${token}` } };
-    // await axios
-    //   .post("/user/store", data, headers)
-    //   .then(function (response) {
-    //     dispatch(getUserCreate('sortByCreateUser', response.status));
-    //     history.push("/manage-user");
-    //   })
-    //   .catch(function () {
-    //     setMess("First name or last name has invalid characters");
-    //   });
+    const token = localStorage.getItem("token");
+    const headers = { headers: { Authorization: `Bearer ${token}` } };
+    await axios
+      .post("/assignment", data, headers)
+      .then(function (response) {
+        //dispatch(getUserCreate('sortByCreateUser', response.status));
+        console.log(response);
+        history.push("/manage-assignment");
+      })
+      .catch(function () {
+        setMess("Something went wrong!");
+      });
     console.log(data)
   };
 
@@ -156,7 +157,6 @@ const CreateNewAssignment = () => {
               </Col>
               <Col md={8}>
                 <Form.Control
-                  required
                   as="textarea"
                   rows={3}
                   value={note}
