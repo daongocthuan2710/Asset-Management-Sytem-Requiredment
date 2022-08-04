@@ -75,9 +75,8 @@ class Assignment extends Model
             ->when($request->has('sortByAssetCode'), function ($query) use ($request) {
                 $sortByAssetCode = $request->query('sortByAssetCode');
                 $query
-                    ->with(["asset" => function ($q) use ($sortByAssetCode) {
-                        $q->orderBy("asset_code", $sortByAssetCode);
-                    }]);
+                    ->join("asset", "asset.id", "assignment.asset_id")
+                    ->orderBy("asset.asset_code", $sortByAssetCode);
             });
     }
 
@@ -87,9 +86,8 @@ class Assignment extends Model
             ->when($request->has('sortByAssetName'), function ($query) use ($request) {
                 $sortByAssetName = $request->query('sortByAssetName');
                 $query
-                ->with(["asset" => function ($q) use ($sortByAssetName) {
-                    $q->orderBy("name", $sortByAssetName);
-                }]);
+                    ->join("asset", "asset.id", "assignment.asset_id")
+                    ->orderBy("asset.name", $sortByAssetName);
             });
     }
 
@@ -99,9 +97,8 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedTo'), function ($query) use ($request) {
                 $sortByAssignedTo = $request->query('sortByAssignedTo');
                 $query
-                    ->with(["staff_id" => function ($q) use ($sortByAssignedTo) {
-                        $q->orderBy("username", $sortByAssignedTo);
-                    }]);
+                    ->join("user", "user.id", "assignment.staff_id")
+                    ->orderBy("user.username", $sortByAssignedTo);
             });
     }
 
@@ -111,9 +108,8 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedBy'), function ($query) use ($request) {
                 $sortByAssignedBy = $request->query('sortByAssignedBy');
                 $query
-                    ->with(["assigned_by" => function ($q) use ($sortByAssignedBy) {
-                        $q->orderBy("username", $sortByAssignedBy);
-                    }]);
+                    ->join("user", "user.id", "assignment.assigned_by")
+                    ->orderBy("user.username", $sortByAssignedBy);
             });
     }
 
