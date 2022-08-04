@@ -14,7 +14,7 @@ class AssignmentService {
     }
 
     async updateAssignmentInfo(data) {
-        const endpoint = `/assignment/${data.assignmentId}?installed_date=${data.installed_date}&name=${data.name}&specification=${data.specification}&state=${data.state}`;
+        const endpoint = `/assignment/${data.assignmentInfo}?staff_id=${data.staffId}&asset_id=${data.assetId}&assigned_date=${data.assigned_date}&note=${data.note}`;
         const response = await Repository.put(endpoint);
         return response;
     }

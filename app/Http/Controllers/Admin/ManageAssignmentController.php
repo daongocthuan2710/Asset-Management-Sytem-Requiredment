@@ -74,7 +74,7 @@ class ManageAssignmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAssignmentRequest $request, $id)
+    public function update(UpdateAssignmentRequest $request, $id) //UpdateAssignmentRequest
     {
         return $this->manageAssignmentService->update($request, $id);
     }

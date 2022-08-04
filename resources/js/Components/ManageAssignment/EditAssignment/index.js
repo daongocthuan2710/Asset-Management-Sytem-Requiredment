@@ -12,20 +12,17 @@ import AssetService from "../../../Services/asset.service";
 import { getAssignmentEdit } from "../../../Actions/assignment.action";
 import assignmentEditReducer from "../../../Reducers/assignment.reducer";
 import {Modal } from "react-bootstrap";
-import Log from "laravel-mix/src/Log";
 
 export default function EditAssignmentForm() {
     const [showModal, setShowModal] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [modalBody, setModalBody] = useState("");
     const [disableSave, setDisableSave] = useState(true);
-    const [assignmentId, setAssignmentId] = useState([]);
+    const [assignmentInfo, setAssignmentInfo] = useState([]);
     const [userList, setUserList] = useState([]);
-    const [userId, setUserId] = useState([]);
-    const [userFullName, setUserFullName] = useState('');
     const [AssetList, setAssetList] = useState([]);
-    const [AssetId, setAssetId] = useState([]);
-    const [assetName, setAssetName] = useState([]);
+    const [assetInfo, setAssetInfo] = useState([]);
+    const [userInfo, setUserInfo] = useState([]);
 
     const assignmentEditInfo = useSelector(
         (state) => state.assignmentEditReducer.assignmentEditInfo
@@ -35,34 +32,36 @@ export default function EditAssignmentForm() {
     function handleCloseEditForm(e) {
         e.preventDefault();
         const data = {
-            assignmentId: assignmentEditInfo.id || '',
+            assignmentInfo: assignmentEditInfo.id || '',
             displayValue: false,
         };
         dispatch(getAssignmentEdit(data));
     }
 
-
+    // Action
     async function handleUpdateAssignmentInfo(e) {
         e.preventDefault();
         console.log('e',e);
-        // const data = {
-        //     assignmentId: assignmentEditInfo.id || '',
-        //     user: e.target.form[0].checked ? 1 : 0,
-        //     assignment: e.target.form[2].value || '',
-        //     note: e.target.form[3].value || '',
-        // };
-        // const response = await AssignmentService.updateAssignmentInfo(data);
-
-        // const message =
-        //     response.data == undefined
-        //         ? response.message
-        //         : response.data.message;
-        // const code = response.code;
-        // handleShowMessage(code, message, assignmentEditInfo.id);
+        const data = {
+            assignmentInfo: assignmentInfo.id || '',
+            staffId: userInfo.id,
+            assetId: assetInfo.id,
+            assigned_date: e.target.form[1].value,
+            note: e.target.form[0].value || '',
+        };
+        console.log('data',data);
+        const response = await AssignmentService.updateAssignmentInfo(data);
+        console.log('response',response);
+        const message =
+            response.data == undefined
+                ? response.message
+                : response.data.message;
+        const code = response.code;
+        handleShowMessage(code, message, assignmentEditInfo.id);
     }
 
-    function handleShowMessage(code, message, assignmentId) {
-        console.log(code, message, assignmentId);
+    function handleShowMessage(code, message, assignmentInfo) {
+        console.log(code, message, assignmentInfo);
         setShowModal(true);
         switch (code) {
             case 200:
@@ -71,7 +70,7 @@ export default function EditAssignmentForm() {
                     setModalBody(message);
                     setTimeout(() => {
                         const data = {
-                            assignmentId: assignmentId,
+                            assignmentInfo: assignmentInfo,
                             displayValue: false,
                             sort_at: "sortByEditAssignment",
                         };
@@ -86,14 +85,29 @@ export default function EditAssignmentForm() {
                     setShowModal(false);
                 }, 1500);
                 break;
+            case 400:
+                setModalHeader("Failed!");
+                setModalBody(message);
+                setTimeout(() => {
+                    setShowModal(false);
+                }, 1500);
+                break;
         }
     }
 
+    function handleShowButtonSave(e) {
+        if(e.target.form[0].value === '' || e.target.form[1].value === ''){
+            setDisableSave(true);
+        }
+        else setDisableSave(false);
+}
+
+    // Get data to show when reload page
     async function fetcDataAssignmentById(){
           const respone = await AssignmentService.getAssignmentEdit(1);
-          setAssignmentId(respone.data);
-          setUserFullName(respone.data.staff_name);
-          setAssetName(respone.data.asset_name);
+          setAssignmentInfo(respone.data);
+          setUserInfo(respone.data.staff);
+          setAssetInfo(respone.data.asset);
     }
 
     async function fetcDataUserList(){
@@ -112,15 +126,14 @@ export default function EditAssignmentForm() {
       }, [])
 
     function handleSelectUser(e,user){
-        setUserId(user.id);
-        setUserFullName(user.full_name);
+        setUserInfo(user);
     }
 
     function handleSelectAsset(e,asset){
-        setAssetId(asset.id);
-        setAssetName(asset.name);
+        setAssetInfo(asset);
     }
 
+    // Element
     const CustomToggleUser = React.forwardRef(({onClick }, ref) => (
         <div
           ref={ref}
@@ -132,7 +145,7 @@ export default function EditAssignmentForm() {
           }}
         >
           <div>
-            {userFullName}
+            {userInfo.name || userInfo.full_name}
           </div>
           <div>&#x25bc;</div>
         </div>
@@ -199,7 +212,7 @@ export default function EditAssignmentForm() {
             onClick(e);
           }}
         >
-          <div>{assetName}</div>
+          <div>{assetInfo.name || assetInfo}</div>
           <div>&#x25bc;</div>
         </div>
       ));
@@ -254,10 +267,6 @@ export default function EditAssignmentForm() {
           );
         },
       );
-
-    function handleShowButtonSave() {
-        setDisableSave(false);
-    }
     return (
         <>
             <Container id="containerFormEdit">
@@ -270,7 +279,7 @@ export default function EditAssignmentForm() {
                 <Row>
                     <Form
                         className="fs-5"
-                        onChange={() => handleShowButtonSave()}
+                        onChange={(e) => handleShowButtonSave(e)}
                     >
                         <Form.Group className="mb-3" controlId="UserSelectForm">
                             <Row>
@@ -328,12 +337,9 @@ export default function EditAssignmentForm() {
                                 <Col md={7}>
                                     <Form.Control
                                         type="date"
-                                        defaultValue={
-                                            assignmentId.assigned_date || ""
-                                        }
+                                        defaultValue={assignmentInfo.assigned_date || ""}
                                         placeholder="Due Join Date"
                                         className="fs-5"
-                                        onChange={(e)=>(e.target.form[0].value == "" ? setDisableSave(true) : setDisableSave(false))}
                                     ></Form.Control>
                                 </Col>
                             </Row>
@@ -345,7 +351,7 @@ export default function EditAssignmentForm() {
                             <Row>
                                 <Col md={5}>
                                     <Form.Label className="mx-4">
-                                        {assignmentId.note}
+                                        {assignmentInfo.note || ""}
                                     </Form.Label>
                                 </Col>
                                 <Col md={7}>
