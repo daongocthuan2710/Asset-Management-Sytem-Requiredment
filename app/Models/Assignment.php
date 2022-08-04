@@ -65,7 +65,7 @@ class Assignment extends Model
             ->when($request->has('sortByNo'), function ($query) use ($request) {
                 $sortByNo = $request->query('sortByNo');
                 $query
-                    ->orderBy("asset_code", $sortByNo);
+                    ->orderBy("id", $sortByNo);
             });
     }
 
@@ -75,7 +75,9 @@ class Assignment extends Model
             ->when($request->has('sortByAssetCode'), function ($query) use ($request) {
                 $sortByAssetCode = $request->query('sortByAssetCode');
                 $query
-                    ->orderBy("asset_code", $sortByAssetCode);
+                    ->with(["asset" => function ($q) use ($sortByAssetCode) {
+                        $q->orderBy("asset_code", $sortByAssetCode);
+                    }]);
             });
     }
 
@@ -85,7 +87,9 @@ class Assignment extends Model
             ->when($request->has('sortByAssetName'), function ($query) use ($request) {
                 $sortByAssetName = $request->query('sortByAssetName');
                 $query
-                    ->orderBy("name", $sortByAssetName);
+                ->with(["asset" => function ($q) use ($sortByAssetName) {
+                    $q->orderBy("name", $sortByAssetName);
+                }]);
             });
     }
 
