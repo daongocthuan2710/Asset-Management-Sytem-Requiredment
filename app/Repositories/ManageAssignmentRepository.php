@@ -13,17 +13,12 @@ use App\Http\Resources\EditAssignmentResource;
 use App\Http\Resources\NewUserResource;
 use App\Http\Resources\UserResource;
 use App\Models\Asset;
-use App\Models\Assignment;
-use App\Repositories\BaseRepository;
 use App\Models\User;
 use App\Rules\JoinedDateWeekend;
 use App\Rules\LatinName;
 use App\Rules\Over18;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\NoReturn;
 use phpDocumentor\Reflection\Types\Integer;
 

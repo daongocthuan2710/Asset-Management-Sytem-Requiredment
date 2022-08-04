@@ -3,7 +3,6 @@
 use App\Http\Controllers\Admin\ManageAssetController;
 use App\Http\Controllers\Admin\ManageAssignmentController;
 use App\Http\Controllers\Admin\ManageCateController;
-use App\Http\Controllers\Admin\ManageAssignmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
