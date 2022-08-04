@@ -39,7 +39,7 @@ class GetEditUserTest extends TestCase
 
     public function test_user_is_not_existed()
     {
-        $id = 1000;
+        $id = 20000;
         Sanctum::actingAs(User::factory()->create([
             'admin' => true,
             'location' => 'HN',

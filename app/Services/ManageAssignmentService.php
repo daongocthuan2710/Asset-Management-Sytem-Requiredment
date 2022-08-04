@@ -100,19 +100,23 @@ class ManageAssignmentService extends BaseService
     public function checkPermission($request, $id)
     {
         $sanctumUser = auth('sanctum')->user();
+        //not an admin
         if (!$sanctumUser || !$sanctumUser->admin) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
         $assignment = Assignment::query()->findOrFail($id);
-        if (!$assignment) {
-            return response()->json(['message' => 'Assignment not found'], 404);
-        }
-        $userId = $assignment->staff_id;
-        $user = User::query()->findOrFail($userId);
-        $location = $user->location;
-        if ($location != $sanctumUser->location) {
+        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        $admin = User::query()->findOrFail($assignment->assigned_by);
+        $user = User::query()->findOrFail($assignment->staff_id);
+        //check location
+        if (
+            ($sanctumUser->location !== $user->location)
+            || ($sanctumUser->location !== $admin->location)
+            || ($sanctumUser->location !== $asset->location)
+        ) {
             return response()->json(['message' => 'You cannot edit assignment in other location!'], 401);
         }
+        //check state of assignment
         if ($assignment->state !== 0) {
             return response()->json(['message' => 'You cannot edit accepted or declined assignment!'], 422);
         }
