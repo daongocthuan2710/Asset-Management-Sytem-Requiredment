@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateAssignmentRequest;
 use App\Services\ManageAssignmentService;
 use Illuminate\Http\Request;
 
@@ -73,9 +74,9 @@ class ManageAssignmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateAssignmentRequest $request, $id)
     {
-        //
+        return $this->manageAssignmentService->update($request, $id);
     }
 
     /**

@@ -36,7 +36,13 @@ class ManageAssignmentRepository extends BaseRepository
 
     public function update($request, $id)
     {
-        //
+        $assignment = Assignment::query()->findOrFail($id);
+        $sanctumUser = auth('sanctum')->user();
+        $assignment->update($request->all());
+        $assignment->update(['assigned_by' => $sanctumUser->id]);
+        return response()->json([
+            'message' => 'Assignment updated successfully'
+        ], 200);
     }
 
     public function show($id)
