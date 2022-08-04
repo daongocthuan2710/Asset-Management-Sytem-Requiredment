@@ -45,7 +45,6 @@ class ManageAssignmentRepository extends BaseRepository
             ->sortByAssignedState($request)
             ->location($sanctumUser->location);
 
-
         return AssignmentResource::collection($data->paginate(config('app.limit')));
     }
     public function edit($request, $id)

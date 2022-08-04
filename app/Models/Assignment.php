@@ -75,8 +75,11 @@ class Assignment extends Model
             ->when($request->has('sortByAssetCode'), function ($query) use ($request) {
                 $sortByAssetCode = $request->query('sortByAssetCode');
                 $query
-                    ->join("asset", "asset.id", "assignment.asset_id")
-                    ->orderBy("asset.asset_code", $sortByAssetCode);
+                    ->with('asset')
+                    ->orderBy(
+                        Asset::select('asset_code')->whereColumn('asset.id', 'assignment.asset_id'),
+                        $sortByAssetCode
+                    );
             });
     }
 
@@ -86,8 +89,11 @@ class Assignment extends Model
             ->when($request->has('sortByAssetName'), function ($query) use ($request) {
                 $sortByAssetName = $request->query('sortByAssetName');
                 $query
-                    ->join("asset", "asset.id", "assignment.asset_id")
-                    ->orderBy("asset.name", $sortByAssetName);
+                    ->with('asset')
+                    ->orderBy(
+                        Asset::select('name')->whereColumn('asset.id', 'assignment.asset_id'),
+                        $sortByAssetName
+                    );
             });
     }
 
@@ -97,8 +103,11 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedTo'), function ($query) use ($request) {
                 $sortByAssignedTo = $request->query('sortByAssignedTo');
                 $query
-                    ->join("user", "user.id", "assignment.staff_id")
-                    ->orderBy("user.username", $sortByAssignedTo);
+                    ->with('staff_id')
+                    ->orderBy(
+                        User::select('username')->whereColumn('user.id', 'assignment.staff_id'),
+                        $sortByAssignedTo
+                    );
             });
     }
 
@@ -108,8 +117,11 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedBy'), function ($query) use ($request) {
                 $sortByAssignedBy = $request->query('sortByAssignedBy');
                 $query
-                    ->join("user", "user.id", "assignment.assigned_by")
-                    ->orderBy("user.username", $sortByAssignedBy);
+                    ->with('assigned_by')
+                    ->orderBy(
+                        User::select('username')->whereColumn('user.id', 'assignment.assigned_by'),
+                        $sortByAssignedBy
+                    );
             });
     }
 

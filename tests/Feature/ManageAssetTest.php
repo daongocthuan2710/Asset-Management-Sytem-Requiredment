@@ -31,17 +31,7 @@ class ManageAssetTest extends TestCase
         $viewAsset->assertStatus(401);
     }
 
-    public function test_admin_could_access()
-    {
-        $santumUser = $this->getSanctum("quytc", "12345");
-
-        $viewAsset = $this->getJson('api/asset', [
-            'Authorization' => "Bearer $santumUser->token"
-        ]);
-        $viewAsset->assertStatus(200);
-    }
-
-    public function test_admin_can_manage_asset_in_the_same_location()
+    public function test_admin_can_only_manage_asset_in_the_same_location()
     {
         $santumUser = $this->getSanctum("quytc", "12345");
 
@@ -50,21 +40,11 @@ class ManageAssetTest extends TestCase
         ]);
         $viewAsset->assertStatus(200)->assertJsonFragment([
             "location" => "HN"
-        ]);
-    }
-
-    public function test_admin_could_not_manage_asset_in_different_location()
-    {
-        $santumUser = $this->getSanctum("quytc", "12345");
-
-        $viewAsset = $this->getJson('api/asset', [
-            'Authorization' => "Bearer $santumUser->token"
-        ]);
-        $viewAsset->assertStatus(200)->assertJsonMissing([
+        ])->assertJsonMissing([
             "location" => "HCM"
         ])->assertJsonMissing([
             "location" => "DN"
-        ]);
+        ]);;
     }
 
     public function test_admin_can_view_asset_detail()
