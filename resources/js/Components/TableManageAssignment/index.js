@@ -18,6 +18,7 @@ import AssignmentDetailModal from "./AssignmentDetailModal";
 import DeleteAsset from "../DeleteAsset";
 import FilterByAssignedDate from "./FilterByAssignedDate";
 import _ from "lodash";
+import DeleteAssignment from "../DeleteAssignment";
 
 
 export default function ManageAssignment() {
@@ -26,11 +27,11 @@ export default function ManageAssignment() {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
+  const [deleteAssignment, setDeleteAssignment] = React.useState({ show: false, id: 0 });
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([{ key: 'All', value: '3' }]);
-  
+
 
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -88,10 +89,11 @@ export default function ManageAssignment() {
     });
   }, []);
 
-  const handleDeleteAsset = (e, id) => {
+  const handleDeleteAssignment = (e, id) => {
     e.stopPropagation();
-    setDeleteAsset({ show: true, id: id });
-    setTimeout(() => setDeleteAsset({ show: false, id: id }), 1);
+    console.log("id", id);
+    setDeleteAssignment({ show: true, id: id});
+    setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
   }
 
 
@@ -434,7 +436,7 @@ export default function ManageAssignment() {
 
   return (
     <div className="containermanageuser">
-      <DeleteAsset show={deleteAsset.show} id={deleteAsset.id} />
+      <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>Assignment List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <div className="d-flex ml-2">
@@ -466,7 +468,7 @@ export default function ManageAssignment() {
             handleSort={handleSort}
             handleOpenEditForm={handleOpenEditForm}
             handleGetAssignmentById={handleGetAssignmentById}
-            handleDeleteAsset={handleDeleteAsset}
+            handleDeleteAssignment={handleDeleteAssignment}
           />
         </div>
       </Row>
