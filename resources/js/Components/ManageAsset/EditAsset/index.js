@@ -139,6 +139,7 @@ export default function EditAssetForm() {
                                 </Col>
                                 <Col md={8}>
                                     <select
+                                        id='assetCategoryDisable'
                                         className="form-select fs-5"
                                         defaultValue={assetEditInfo.category}
                                         disabled

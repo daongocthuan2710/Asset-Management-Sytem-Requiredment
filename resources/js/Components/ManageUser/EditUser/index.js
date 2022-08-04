@@ -135,6 +135,7 @@ export default function EditForm() {
                                 </Col>
                                 <Col md={8}>
                                     <Form.Control
+                                        id="userNameDisable"
                                         type="input"
                                         value={userEditInfo.first_name}
                                         className="fs-5"
@@ -150,6 +151,7 @@ export default function EditForm() {
                                 </Col>
                                 <Col md={8}>
                                     <Form.Control
+                                        id="userNameDisable"
                                         type="text"
                                         className="fs-5"
                                         value={userEditInfo.last_name}
