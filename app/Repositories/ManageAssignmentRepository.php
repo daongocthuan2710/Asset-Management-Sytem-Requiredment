@@ -18,14 +18,16 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\AssignmentResource;
 use JetBrains\PhpStorm\NoReturn;
 use phpDocumentor\Reflection\Types\Integer;
 
 class ManageAssignmentRepository extends BaseRepository
 {
-    public function getAll()
+
+    public function __construct()
     {
-        //
+        $this->query = Assignment::query();
     }
 
     public function edit($request, $id)
@@ -48,5 +50,22 @@ class ManageAssignmentRepository extends BaseRepository
     public function show($id)
     {
         //
+}
+
+    public function getAll($request, $sanctumUser)
+    {
+        $data = $this->query
+            ->search($request)
+            ->filterByState($request)
+            ->filterByDate($request)
+            ->sortByNo($request)
+            ->sortByAssetCode($request)
+            ->sortByAssetName($request)
+            ->sortByAssignedTo($request)
+            ->sortByAssignedBy($request)
+            ->sortByAssignedDate($request)
+            ->sortByAssignedState($request);
+
+        return AssignmentResource::collection($data->paginate(config('app.limit')));
     }
 }

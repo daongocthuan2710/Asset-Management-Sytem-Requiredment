@@ -41,4 +41,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::resource('/profile', ProfileController::class);
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
+    Route::resource('/assignment', ManageAssignmentController::class);
 });

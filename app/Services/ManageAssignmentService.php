@@ -12,19 +12,21 @@ use App\Repositories\ManageUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Repositories\ManageAssignmentRepository;
+use App\Services\BaseService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ManageAssignmentService extends BaseService
 {
     protected $manageAssignmentRepository;
+
     public function __construct(ManageAssignmentRepository $ManageAssignmentRepository)
     {
         $this->manageAssignmentRepository = $ManageAssignmentRepository;
     }
 
-    public function getAll()
-    {
-        //
-    }
     public function store($data)
     {
         //
@@ -126,4 +128,16 @@ class ManageAssignmentService extends BaseService
     {
         //
     }
+
+    public function getAll($request)
+    {
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->manageAssignmentRepository->getAll($request, $sanctumUser);
+    }
+
 }

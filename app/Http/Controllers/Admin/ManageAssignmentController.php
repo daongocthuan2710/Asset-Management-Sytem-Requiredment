@@ -19,19 +19,10 @@ class ManageAssignmentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        return $this->manageAssignmentService->getAll($request);
     }
 
     /**
