@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Assignment;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Repositories\ManageUserRepository;
@@ -101,14 +102,18 @@ class ManageUserService extends BaseService
     }
     public function canDisable($id)
     {
-        $assignment = false;
-        if ($assignment) {
+        $assignment = Assignment::where('assigned_by', $id)
+            ->orWhere('staff_id', $id)
+            ->count();
+        if ($assignment > 0) {
             return response()->json([
-                'disable' => $assignment
+                'message' => "Assignment available",
+                'disable' => false
             ]);
         } else {
             return response()->json([
-            'disable' => $assignment
+                'message' => "You can disable",
+                'disable' => true
             ]);
         }
     }
