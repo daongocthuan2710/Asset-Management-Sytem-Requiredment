@@ -106,6 +106,15 @@ class ManageAssignmentService extends BaseService
             return $this->manageAssignmentRepository->edit($request, $id);
         }
     }
+    public function destroy($request, $id)
+    {
+        $request->destroy = true;
+        if ($this->checkPermission($request, $id) !== null) {
+            return $this->checkPermission($request, $id);
+        } else {
+            return $this->manageAssignmentRepository->destroy($id);
+        }
+    }
     public function checkPermission($request, $id)
     {
         $sanctumUser = auth('sanctum')->user();
@@ -126,13 +135,28 @@ class ManageAssignmentService extends BaseService
             return response()->json(['message' => 'You cannot edit assignment in other location!'], 401);
         }
         //check state of assignment
-        if ($assignment->state !== 0) {
-            return response()->json(['message' => 'You cannot edit accepted or declined assignment!'], 422);
+        if (!$request->destroy) {
+            if ($assignment->state !== 0) {
+                return response()->json(['message' => 'You cannot edit accepted or declined assignment!'], 422);
+            }
+        } else {
+            if ($assignment->state === 1) {
+                return response()->json(['message' => 'You cannot delete accepted assignment!'], 422);
+            }
         }
         return null;
     }
     public function show($id)
     {
         //
+    }
+    public function canDelete($request, $id)
+    {
+        $request['destroy'] = true;
+        if ($this->checkPermission($request, $id) !== null) {
+            return $this->checkPermission($request, $id);
+        } else {
+            return response()->json(['message' => 'You can delete this assignment'], 200);
+        }
     }
 }

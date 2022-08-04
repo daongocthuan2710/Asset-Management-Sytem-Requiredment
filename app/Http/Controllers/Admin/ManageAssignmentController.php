@@ -75,8 +75,13 @@ class ManageAssignmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        return $this->manageAssignmentService->destroy($request, $id);
+    }
+
+    public function canDelete(Request $request, $id)
+    {
+        return $this->manageAssignmentService->canDelete($request, $id);
     }
 }

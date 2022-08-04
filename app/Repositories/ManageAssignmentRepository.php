@@ -31,6 +31,7 @@ class ManageAssignmentRepository extends BaseRepository
 
     public function getAll($request, $sanctumUser)
     {
+        $sanctumUser = auth('sanctum')->user();
         $data = $this->query
             ->search($request)
             ->filterByState($request)
@@ -41,7 +42,8 @@ class ManageAssignmentRepository extends BaseRepository
             ->sortByAssignedTo($request)
             ->sortByAssignedBy($request)
             ->sortByAssignedDate($request)
-            ->sortByAssignedState($request);
+            ->sortByAssignedState($request)
+            ->location($sanctumUser->location);
 
 
         return AssignmentResource::collection($data->paginate(config('app.limit')));
@@ -66,5 +68,14 @@ class ManageAssignmentRepository extends BaseRepository
     public function show($id)
     {
         //
+    }
+
+    public function destroy($id)
+    {
+        $assignment = Assignment::query()->findOrFail($id);
+        $assignment->delete();
+        return response()->json([
+            'message' => 'Assignment deleted successfully'
+        ], 200);
     }
 }

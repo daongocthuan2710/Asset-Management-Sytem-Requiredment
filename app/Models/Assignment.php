@@ -130,6 +130,11 @@ class Assignment extends Model
                 $query->orderBy("state", $sortByState);
             });
     }
+    public function scopeLocation($query, $location)
+    {
+        $users = User::where('location', $location)->pluck('id');
+        return $query->whereIn('staff_id', $users);
+    }
     protected $fillable = [
         'staff_id',
         'asset_id',
