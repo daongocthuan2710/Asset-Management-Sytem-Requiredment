@@ -9,7 +9,9 @@ import {
     FaAngleUp,
     FaPencilAlt,
     FaRegTimesCircle,
+    FaUndo
 } from "react-icons/fa";
+import moment from "moment";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
@@ -64,7 +66,7 @@ export default function AssignmentTable({
         
       }
     return (
-        <Table responsive="md">
+        <Table id="table-assignment" responsive="md">
             <thead>
                 <tr>
                     {data.length > 0
@@ -92,28 +94,25 @@ export default function AssignmentTable({
                     data.length > 0 &&
                     data.map((item) => (
                         <tr key={item.id} onClick={() => handleGetUserById(item.id)}>
-                            <td>{item.asset_code}</td>
-                            <td>{item.name}</td>
-                            <td>{item.category.name}</td>
+                            <td>{item.id}</td>
+                            <td>{item.asset.asset_code}</td>
+                            <td>{item.asset.name}</td>
+                            <td>{item.staff.username}</td>
+                            <td>{item.assigned_by.username}</td>
+                            <td>{moment(item.assigned_date).format('DD-MM-YYYY')}</td>
                             <td>{item.state.name}</td>
+                            
                             <td className="td-without_border">
-                                {item.state.code !== 2 ?
-                                    <>
-                                        <FaPencilAlt
+                                     <FaPencilAlt
                                             onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton'
                                         />{" "}
                                         {"  "}
+                                        &nbsp;
                                         <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2 }
                                                           onClick={(e) => handleDeleteAsset(e, item.id)} type="button"/>
-                                    </>
-                                    :
-                                    <>
-                                        <FaPencilAlt color='gray'/>{" "}
-                                        {"  "}
-                                        <FaRegTimesCircle color='gray'/>
-                                    </>
-
-                                }
+                                                          {" "}
+                                        {"" } &nbsp;
+                                        <FaUndo id="undo-icon"/>
                             </td>
                         </tr>
                     ))

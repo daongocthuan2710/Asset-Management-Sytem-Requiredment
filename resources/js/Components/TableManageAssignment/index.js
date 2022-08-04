@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import "./style.scss";
 import "./style.css";
@@ -15,8 +16,9 @@ import FilterByState from "./FilterByState";
 import SearchCreate from "./SearchCreate";
 import AssignmentDetailModal from "./AssignmentDetailModal";
 import DeleteAsset from "../DeleteAsset";
-import FilterByCategory from "./FilterByCategory";
+import FilterByAssignedDate from "./FilterByAssignedDate";
 import _ from "lodash";
+
 
 export default function ManageAssignment() {
   const [currentButton, setFilter] = React.useState(["3"]);
@@ -27,8 +29,8 @@ export default function ManageAssignment() {
   const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [modal, setModal] = React.useState(false);
-  const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
-
+  const [arrayState, setArrayState] = React.useState([{ key: 'All', value: '3' }]);
+  
 
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -94,18 +96,19 @@ export default function ManageAssignment() {
 
 
   const getApiAssignment = async ({
-    FilterByCategory = undefined,
+    FilterByDate = undefined,
     FilterByState = undefined,
     search = undefined,
     page = 1,
     sort = undefined,
   } = {}) => {
-    let url = "api/asset";
+    let url = "api/assignment";
     let array = [];
+    console.log(FilterByDate)
 
-    if (FilterByCategory) {
-      if (FilterByCategory.length > 0) {
-        array.push(`filterByCategory=${FilterByCategory}`);
+    if (FilterByDate) {
+      if (FilterByDate.length > 0 ) {
+      array.push(`filterByDate=${FilterByDate}`);
       }
       else {
         array.push('');
@@ -192,46 +195,14 @@ export default function ManageAssignment() {
     return response.data;
   };
 
-  const handleFilterCategory = (id) => {
+  const handleFilterDate = (date) => {
     setPage(1);
-    const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
 
-    const index = tempFilterCategory.findIndex((e) => e === id);
-    if (index === -1) {
-      tempFilterCategory.push(id);
-    } else {
-      tempFilterCategory.splice(index, 1);
-    }
 
-    setFilterCategory(tempFilterCategory);
-
-    let temp_filter_state;
-    let temp_search;
-    let temp_sort;
-    let temp_page;
-
-    if (arrayState.length > 0) {
-      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
-    }
-
-    if (page >= 1) {
-      temp_page = page;
-    }
-
-    if (sortArray.length > 0) {
-      temp_sort = JSON.parse(JSON.stringify(sortArray));
-    }
-
-    if (currentSearch !== "") {
-      temp_search = currentSearch;
-    }
 
     getApiAssignment({
-      FilterByState: temp_filter_state,
-      FilterByCategory: tempFilterCategory,
-      page: temp_page,
-      sort: temp_sort,
-      search: temp_search
+      FilterByDate: date,
+
     });
   };
   const handleFilter = (key, value) => {
@@ -473,7 +444,7 @@ export default function ManageAssignment() {
             arrayState={arrayState}
           />
           <div id="secondFilterAsset">
-            <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory} />
+            <FilterByAssignedDate handleFilterDate={handleFilterDate} />
 
           </div>
         </div>

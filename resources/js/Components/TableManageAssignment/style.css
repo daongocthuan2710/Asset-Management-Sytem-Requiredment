@@ -169,3 +169,27 @@ tbody{
 #secondFilterAsset{
     margin-left: 20px;
 }
+#table-assignment{
+    font-size: 13px !important;
+}
+#undo-icon{
+    color: rgb(37, 139, 255);
+}
+.react-datepicker__day--selected{
+    background-color: rgb(220 53 69) !important;
+    color: rgb(255, 255, 255) !important;
+}
+.react-datepicker__header {
+    background-color: rgb(220 53 69) !important;
+    color: rgb(255, 255, 255) !important;
+}
+.react-datepicker__current-month{
+    color: rgb(255, 255, 255) !important;
+
+}
+.react-datepicker__day-name{
+    color: rgb(255, 255, 255) !important;
+}
+#button-assigned-date{
+    width: 180px;
+}

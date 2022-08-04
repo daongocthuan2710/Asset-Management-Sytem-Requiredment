@@ -38,49 +38,22 @@ export default function FilterByState({
                             type="checkbox"
                             id="checkbox-admin"
                             className="mx-4 my-2 font-weight-bold"
-                            label="Assigned"
-                            checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "2") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "2")].value === "2"}
-
-                            onChange={() => handleFilter("Assigned", "2")}
-                            eventKey="2"
-                        />
-                        <Form.Check
-                            type="checkbox"
-                            id="checkbox-staff"
-                            className="mx-4 font-weight-bold"
-                            label="Available"
+                            label="Accepted"
                             checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "1") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "1")].value === "1"}
-                            onChange={() => handleFilter("Available", "1")}
-                            eventkey="1"
+
+                            onChange={() => handleFilter("Accepted", "1")}
+                            eventKey="1"
                         />
                         <Form.Check
                             type="checkbox"
                             id="checkbox-staff"
                             className="mx-4 font-weight-bold"
-                            label="Not Available"
+                            label="Wait for acceptance"
                             checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "0") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "0")].value === "0"}
-                            onChange={() => handleFilter("Not Available", "0")}
+                            onChange={() => handleFilter("Wait for acceptance", "0")}
                             eventkey="0"
-                        />        
-                        <Form.Check
-                            type="checkbox"
-                            id="checkbox-staff"
-                            className="mx-4 font-weight-bold"
-                            label="Waiting for recycling"
-                            checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "-1") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "-1")].value === "-1"}
-                            onChange={() => handleFilter("Waiting for recycling", "-1")}
-                            eventkey="-1"
-                        />       
-                         <Form.Check
-                            type="checkbox"
-                            id="checkbox-staff"
-                            className="mx-4 font-weight-bold"
-                            label="Recycled"
-                            checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "-2") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "-2")].value === "-2"}
-                            onChange={() => handleFilter("Recycled", "-2")}
-                            eventkey="-2"
-                        />               
-
+                        />
+                       
                     </Form>
                 </Dropdown.Menu>
             </Dropdown>
