@@ -88,7 +88,7 @@ class EditAssetTest extends TestCase
 
     public function test_not_existed_asset(): void
     {
-        $id = 200; //not existed asset
+        $id = 20000; //not existed asset
         Sanctum::actingAs(User::factory()->create([
             'admin' => true,
             'location' => 'DN',

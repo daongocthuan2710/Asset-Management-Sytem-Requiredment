@@ -84,7 +84,7 @@ class EditUserTest extends TestCase
 
     public function test_not_existed_user()
     {
-        $id = 200;
+        $id = 20000;
         $body = [
             'date_of_birth' => '1990-02-20',
             'joined_date' => '2022-07-07', //Thursday

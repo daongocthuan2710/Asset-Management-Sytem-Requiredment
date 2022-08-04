@@ -130,4 +130,11 @@ class Assignment extends Model
                 $query->orderBy("state", $sortByState);
             });
     }
+    protected $fillable = [
+        'staff_id',
+        'asset_id',
+        'assigned_by',
+        'assigned_date',
+        'note',
+    ];
 }
