@@ -22,6 +22,8 @@ class ManageAssignmentRepository extends BaseRepository
     {
         $data = $this->query
             ->search($request)
+            ->filterByState($request)
+            ->filterByDate($request)
             ->sortByNo($request)
             ->sortByAssetCode($request)
             ->sortByAssetName($request)

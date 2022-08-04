@@ -55,7 +55,7 @@ class Assignment extends Model
         $filterByDate = $request->query('filterByDate');
         return $query
             ->when($request->has('filterByDate'), function ($query) use ($filterByDate) {
-                $query->whereIn("state", $filterByDate);
+                $query->where("assigned_date", $filterByDate);
             });
     }
 
