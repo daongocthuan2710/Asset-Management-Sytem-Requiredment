@@ -79,27 +79,25 @@ class AuthenticationTest extends TestCase
         );
         $response->assertStatus(200);
         $token = $response->getData()->token;
-        $response = $this->getJson(
-            '/api/auth/tokens',
-            [],
-            [
-                'Authorization' => "Bearer $token"
-            ]
-        );
+        $response = $this->getJson('/api/logout', [
+            'Authorization' => "Bearer $token"
+        ]);
         $response->assertStatus(200);
     }
 
     public function test_get_information_successfully()
     {
         $response = $this->postJson('api/login', [
-            'username' => 'datdn',
+            'username' => 'bichvht',
             'password' => '12345',
         ]);
         $response->assertStatus(200);
         $token = $response->getData()->token;
-        $response = $this->getJson('user-information', [
+        $response = $this->getJson('api/user-information', [
             'Authorization' => "Bearer $token"
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(200)->assertJsonFragment([
+            "username" => "bichvht"
+        ]);
     }
 }
