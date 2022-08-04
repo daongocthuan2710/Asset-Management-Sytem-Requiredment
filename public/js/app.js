@@ -6184,18 +6184,23 @@ function ManageAssignment() {
       filterCategory = _React$useState14[0],
       setFilterCategory = _React$useState14[1];
 
-  var _React$useState15 = react__WEBPACK_IMPORTED_MODULE_0__.useState(false),
+  var _React$useState15 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
       _React$useState16 = _slicedToArray(_React$useState15, 2),
-      modal = _React$useState16[0],
-      setModal = _React$useState16[1];
+      filterByDate = _React$useState16[0],
+      setFilterByDate = _React$useState16[1];
 
-  var _React$useState17 = react__WEBPACK_IMPORTED_MODULE_0__.useState([{
+  var _React$useState17 = react__WEBPACK_IMPORTED_MODULE_0__.useState(false),
+      _React$useState18 = _slicedToArray(_React$useState17, 2),
+      modal = _React$useState18[0],
+      setModal = _React$useState18[1];
+
+  var _React$useState19 = react__WEBPACK_IMPORTED_MODULE_0__.useState([{
     key: 'All',
     value: '3'
   }]),
-      _React$useState18 = _slicedToArray(_React$useState17, 2),
-      arrayState = _React$useState18[0],
-      setArrayState = _React$useState18[1];
+      _React$useState20 = _slicedToArray(_React$useState19, 2),
+      arrayState = _React$useState20[0],
+      setArrayState = _React$useState20[1];
 
   var sort_create_at = (0,react_redux__WEBPACK_IMPORTED_MODULE_7__.useSelector)(function (state) {
     return state.userEditReducer.sort_update_at;
@@ -6207,7 +6212,7 @@ function ManageAssignment() {
     return state.assetGetMessageReducer.sort_at;
   });
 
-  var _React$useState19 = react__WEBPACK_IMPORTED_MODULE_0__.useState([{
+  var _React$useState21 = react__WEBPACK_IMPORTED_MODULE_0__.useState([{
     name: "No.",
     isSortASC: true,
     isSortDESC: false
@@ -6236,14 +6241,14 @@ function ManageAssignment() {
     isSortASC: true,
     isSortDESC: false
   }]),
-      _React$useState20 = _slicedToArray(_React$useState19, 2),
-      tableHeader = _React$useState20[0],
-      setTableHeader = _React$useState20[1];
-
-  var _React$useState21 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
       _React$useState22 = _slicedToArray(_React$useState21, 2),
-      data = _React$useState22[0],
-      setData = _React$useState22[1];
+      tableHeader = _React$useState22[0],
+      setTableHeader = _React$useState22[1];
+
+  var _React$useState23 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
+      _React$useState24 = _slicedToArray(_React$useState23, 2),
+      data = _React$useState24[0],
+      setData = _React$useState24[1];
 
   react__WEBPACK_IMPORTED_MODULE_0__.useEffect(function () {
     getApiAssignment({
@@ -6337,7 +6342,7 @@ function ManageAssignment() {
               if (sort) {
                 sort.forEach(function (item) {
                   if (item.key === "No.") {
-                    array.push("sortByAssetCode=".concat(item.value));
+                    array.push("sortByNo=".concat(item.value));
                   }
 
                   if (item.key === "Asset Code") {
@@ -6345,19 +6350,19 @@ function ManageAssignment() {
                   }
 
                   if (item.key === "Asset Name") {
-                    array.push("sortByName=".concat(item.value));
+                    array.push("sortByAssetName=".concat(item.value));
                   }
 
                   if (item.key === "Assigned to") {
-                    array.push("sortByCategory=".concat(item.value));
+                    array.push("sortByAssignedTo=".concat(item.value));
                   }
 
                   if (item.key === "Assigned by") {
-                    array.push("sortByState=".concat(item.value));
+                    array.push("sortByAssignedBy=".concat(item.value));
                   }
 
                   if (item.key === "Assigned Date") {
-                    array.push("sortByState=".concat(item.value));
+                    array.push("sortByAssignedDate=".concat(item.value));
                   }
 
                   if (item.key === "State") {
@@ -6409,8 +6414,22 @@ function ManageAssignment() {
 
   var handleFilterDate = function handleFilterDate(date) {
     setPage(1);
+    var temp_filter_state;
+    var temp_search;
+
+    if (arrayState.length > 0) {
+      temp_filter_state = JSON.parse(JSON.stringify(arrayState));
+    }
+
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
+    }
+
+    setFilterByDate(date);
     getApiAssignment({
-      FilterByDate: date
+      FilterByDate: date,
+      FilterByState: temp_filter_state,
+      search: temp_search
     });
   };
 
@@ -6452,31 +6471,26 @@ function ManageAssignment() {
     var temp_page;
     var temp_search;
     var temp_sort;
-    var temp_filter_category;
+    var temp_filter_date;
+
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
+    }
+
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(arrayStateTemp));
+    }
 
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
 
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
-    }
-
-    if (sortArray.length > 0) {
-      temp_sort = JSON.parse(JSON.stringify(sortArray));
-    }
-
-    if (page >= 1) {
-      temp_page = page;
-    }
-
-    setPage(1);
     getApiAssignment({
       FilterByState: arrayStateTemp,
-      page: temp_page,
+      // page: temp_page,
       search: temp_search,
-      sort: temp_sort,
-      FilterByCategory: temp_filter_category
+      // sort: temp_sort,
+      FilterByDate: temp_filter_date
     });
   };
 
@@ -6486,7 +6500,7 @@ function ManageAssignment() {
     setCurrentSearch(value);
     var temp_filter_state;
     var temp_page;
-    var temp_filter_category;
+    var temp_filter_date;
     var temp_sort;
 
     if (arrayState.length > 0) {
@@ -6497,8 +6511,10 @@ function ManageAssignment() {
       temp_page = page;
     }
 
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    console.log(filterByDate);
+
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
 
     if (sortArray.length > 0) {
@@ -6510,7 +6526,7 @@ function ManageAssignment() {
       search: value,
       page: temp_page,
       sort: temp_sort,
-      FilterByCategory: temp_filter_category
+      FilterByDate: temp_filter_date
     });
   };
 
@@ -6557,10 +6573,6 @@ function ManageAssignment() {
       temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
 
-    if (page >= 1) {
-      temp_page = page;
-    }
-
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
@@ -6586,7 +6598,7 @@ function ManageAssignment() {
       tempHeader[indexHeader].isSortDESC = true;
 
       for (var i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 4) {
+        if (i != indexHeader && i != 7) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -6607,8 +6619,8 @@ function ManageAssignment() {
 
       for (var _i2 = 0; _i2 < tempHeader.length; _i2++) {
         if (_i2 != indexHeader && _i2 != 4) {
-          tempHeader[_i2].isSortASC = false;
-          tempHeader[_i2].isSortDESC = true;
+          tempHeader[_i2].isSortASC = true;
+          tempHeader[_i2].isSortDESC = false;
         }
       }
     }
@@ -6683,10 +6695,10 @@ function ManageAssignment() {
     }
   }
 
-  var _React$useState23 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
-      _React$useState24 = _slicedToArray(_React$useState23, 2),
-      assignment = _React$useState24[0],
-      setAssignment = _React$useState24[1];
+  var _React$useState25 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
+      _React$useState26 = _slicedToArray(_React$useState25, 2),
+      assignment = _React$useState26[0],
+      setAssignment = _React$useState26[1];
 
   var handleGetAssignmentById = /*#__PURE__*/function () {
     var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(assetId) {
