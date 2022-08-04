@@ -19,6 +19,12 @@ class UserService {
         return response;
     }
 
+    async getUserList() {
+        const endpoint = `/manageUser?sortByStaffCode=asc&sortByFullName=asc&sortByType=asc&no-paginate&search=`;
+        const response = await Repository.get(endpoint);
+        return response;
+    }
+
     async getUserById(userId) {
         const endpoint = `/user/${userId}`;
         const response = await Repository.get(endpoint);

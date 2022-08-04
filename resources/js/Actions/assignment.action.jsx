@@ -31,8 +31,7 @@ export const getAssignmentEdit = (data) => {
                 type: GET_ASSIGNMENT_EDIT,
                 payload: {
                     value: data.displayValue || false,
-                    data: assignmentEdit || '',
-                    sort_update_at: data.sort_at || '',
+                    data: assignmentEdit || ''
                 },
             })
         }

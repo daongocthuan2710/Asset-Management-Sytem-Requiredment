@@ -1,21 +1,31 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
-import React, { useState, forwardRef } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Row, Container, Col, div } from "reactstrap";
+import { Row, Container, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import AssignmentService from "../../../Services/assignment.service";
+import UserService from "../../../Services/user.service";
+import AssetService from "../../../Services/asset.service";
 import { getAssignmentEdit } from "../../../Actions/assignment.action";
 import assignmentEditReducer from "../../../Reducers/assignment.reducer";
-import { FaSearch } from "react-icons/fa";
-import { FormControl, Modal } from "react-bootstrap";
+import {Modal } from "react-bootstrap";
+import Log from "laravel-mix/src/Log";
 
 export default function EditAssignmentForm() {
     const [showModal, setShowModal] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [modalBody, setModalBody] = useState("");
     const [disableSave, setDisableSave] = useState(true);
+    const [assignmentId, setAssignmentId] = useState([]);
+    const [userList, setUserList] = useState([]);
+    const [userId, setUserId] = useState([]);
+    const [userFullName, setUserFullName] = useState('');
+    const [AssetList, setAssetList] = useState([]);
+    const [AssetId, setAssetId] = useState([]);
+    const [assetName, setAssetName] = useState([]);
 
     const assignmentEditInfo = useSelector(
         (state) => state.assignmentEditReducer.assignmentEditInfo
@@ -25,29 +35,30 @@ export default function EditAssignmentForm() {
     function handleCloseEditForm(e) {
         e.preventDefault();
         const data = {
-            assignmentId: "",
+            assignmentId: assignmentEditInfo.id || '',
             displayValue: false,
-            sort_at: "",
         };
         dispatch(getAssignmentEdit(data));
     }
 
+
     async function handleUpdateAssignmentInfo(e) {
         e.preventDefault();
-        const data = {
-            assignmentId: assignmentEditInfo.id || '',
-            user: e.target.form[0].checked ? 1 : 0,
-            assignment: e.target.form[2].value || '',
-            note: e.target.form[3].value || '',
-        };
-        const response = await AssignmentService.updateAssignmentInfo(data);
+        console.log('e',e);
+        // const data = {
+        //     assignmentId: assignmentEditInfo.id || '',
+        //     user: e.target.form[0].checked ? 1 : 0,
+        //     assignment: e.target.form[2].value || '',
+        //     note: e.target.form[3].value || '',
+        // };
+        // const response = await AssignmentService.updateAssignmentInfo(data);
 
-        const message =
-            response.data == undefined
-                ? response.message
-                : response.data.message;
-        const code = response.code;
-        handleShowMessage(code, message, assignmentEditInfo.id);
+        // const message =
+        //     response.data == undefined
+        //         ? response.message
+        //         : response.data.message;
+        // const code = response.code;
+        // handleShowMessage(code, message, assignmentEditInfo.id);
     }
 
     function handleShowMessage(code, message, assignmentId) {
@@ -78,7 +89,39 @@ export default function EditAssignmentForm() {
         }
     }
 
-    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+    async function fetcDataAssignmentById(){
+          const respone = await AssignmentService.getAssignmentEdit(1);
+          setAssignmentId(respone.data);
+          setUserFullName(respone.data.staff_name);
+          setAssetName(respone.data.asset_name);
+    }
+
+    async function fetcDataUserList(){
+          const respone = await UserService.getUserList();
+          setUserList(respone.data.data);
+    }
+
+    async function fetcDataAssetList(){
+          const respone = await AssetService.getAssetList();
+          setAssetList(respone.data.data);
+    }
+    useEffect(() => {
+        fetcDataUserList();
+        fetcDataAssetList();
+        fetcDataAssignmentById();
+      }, [])
+
+    function handleSelectUser(e,user){
+        setUserId(user.id);
+        setUserFullName(user.full_name);
+    }
+
+    function handleSelectAsset(e,asset){
+        setAssetId(asset.id);
+        setAssetName(asset.name);
+    }
+
+    const CustomToggleUser = React.forwardRef(({onClick }, ref) => (
         <div
           ref={ref}
           className = "d-flex justify-content-between"
@@ -88,27 +131,16 @@ export default function EditAssignmentForm() {
             onClick(e);
           }}
         >
-          <div>{children}</div>
+          <div>
+            {userFullName}
+          </div>
           <div>&#x25bc;</div>
         </div>
       ));
-                {/* <form className="search d-flex justify-content-between">
-                    <input type="text" placeholder="Search.." name="search"/>
-                    <div type="text"><FaSearch/></div>
-                </form> */}
-                {/* <div className = "d-flex justify-content-between">
-                <Form.Control
-                    autoFocus
-                    className="mx-3 my-2 w-auto"
-                    onChange={(e) => setValue(e.target.value)}
-                    value={value}
-                    />
-                    <div id="search-icon"><FaSearch/></div>
-                </div> */}
 
-      const CustomMenu = React.forwardRef(
-        ({ children, style, className, 'aria-labelledby': labeledBy }, ref) => {
-          const [value, setValue] = useState('');
+      const CustomMenuUser = React.forwardRef(
+        ({style, className, 'aria-labelledby': labeledBy }, ref) => {
+          const [searchUser, setSearchUser] = useState('');
           return (
             <div
               ref={ref}
@@ -118,27 +150,104 @@ export default function EditAssignmentForm() {
             >
             <Container className="w-auto">
                 <Row>
-                    <Col md={4}>Select User</Col>
-                    <Col md={8}>
+                    <Col md={12} className="d-flex justify-content-center">
                         <Form.Control
                         autoFocus
-                        className="mx-3 my-2 w-auto"
-                        onChange={(e) => setValue(e.target.value)}
-                        value={value}
+                        type="text"
+                        placeholder = "Search..."
+                        className="mx-3 my-2 w-auto fs-6"
+                        onChange={(e) => setSearchUser(e.target.value)}
+                        defaultValue = {searchUser}
                         />
                     </Col>
                 </Row>
                 <Row>
-                    <ul className="list-unstyled">
-                    {React.Children.toArray(children).filter(
-                    (child) =>
-                        !value || child.props.children.toLowerCase().startsWith(value),
-                    )}
+                    <ul className="list-unstyled fs-6">
+                    {userList.filter(
+                    (item) =>
+                        {
+                            if(searchUser == ""){
+                                return item;
+                            }
+                            else if(item.full_name.toLowerCase().includes(searchUser.toLowerCase()) || item.staff_code.toLowerCase().includes(searchUser.toLowerCase())){
+                                return item;
+                            }
+                        }).map((user) => (
+                            <Dropdown.Item key={user.id} onClick ={(e)=>handleSelectUser(e,user)}>
+                                <Row>
+                                    <Col md={4}>{user.staff_code}</Col>
+                                    <Col md={7}>{user.full_name}</Col>
+                                    <Col md={1}></Col>
+                                </Row>
+                        </Dropdown.Item>
+                        ))}
                     </ul>
                 </Row>
+            </Container>
+            </div>
+          );
+        },
+      );
+
+      const CustomToggleAsset = React.forwardRef(({onClick }, ref) => (
+        <div
+          ref={ref}
+          className = "d-flex justify-content-between"
+          style = {{cursor: "pointer"}}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick(e);
+          }}
+        >
+          <div>{assetName}</div>
+          <div>&#x25bc;</div>
+        </div>
+      ));
+
+      const CustomMenuAsset = React.forwardRef(
+        ({style, className, 'aria-labelledby': labeledBy }, ref) => {
+          const [searchAsset, setSearchAsset] = useState('');
+          return (
+            <div
+              ref={ref}
+              style={style}
+              className={className}
+              aria-labelledby={labeledBy}
+            >
+            <Container className="w-auto">
                 <Row>
-                    <Col>Save</Col>
-                    <Col>Cancel</Col>
+                    <Col md={12} className="d-flex justify-content-center">
+                        <Form.Control
+                        autoFocus
+                        type="text"
+                        placeholder = "Search..."
+                        className="mx-3 my-2 w-auto fs-6"
+                        onChange={(e) => setSearchAsset(e.target.value)}
+                        defaultValue = {searchAsset}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <ul className="list-unstyled fs-6">
+                    {AssetList.filter(
+                    (item) =>
+                        {
+                            if(searchAsset == ""){
+                                return item;
+                            }
+                            else if(item.asset_code.toLowerCase().includes(searchAsset.toLowerCase()) || item.name.toLowerCase().includes(searchAsset.toLowerCase())){
+                                return item;
+                            }
+                        }).map((asset) => (
+                            <Dropdown.Item key={asset.id} onClick ={(e)=>handleSelectAsset(e,asset)}>
+                                <Row>
+                                    <Col md={4}>{asset.asset_code}</Col>
+                                    <Col md={7}>{asset.name}</Col>
+                                    <Col md={1}></Col>
+                                </Row>
+                        </Dropdown.Item>
+                        ))}
+                    </ul>
                 </Row>
             </Container>
             </div>
@@ -171,19 +280,12 @@ export default function EditAssignmentForm() {
                                     </Form.Label>
                                 </Col>
                                 <Col md={7}>
-                                    <Dropdown className="fs-5 form-control w-auto">
-                                        <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                                    <Dropdown className="fs-5 form-control">
+                                        <Dropdown.Toggle as={CustomToggleUser} id="dropdown-custom-components">
                                          User Name
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu as={CustomMenu}>
-                                        <Dropdown.Item eventKey="1">Red</Dropdown.Item>
-                                        <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
-                                        <Dropdown.Item eventKey="3" active>
-                                            Orange
-                                        </Dropdown.Item>
-                                        <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
-                                        </Dropdown.Menu>
+                                        <Dropdown.Menu as={CustomMenuUser}></Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
                             </Row>
@@ -197,11 +299,11 @@ export default function EditAssignmentForm() {
                                 </Col>
                                 <Col md={7}>
                                     <Dropdown className="fs-5 form-control">
-                                        <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                                        <Dropdown.Toggle as={CustomToggleAsset} id="dropdown-custom-components">
                                          Asset Name
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu as={CustomMenu}>
+                                        <Dropdown.Menu as={CustomMenuAsset}>
                                         <Dropdown.Item eventKey="1">Red</Dropdown.Item>
                                         <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
                                         <Dropdown.Item eventKey="3" active>
@@ -226,11 +328,12 @@ export default function EditAssignmentForm() {
                                 <Col md={7}>
                                     <Form.Control
                                         type="date"
-                                        value={
-                                            assignmentEditInfo.installed_date || ""
+                                        defaultValue={
+                                            assignmentId.assigned_date || ""
                                         }
                                         placeholder="Due Join Date"
                                         className="fs-5"
+                                        onChange={(e)=>(e.target.form[0].value == "" ? setDisableSave(true) : setDisableSave(false))}
                                     ></Form.Control>
                                 </Col>
                             </Row>
@@ -242,7 +345,7 @@ export default function EditAssignmentForm() {
                             <Row>
                                 <Col md={5}>
                                     <Form.Label className="mx-4">
-                                        Note
+                                        {assignmentId.note}
                                     </Form.Label>
                                 </Col>
                                 <Col md={7}>
@@ -255,8 +358,6 @@ export default function EditAssignmentForm() {
                                 </Col>
                             </Row>
                         </Form.Group>
-
-
                         <Row className="text-end">
                             <Col>
                                 <Button

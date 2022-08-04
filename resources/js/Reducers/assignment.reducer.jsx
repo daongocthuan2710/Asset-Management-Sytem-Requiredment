@@ -12,8 +12,7 @@ const assignmentEditReducer = (state = initState, action) => {
             return {
                 ...state,
                 value: action.payload.value,
-                assignmentEditInfo: action.payload.data,
-                sort_at: action.payload.sort_update_at,
+                assignmentEditInfo: action.payload.data
             };
         default:
             return state;
