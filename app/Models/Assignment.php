@@ -153,5 +153,6 @@ class Assignment extends Model
         'assigned_by',
         'assigned_date',
         'note',
+        'state',
     ];
 }

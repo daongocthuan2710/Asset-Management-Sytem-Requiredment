@@ -77,4 +77,11 @@ class ManageAssignmentRepository extends BaseRepository
             'message' => 'Assignment deleted successfully'
         ], 200);
     }
+    public function response($request, $id)
+    {
+        Assignment::query()->findOrFail($id)->update(['state' => $request->response ? 1 : -1]);
+        return response()->json([
+            'message' => 'Assignment updated successfully',
+        ], 200);
+    }
 }

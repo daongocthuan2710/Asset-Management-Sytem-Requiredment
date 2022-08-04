@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AssignmentResponeRequest;
 use App\Http\Requests\UpdateAssignmentRequest;
 use App\Services\ManageAssignmentService;
 use Illuminate\Http\Request;
@@ -83,5 +84,10 @@ class ManageAssignmentController extends Controller
     public function canDelete(Request $request, $id)
     {
         return $this->manageAssignmentService->canDelete($request, $id);
+    }
+
+    public function response(AssignmentResponeRequest $request, $id)
+    {
+        return $this->manageAssignmentService->response($request, $id);
     }
 }
