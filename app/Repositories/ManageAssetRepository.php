@@ -55,28 +55,16 @@ class ManageAssetRepository extends BaseRepository
 
     public function edit($request, $id)
     {
-        try {
-            $asset = $this->query->find($id);
-            return response()->json(new EditAssetResource($asset), 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error'
-            ], 500);
-        }
+        $asset = $this->query->find($id);
+        return response()->json(new EditAssetResource($asset), 200);
     }
 
     public function update($request, $id): \Illuminate\Http\JsonResponse
     {
-        try {
-            $asset = $this->query->find($id);
-            $asset->update($request->all());
-            return response()->json([
-                'message' => 'Asset updated successfully'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error'
-            ], 500);
-        }
+        $asset = $this->query->find($id);
+        $asset->update($request->all());
+        return response()->json([
+            'message' => 'Asset updated successfully'
+        ], 200);
     }
 }

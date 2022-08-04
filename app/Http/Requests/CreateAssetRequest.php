@@ -2,16 +2,14 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\JoinedDateWeekend;
 use App\Rules\LatinName;
-use App\Rules\Over18;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class CreateUserRequest extends FormRequest
+class CreateAssetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,20 +29,12 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:128', new LatinName()],
-            'last_name' => ['required', 'string', 'max:128', new LatinName()],
-            'date_of_birth' => ['required', 'date', new Over18()],
-            'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
-            'admin' => ['required', 'bool', Rule::in([0, 1])],
-            'gender' => ['required', 'integer', Rule::in([0, 1])],
-        ];
-    }
-    public function messages()
-    {
-        return [
-            'joined_date.after' => 'Joined date is not later than Date of Birth. Please select a different date',
-            'first_name.required' => 'Please input first name',
-            'last_name.required' => 'Please input last name',
+            'name' => ['string', 'required', 'max:128', new LatinName()],
+            'category_id' => ['string', 'required', 'exists:category,id'],
+            'installed_date' => ['date','required'],
+            'specification' => ['string','required','max:128'],
+            'state' => ['integer', 'required', Rule::in([0, 1])],
+            //0 : not available, 1 : available
         ];
     }
     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator)

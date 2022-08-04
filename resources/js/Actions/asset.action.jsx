@@ -39,3 +39,4 @@ export const getAssetEdit = (data) => {
         return response;
     }
 }
+

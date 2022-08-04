@@ -11,6 +11,7 @@ import assetEditReducer from "../../Reducers/asset.reducer";
 import userEditReducer from "../../Reducers/userEdit.reducer";
 import { useSelector } from "react-redux";
 import EditForm from "../ManageUser/EditUser";
+import CreateNewAsset from "../CreateNewAsset";
 import EditAssetForm from "../ManageAsset/EditAsset";
 import EditAssignmentForm from "../ManageAssignment/EditAssignment";
 
@@ -35,6 +36,9 @@ export default function BodySection() {
                     </Route>
                     <Route path="/manage-asset">
                         {assetEditReducer ? <EditAssetForm /> :<ManageAsset />}
+                    </Route>
+                    <Route path="/create-asset">
+                        <CreateNewAsset />
                     </Route>
                     <Route path="/create-user">
                         <CreateNewUser />

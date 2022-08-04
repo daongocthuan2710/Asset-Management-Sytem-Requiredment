@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class CreateUserRequest extends FormRequest
+class UpdateAssignmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,28 +31,24 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:128', new LatinName()],
-            'last_name' => ['required', 'string', 'max:128', new LatinName()],
-            'date_of_birth' => ['required', 'date', new Over18()],
-            'joined_date' => ['required', 'date', 'after:date_of_birth', new JoinedDateWeekend()],
-            'admin' => ['required', 'bool', Rule::in([0, 1])],
-            'gender' => ['required', 'integer', Rule::in([0, 1])],
+            'staff_id' => ['int', 'required'],
+            'asset_id' => ['int', 'required'],
+            'assigned_date' => ['date', 'required'],
+            'note' => ['string'],
         ];
     }
     public function messages()
     {
-        return [
-            'joined_date.after' => 'Joined date is not later than Date of Birth. Please select a different date',
-            'first_name.required' => 'Please input first name',
-            'last_name.required' => 'Please input last name',
-        ];
+        return [];
     }
     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator)
     {
+
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'message' => $errors,
+                "message" => "Validations fails",
+                'error' => $errors,
             ],
             400
         ));

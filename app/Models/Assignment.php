@@ -15,4 +15,12 @@ class Assignment extends Model
     {
         return $this->belongsTo(Asset::class);
     }
+
+    protected $fillable = [
+        'staff_id',
+        'asset_id',
+        'assigned_by',
+        'assigned_date',
+        'note',
+    ];
 }

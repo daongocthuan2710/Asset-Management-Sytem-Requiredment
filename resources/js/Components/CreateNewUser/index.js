@@ -4,7 +4,7 @@ import axios from "../../Services/base.service";
 import "./style.css";
 import { useHistory } from "react-router-dom";
 import { getUserCreate } from "../../Actions/user.action";
-import {useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 const CreateNewUser = () => {
   let history = useHistory();
   const [firstName, setFirstName] = React.useState("");
@@ -86,20 +86,17 @@ const CreateNewUser = () => {
     await axios
       .post("/user/store", data, headers)
       .then(function (response) {
-        console.log('response',response);
-        dispatch(getUserCreate('sortByCreateUser',response.status));
-       history.push("/manage-user");
+        dispatch(getUserCreate('sortByCreateUser', response.status));
+        history.push("/manage-user");
       })
       .catch(function () {
         setMess("First name or last name has invalid characters");
       });
-
-      console.log('headers',headers);
   };
 
   return (
     <>
-      <Container>
+      <Container id="containerFormCreate">
         <h4>
           <b>Create New User</b>
         </h4>
@@ -160,24 +157,24 @@ const CreateNewUser = () => {
             <Row>
               <Col>
                 <Form.Label>Gender</Form.Label>
-              </Col>
-              <Col md={4}>
-                <Form.Check
+              </Col >
+              <Col md={8}>
+                <Form.Check inline
+                  id="female"
                   name="gender"
                   type="radio"
                   value={0}
-                  onChange={(e) => setGender(e.target.value)}
                   label="Female"
-                />
-              </Col>
-              <Col md={4}>
-                <Form.Check
+                  onChange={(e) => setGender(e.target.value)}></Form.Check>
+
+
+                <Form.Check inline
+                  id="male"
                   name="gender"
                   type="radio"
-                  value={1}
-                  onChange={(e) => setGender(e.target.value)}
                   label="Male"
-                />
+                  value={1}
+                  onChange={(e) => setGender(e.target.value)}></Form.Check>
               </Col>
             </Row>
           </Form.Group>
@@ -235,7 +232,7 @@ const CreateNewUser = () => {
               variant="outline-secondary"
               onClick={() => history.push("/manage-user")}
             >
-              Cancle
+              Cancel
             </Button>
           </Form.Group>
         </Form>

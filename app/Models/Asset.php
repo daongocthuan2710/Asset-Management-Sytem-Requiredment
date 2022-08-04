@@ -39,17 +39,12 @@ class Asset extends Model
             });
     }
 
-    public function scopeFilterByCategory($querry, $request)
+    public function scopeFilterByCategory($query, $request)
     {
-        return $querry
+        return $query
             ->when($request->has('filterByCategory'), function ($query) use ($request) {
                 $filterByCategory = explode(',', $request->query('filterByCategory'));
-                foreach ($filterByCategory as $key => $value) {
-                    if ($key === 0) {
-                        $query->where("category_id", "=", $value);
-                    }
-                    $query->orWhere("category_id", "=", $value);
-                }
+                $query->whereIn("category_id", $filterByCategory);
             });
     }
 
@@ -61,12 +56,7 @@ class Asset extends Model
         }
         return $query
             ->when($request->has('filterByState'), function ($query) use ($filterByState) {
-                foreach ($filterByState as $key => $value) {
-                    if ($key === 0) {
-                        $query->where("state", "=", $value);
-                    }
-                    $query->orWhere("state", "=", $value);
-                }
+                $query->whereIn("state", $filterByState);
             });
     }
 
@@ -122,7 +112,7 @@ class Asset extends Model
     public function scopeSortByCreateAsset($querry, $request)
     {
         return $querry
-            ->when($request->has('sortBCreateAsset'), function ($query) use ($request) {
+            ->when($request->has('sortByCreateAsset'), function ($query) use ($request) {
                 $query
                     ->orderBy("created_at", 'desc');
             });
