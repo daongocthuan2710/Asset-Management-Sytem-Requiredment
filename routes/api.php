@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\ManageAssetController;
-use App\Http\Controllers\Admin\ManageCateController;
 use App\Http\Controllers\Admin\ManageAssignmentController;
+use App\Http\Controllers\Admin\ManageCateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -26,9 +26,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('/user', ManageUserController::class);
+Route::resource('/assignment', ManageAssignmentController::class);
 Route::post('/user/store', [ManageUserController::class, 'store']);
 Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
+Route::get('/can-delete-assignment/{id}', [ManageAssignmentController::class, 'canDelete']);
 
 // Route::resource('/login', AuthenticationController::class);
 Route::resource('/category', ManageCateController::class);

@@ -16,7 +16,7 @@ import moment from "moment";
 export default function AssignmentTable({
     data, Nodata, tableHeader,
     handleSort, handleOpenEditForm,
-    handleGetUserById, handleDeleteAsset
+    handleGetUserById, handleDeleteAssignment
 }) {
     const sort_at = useSelector(
         (state) => state.assetEditReducer.sort_at
@@ -63,7 +63,7 @@ export default function AssignmentTable({
             }
             break;
         }
-        
+
       }
     return (
         <Table id="table-assignment" responsive="md">
@@ -101,17 +101,20 @@ export default function AssignmentTable({
                             <td>{item.assigned_by.username}</td>
                             <td>{moment(item.assigned_date).format('DD-MM-YYYY')}</td>
                             <td>{item.state.name}</td>
-                            
+
                             <td className="td-without_border">
                                      <FaPencilAlt
                                             onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton'
                                         />{" "}
                                         {"  "}
                                         &nbsp;
-                                        <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2 }
-                                                          onClick={(e) => handleDeleteAsset(e, item.id)} type="button"/>
-                                                          {" "}
-                                        {"" } &nbsp;
+                                {
+                                    item.state.code === 1 ?
+                                        <FaRegTimesCircle color='gray'/>
+                                        : <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2 }
+                                                            onClick={(e) => handleDeleteAssignment(e, item.id)} type="button"/>
+                                }
+                                {" "}{" "} &nbsp;
                                         <FaUndo id="undo-icon"/>
                             </td>
                         </tr>

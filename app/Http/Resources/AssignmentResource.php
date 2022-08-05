@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Asset;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,6 +28,15 @@ class AssignmentResource extends JsonResource
                 $stateName = 'Accepted';
                 break;
         }
+        $staff = User::find($this->staff_id);
+        $admin = User::find($this->assigned_by);
+        $asset = Asset::find($this->asset_id);
+        if($staff->location === $admin->location && $staff->location === $asset->location) {
+            $location = $staff->location;
+        }
+        else {
+            $location = 'not_match';
+        }
         return [
             'id' => $this->id,
             'asset' => new AssetResource($this->asset),
@@ -37,7 +47,8 @@ class AssignmentResource extends JsonResource
             'state' => [
                 'code' => $this->state,
                 'name' => $stateName
-            ]
+            ],
+            'location' => $location,
         ];
     }
 }
