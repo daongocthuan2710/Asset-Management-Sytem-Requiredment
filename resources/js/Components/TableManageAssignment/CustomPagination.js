@@ -19,7 +19,7 @@ export default function CustomPagination({
                     linkClassNext="page-next"
                     activeLinkClass="pagination-active"
                     hideFirstLastPages={true}
-                    onChange={(pageNumber) => handlePageChange(pageNumber)}
+                    onChange={(page) => handlePageChange(page)}
                 />
             ) : (
                 ""

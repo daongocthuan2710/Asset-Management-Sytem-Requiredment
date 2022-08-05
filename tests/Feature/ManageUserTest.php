@@ -62,4 +62,23 @@ class ManageUserTest extends TestCase
             "location" => "HCM"
         ]);
     }
+
+    public function test_admin_could_not_view_user_in_different_location()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "tuandc",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+
+        $viewUser = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewUser->assertStatus(200)->assertJsonMissing([
+            "location" => "HN"
+        ])->assertJsonMissing([
+            "location" => "DN"
+        ]);
+    }
 }

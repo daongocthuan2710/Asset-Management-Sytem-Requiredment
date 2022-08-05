@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import "./style.scss";
 import "./style.css";
@@ -8,29 +9,29 @@ import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.gif";
-import assetService from "../../Services/asset.service";
+import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
-import AssetTable from "./AssetTable";
+import AssignmentTable from "./AssignmentTable";
 import FilterByState from "./FilterByState";
 import SearchCreate from "./SearchCreate";
-import AssetDetailModal from "./AssetDetailModal";
+import AssignmentDetailModal from "./AssignmentDetailModal";
 import DeleteAsset from "../DeleteAsset";
-import FilterByCategory from "./FilterByCategory";
+import FilterByAssignedDate from "./FilterByAssignedDate";
 import _ from "lodash";
-import assetEditReducer from "../../Reducers/asset.reducer";
-import assetGetMessageReducer from "../../Reducers/getMessageTopSort.reducer";
+import DeleteAssignment from "../DeleteAssignment";
 
-export default function ManageAsset() {
+
+export default function ManageAssignment() {
   const [currentButton, setFilter] = React.useState(["3"]);
   const [currentSearch, setCurrentSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
+  const [deleteAssignment, setDeleteAssignment] = React.useState({ show: false, id: 0 });
   const [filterCategory, setFilterCategory] = React.useState([]);
-  const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
+  const [filterByDate, setFilterByDate] = React.useState([]);
   const [modal, setModal] = React.useState(false);
-  const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
+  const [arrayState, setArrayState] = React.useState([{ key: 'All', value: '3' }]);
 
 
   const sort_create_at = useSelector(
@@ -45,6 +46,11 @@ export default function ManageAsset() {
 
   const [tableHeader, setTableHeader] = React.useState([
     {
+      name: "No.",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
       name: "Asset Code",
       isSortASC: true,
       isSortDESC: false,
@@ -55,7 +61,17 @@ export default function ManageAsset() {
       isSortDESC: false,
     },
     {
-      name: "Category",
+      name: "Assigned to",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Assigned by",
+      isSortASC: true,
+      isSortDESC: false,
+    },
+    {
+      name: "Assigned Date",
       isSortASC: true,
       isSortDESC: false,
     },
@@ -69,46 +85,45 @@ export default function ManageAsset() {
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    getApiUser({
+    getApiAssignment({
       FilterByState: arrayState,
     });
   }, []);
 
-  const handleDeleteAsset = (e, id) => {
+  const handleDeleteAssignment = (e, id) => {
     e.stopPropagation();
-    setDeleteAsset({ show: true, id: id });
-    setTimeout(() => setDeleteAsset({ show: false, id: id }), 1);
+    console.log("id", id);
+    setDeleteAssignment({ show: true, id: id});
+    setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
   }
 
 
-  const getApiUser = async ({
-    FilterByCategory = undefined,
+  const getApiAssignment = async ({
+    FilterByDate = undefined,
     FilterByState = undefined,
     search = undefined,
     page = 1,
     sort = undefined,
   } = {}) => {
-    let url = "api/asset";
+    let url = "api/assignment";
     let array = [];
+    console.log(FilterByDate)
 
-    if (FilterByCategory) {
-      if (FilterByCategory.length > 0) {
-        array.push(`filterByCategory=${FilterByCategory}`);
+    if (FilterByDate) {
+      if (FilterByDate.length > 0 ) {
+      array.push(`filterByDate=${FilterByDate}`);
       }
       else {
         array.push('');
       }
     }
-    
-    if(sort_at === 'sortByEditAsset'){
-      array.push('sortByEditAsset');
-  }
-    if(sort_at_get_mesage=== 'sortByCreateAsset'){
-      array.push('sortByCreateAsset');
-  }
 
-
- 
+    if (sort_at === 'sortByEditAssignment') {
+      array.push('sortByEditAssignment');
+    }
+    if (sort_at_get_mesage === 'sortByCreateAssignment') {
+      array.push('sortByCreateAssignment');
+    }
 
 
     if (FilterByState) {
@@ -134,14 +149,23 @@ export default function ManageAsset() {
     console.log(sort_create_at);
     if (sort) {
       sort.forEach((item) => {
+        if (item.key === "No.") {
+          array.push(`sortByNo=${item.value}`);
+        }
         if (item.key === "Asset Code") {
           array.push(`sortByAssetCode=${item.value}`);
         }
         if (item.key === "Asset Name") {
-          array.push(`sortByName=${item.value}`);
+          array.push(`sortByAssetName=${item.value}`);
         }
-        if (item.key === "Category") {
-          array.push(`sortByCategory=${item.value}`);
+        if (item.key === "Assigned to") {
+          array.push(`sortByAssignedTo=${item.value}`);
+        }
+        if (item.key === "Assigned by") {
+          array.push(`sortByAssignedBy=${item.value}`);
+        }
+        if (item.key === "Assigned Date") {
+          array.push(`sortByAssignedDate=${item.value}`);
         }
         if (item.key === "State") {
           array.push(`sortByState=${item.value}`);
@@ -174,48 +198,33 @@ export default function ManageAsset() {
     return response.data;
   };
 
-  const handleFilterCategory = (id) => {
-    const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
-
-    const index = tempFilterCategory.findIndex((e) => e === id);
-    if (index === -1) {
-      tempFilterCategory.push(id);
-    } else {
-      tempFilterCategory.splice(index, 1);
-    }
-
-    setFilterCategory(tempFilterCategory);
-
+  const handleFilterDate = (date) => {
+    setPage(1);
     let temp_filter_state;
     let temp_search;
     let temp_sort;
-    let temp_page;
-
     if (arrayState.length > 0) {
       temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
-
-    if (page >= 1) {
-      temp_page = page;
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
     }
-
     if (sortArray.length > 0) {
       temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
-    if (currentSearch !== "") {
-      temp_search = currentSearch;
-    }
 
-    getApiUser({
+    setFilterByDate(date);
+    getApiAssignment({
+      FilterByDate: date,
       FilterByState: temp_filter_state,
-      FilterByCategory: tempFilterCategory,
-      page: temp_page,
+      search: temp_search,
       sort: temp_sort,
-      search: temp_search
     });
   };
   const handleFilter = (key, value) => {
+    setPage(1);
+
     let arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
     if (key !== 'All') {
       const findIndex = arrayStateTemp.findIndex((item) => item.key === 'All');
@@ -233,45 +242,38 @@ export default function ManageAsset() {
       }
     }
 
+
     setArrayState(arrayStateTemp);
 
-    let temp_page;
     let temp_search;
     let temp_sort;
-    let temp_filter_category;
-
-    if (currentSearch !== "") {
-      temp_search = currentSearch;
-    }
-
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    let temp_filter_date;
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
 
     if (sortArray.length > 0) {
       temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
-
-    if (page >= 1) {
-      temp_page = page;
+    if (currentSearch !== "") {
+      temp_search = currentSearch;
     }
-
-
-    getApiUser({
+  
+    getApiAssignment({
       FilterByState: arrayStateTemp,
-      page: temp_page,
       search: temp_search,
       sort: temp_sort,
-      FilterByCategory: temp_filter_category,
+      FilterByDate: temp_filter_date,
     });
   };
   const handleSearch = (e, value) => {
+    setPage(1);
     e.preventDefault();
     setCurrentSearch(value);
 
     let temp_filter_state;
     let temp_page;
-    let temp_filter_category;
+    let temp_filter_date;
     let temp_sort;
 
     if (arrayState.length > 0) {
@@ -281,28 +283,29 @@ export default function ManageAsset() {
     if (page >= 1) {
       temp_page = page;
     }
-
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    console.log(filterByDate);
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
 
     if (sortArray.length > 0) {
       temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
-    getApiUser({
+    getApiAssignment({
       FilterByState: temp_filter_state,
       search: value,
       page: temp_page,
       sort: temp_sort,
-      FilterByCategory: temp_filter_category,
+      FilterByDate: temp_filter_date,
     });
   };
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
+
     let temp_filter_state;
     let temp_search;
-    let temp_filter_category;
+    let temp_filter_date;
     let temp_sort;
 
     if (arrayState.length > 0) {
@@ -313,58 +316,62 @@ export default function ManageAsset() {
       temp_search = currentSearch;
     }
 
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
 
     if (sortArray.length > 0) {
       temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
-    getApiUser({
+    getApiAssignment({
       FilterByState: temp_filter_state,
       search: temp_search,
       page: pageNumber,
       sort: temp_sort,
-      FilterByCategory: temp_filter_category,
+      FilterByDate: temp_filter_date,
     });
   };
   const handleSort = (key, value) => {
     let temp_filter_state;
     let temp_page;
     let temp_search;
-    let temp_filter_category;
+    let temp_filter_date;
 
     if (arrayState.length > 0) {
       temp_filter_state = JSON.parse(JSON.stringify(arrayState));
     }
-
-    if (page >= 1) {
-      temp_page = page;
-    }
-
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
-
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    if (page) {
+      temp_page = page;
+    }
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
 
-    const tempSortArray = [];
+    const tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     const tempHeader = JSON.parse(JSON.stringify(tableHeader));
+
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
+
     if (value) {
-      console.log('value', value);
-      tempSortArray.push({ key, value });
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'asc';
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 4) {
+        if (i != indexHeader && i != 7) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+        if (i === 7) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -373,27 +380,25 @@ export default function ManageAsset() {
     }
 
     if (!value) {
-      tempSortArray.push({ key, value });
+      setSortArray([]);
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'desc';
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
+      tempSortArray[0].value = 'asc';
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 4) {
-          tempHeader[i].isSortASC = false;
-          tempHeader[i].isSortDESC = true;
+        if (i != 7) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
         }
       }
     }
 
-    setTableHeader(tempHeader);
 
-    getApiUser({
+    setTableHeader(tempHeader);
+    getApiAssignment({
       FilterByState: temp_filter_state,
       search: temp_search,
       page: temp_page,
       sort: tempSortArray,
-      FilterByCategory: temp_filter_category,
+      FilterByDate: temp_filter_date,
     });
   };
 
@@ -428,32 +433,32 @@ export default function ManageAsset() {
         break;
     }
   }
-  const [user, setUser] = React.useState([]);
+  const [assignment, setAssignment] = React.useState([]);
 
-  const handleGetUserById = async (assetId) => {
-    const response = await assetService.getAssetById(assetId);
+  const handleGetAssignmentById = async (assignmentId) => {
+    const response = await assignmentService.getAssignmentById(assignmentId);
     setModal(true);
-    console.log(response);
-    setUser(response.data.data);
+    console.log(response.data.data);
+    setAssignment(response.data.data);
   }
 
   return (
     <div className="containermanageuser">
-      <DeleteAsset show={deleteAsset.show} id={deleteAsset.id} />
-      <h5 style={{ color: "red", fontWeight: "bold" }}>Asset List </h5>
+      <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
+      <h5 style={{ color: "red", fontWeight: "bold" }}>Assignment List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
-      <div className="d-flex ml-2">
-        <FilterByState
-          currentButton={currentButton}
-          handleFilter={handleFilter}
-          arrayState={arrayState}
-        />
-        <div id="secondFilterAsset">
-        <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory}  />
-          
+        <div className="d-flex ml-2">
+          <FilterByState
+            currentButton={currentButton}
+            handleFilter={handleFilter}
+            arrayState={arrayState}
+          />
+          <div id="secondFilterAsset">
+            <FilterByAssignedDate handleFilterDate={handleFilterDate} />
+
+          </div>
         </div>
-      </div>
-        
+
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}
@@ -464,15 +469,14 @@ export default function ManageAsset() {
       </div>
       <Row>
         <div id="table-manage-user">
-          <AssetTable
+          <AssignmentTable
             data={data}
             tableHeader={tableHeader}
             Nodata={Nodata}
-            setPage={setPage}
             handleSort={handleSort}
             handleOpenEditForm={handleOpenEditForm}
-            handleGetUserById={handleGetUserById}
-            handleDeleteAsset={handleDeleteAsset}
+            handleGetAssignmentById={handleGetAssignmentById}
+            handleDeleteAssignment={handleDeleteAssignment}
           />
         </div>
       </Row>
@@ -483,9 +487,9 @@ export default function ManageAsset() {
           handlePageChange={handlePageChange}
         />
       </Row>
-      <AssetDetailModal
+      <AssignmentDetailModal
         modal={modal}
-        user={user}
+        assignment={assignment}
         setModal={setModal}
       />
     </div>

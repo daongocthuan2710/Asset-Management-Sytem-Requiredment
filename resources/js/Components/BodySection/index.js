@@ -14,6 +14,7 @@ import EditForm from "../ManageUser/EditUser";
 import CreateNewAsset from "../CreateNewAsset";
 import CreateNewAssignment from "../CreateNewAssignment";
 import EditAssetForm from "../ManageAsset/EditAsset";
+import ManageAssignment from "../TableManageAssignment";
 
 export default function BodySection() {
     const assetEditReducer = useSelector((state) => state.assetEditReducer.value);
@@ -35,7 +36,7 @@ export default function BodySection() {
                         {userEditReducer ? <EditForm /> : <ManageUser />}
                     </Route>
                     <Route path="/manage-asset">
-                        {assetEditReducer ? <EditAssetForm /> :<ManageAsset />}
+                        {assetEditReducer ? <EditAssetForm /> : <ManageAsset />}
                     </Route>
                     <Route path="/create-asset">
                         <CreateNewAsset />
@@ -47,7 +48,7 @@ export default function BodySection() {
                         <CreateNewAssignment />
                     </Route>
                     <Route path="/manage-assignment">
-                        <Test />
+                        <ManageAssignment />
                     </Route>
                     <Route path="/request-for-returning">
                         <Test />

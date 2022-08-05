@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\ManageAssetController;
-use App\Http\Controllers\Admin\ManageCateController;
 use App\Http\Controllers\Admin\ManageAssignmentController;
+use App\Http\Controllers\Admin\ManageCateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -27,9 +27,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('/user', ManageUserController::class);
 Route::get('/user/search/{keyword}', [ManageUserController::class, 'search']);
+Route::resource('/assignment', ManageAssignmentController::class);
 Route::post('/user/store', [ManageUserController::class, 'store']);
 Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
+Route::get('/can-delete-assignment/{id}', [ManageAssignmentController::class, 'canDelete']);
 
 // Route::resource('/login', AuthenticationController::class);
 Route::resource('/assignment', ManageAssignmentController::class);
@@ -43,4 +45,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::resource('/profile', ProfileController::class);
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
+    Route::resource('/assignment', ManageAssignmentController::class);
 });
