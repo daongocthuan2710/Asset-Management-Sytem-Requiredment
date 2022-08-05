@@ -45,8 +45,10 @@ export default function BodySection() {
                         <CreateNewUser />
                     </Route>
                     <Route path="/manage-assignment">
-                        {/* <EditAssignmentForm/> */}
                         <ManageAssignment />
+                    </Route>
+                    <Route path="/edit-assignment">
+                        <EditAssignmentForm />
                     </Route>
                     <Route path="/request-for-returning">
                         <Test />

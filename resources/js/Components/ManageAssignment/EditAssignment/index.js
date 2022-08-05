@@ -12,6 +12,10 @@ import AssetService from "../../../Services/asset.service";
 import { getAssignmentEdit } from "../../../Actions/assignment.action";
 import assignmentEditReducer from "../../../Reducers/assignment.reducer";
 import {Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+
 
 export default function EditAssignmentForm() {
     const [showModal, setShowModal] = useState(false);
@@ -23,35 +27,33 @@ export default function EditAssignmentForm() {
     const [AssetList, setAssetList] = useState([]);
     const [assetInfo, setAssetInfo] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
-
+    const [note, setNote] = useState('');
+    const [assignedDate, setAssignedDate] = useState('');
+    const [select, setSelect] = useState(false);
     const assignmentEditInfo = useSelector(
         (state) => state.assignmentEditReducer.assignmentEditInfo
     );
-
+    let history = useHistory();
+    const assignmentId = Number.parseInt(window.location.pathname.split("/").at(-1));
     const dispatch = useDispatch();
     function handleCloseEditForm(e) {
         e.preventDefault();
-        const data = {
-            assignmentInfo: assignmentEditInfo.id || '',
-            displayValue: false,
-        };
-        dispatch(getAssignmentEdit(data));
+        history.push(`/manage-assignment`);
     }
 
     // Action
     async function handleUpdateAssignmentInfo(e) {
         e.preventDefault();
-        console.log('e',e);
         const data = {
             assignmentInfo: assignmentInfo.id || '',
             staffId: userInfo.id,
             assetId: assetInfo.id,
-            assigned_date: e.target.form[1].value,
-            note: e.target.form[0].value || '',
+            assigned_date: assignedDate || '',
+            note: note || '',
         };
-        console.log('data',data);
+
         const response = await AssignmentService.updateAssignmentInfo(data);
-        console.log('response',response);
+
         const message =
             response.data == undefined
                 ? response.message
@@ -60,8 +62,8 @@ export default function EditAssignmentForm() {
         handleShowMessage(code, message, assignmentEditInfo.id);
     }
 
-    function handleShowMessage(code, message, assignmentInfo) {
-        console.log(code, message, assignmentInfo);
+    function handleShowMessage(code, message, assignmentEditInfoId) {
+        console.log(code, message, assignmentEditInfoId);
         setShowModal(true);
         switch (code) {
             case 200:
@@ -69,12 +71,8 @@ export default function EditAssignmentForm() {
                     setModalHeader("Success");
                     setModalBody(message);
                     setTimeout(() => {
-                        const data = {
-                            assignmentInfo: assignmentInfo,
-                            displayValue: false,
-                            sort_at: "sortByEditAssignment",
-                        };
-                        dispatch(getAssignmentEdit(data));
+                        setShowModal(false);
+                        history.push(`/manage-assignment`);
                     }, 1500);
                 }
                 break;
@@ -96,18 +94,17 @@ export default function EditAssignmentForm() {
     }
 
     function handleShowButtonSave(e) {
-        if(e.target.form[0].value === '' || e.target.form[1].value === ''){
-            setDisableSave(true);
-        }
-        else setDisableSave(false);
+        //
 }
 
     // Get data to show when reload page
     async function fetcDataAssignmentById(){
-          const respone = await AssignmentService.getAssignmentEdit(1);
+          const respone = await AssignmentService.getAssignmentEdit(assignmentId);
           setAssignmentInfo(respone.data);
           setUserInfo(respone.data.staff);
           setAssetInfo(respone.data.asset);
+          setAssignedDate(respone.data.assigned_date);
+          setNote(respone.data.note);
     }
 
     async function fetcDataUserList(){
@@ -120,16 +117,25 @@ export default function EditAssignmentForm() {
           setAssetList(respone.data.data);
     }
     useEffect(() => {
+        fetcDataAssignmentById();
         fetcDataUserList();
         fetcDataAssetList();
-        fetcDataAssignmentById();
       }, [])
 
+    useEffect(() => {
+    setDisableSave(true);
+    console.log('assignedDate',assignedDate,'note',note,'select',select);
+    if (assignedDate !== "" && note !== "")
+        setDisableSave(false);
+    }, [assignedDate, note, select]);
+
     function handleSelectUser(e,user){
+        setSelect(true);
         setUserInfo(user);
     }
 
     function handleSelectAsset(e,asset){
+        setSelect(true);
         setAssetInfo(asset);
     }
 
@@ -143,6 +149,7 @@ export default function EditAssignmentForm() {
             e.preventDefault();
             onClick(e);
           }}
+          defaultValue = {userInfo.name || userInfo.full_name}
         >
           <div>
             {userInfo.name || userInfo.full_name}
@@ -210,6 +217,7 @@ export default function EditAssignmentForm() {
           onClick={(e) => {
             e.preventDefault();
             onClick(e);
+
           }}
         >
           <div>{assetInfo.name || assetInfo}</div>
@@ -289,9 +297,11 @@ export default function EditAssignmentForm() {
                                     </Form.Label>
                                 </Col>
                                 <Col md={7}>
-                                    <Dropdown className="fs-5 form-control">
-                                        <Dropdown.Toggle as={CustomToggleUser} id="dropdown-custom-components">
-                                         User Name
+                                    <Dropdown className="fs-5 form-control" defaultValue = {userInfo.name || userInfo.full_name || ""}>
+                                        <Dropdown.Toggle
+                                        as={CustomToggleUser}
+                                        id="dropdown-custom-components"
+                                        >
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu as={CustomMenuUser}></Dropdown.Menu>
@@ -312,14 +322,7 @@ export default function EditAssignmentForm() {
                                          Asset Name
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu as={CustomMenuAsset}>
-                                        <Dropdown.Item eventKey="1">Red</Dropdown.Item>
-                                        <Dropdown.Item eventKey="2">Blue</Dropdown.Item>
-                                        <Dropdown.Item eventKey="3" active>
-                                            Orange
-                                        </Dropdown.Item>
-                                        <Dropdown.Item eventKey="1">Red-Orange</Dropdown.Item>
-                                        </Dropdown.Menu>
+                                        <Dropdown.Menu as={CustomMenuAsset}></Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
                             </Row>
@@ -337,9 +340,9 @@ export default function EditAssignmentForm() {
                                 <Col md={7}>
                                     <Form.Control
                                         type="date"
-                                        defaultValue={assignmentInfo.assigned_date || ""}
-                                        placeholder="Due Join Date"
+                                        defaultValue={assignmentInfo.assigned_date || ''}
                                         className="fs-5"
+                                        onChange = {(e) => {setAssignedDate(e.target.value || assignmentInfo.assigned_date)}}
                                     ></Form.Control>
                                 </Col>
                             </Row>
@@ -351,14 +354,15 @@ export default function EditAssignmentForm() {
                             <Row>
                                 <Col md={5}>
                                     <Form.Label className="mx-4">
-                                        {assignmentInfo.note || ""}
+                                        Note
                                     </Form.Label>
                                 </Col>
                                 <Col md={7}>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
-                                        defaultValue={''}
+                                        defaultValue={assignmentInfo.note || ''}
+                                        onChange = {(e) => {setNote(e.target.value || assignmentInfo.note)}}
                                         className="fs-5"
                                     />
                                 </Col>
@@ -374,7 +378,7 @@ export default function EditAssignmentForm() {
                                 >
                                     Save
                                 </Button>
-                                <b> </b>
+                                <b> </b><Link to ='/manage-assignment'>
                                 <Button
                                     id="pwCancelButton"
                                     variant="light"
@@ -382,6 +386,7 @@ export default function EditAssignmentForm() {
                                 >
                                     Cancel
                                 </Button>
+                                </Link>
                             </Col>
                         </Row>
                     </Form>

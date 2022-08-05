@@ -12,9 +12,6 @@ use App\Repositories\ManageUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Repositories\ManageAssignmentRepository;
-use App\Services\BaseService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 

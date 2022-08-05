@@ -44,8 +44,7 @@ export default function ManageAsset() {
   const sort_at_get_mesage = useSelector(
     (state) => state.assetGetMessageReducer.sort_at
   );
-  console.log(sort_at ," tao la sort aray");
-  console.log(sort_at_get_mesage ," tao la sort_at_get_mesage");
+
 
   const [tableHeader, setTableHeader] = React.useState([
     {
@@ -103,8 +102,8 @@ export default function ManageAsset() {
         array.push('');
       }
     }
-    
-    console.log(sort ," tao la sort aray 2");
+
+
 
     if(sort_at === 'sortByEditAsset'){
       array.push('sortByEditAsset');
@@ -114,7 +113,7 @@ export default function ManageAsset() {
   }
 
 
- 
+
 
 
     if (FilterByState) {
@@ -137,7 +136,7 @@ export default function ManageAsset() {
     if (page) {
       array.push(`page=${page}`);
     }
-    console.log(sort_create_at);
+
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "Asset Code") {
@@ -462,10 +461,10 @@ export default function ManageAsset() {
         />
         <div id="secondFilterAsset">
         <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory}  />
-          
+
         </div>
       </div>
-        
+
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}

@@ -20,7 +20,7 @@ class AssetService {
     }
 
     async getAssetList() {
-        const endpoint = `/asset?sortByName=asc&sortByAssetCode=desc&sortByCategory=desc&search=PC&no-paginate`;
+        const endpoint = `/asset?sortByName=asc&sortByAssetCode=desc&sortByCategory=desc&search=&no-paginate`;
         const response = await Repository.get(endpoint);
         return response;
     }
