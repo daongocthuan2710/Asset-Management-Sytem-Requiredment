@@ -25,10 +25,6 @@ const CreateNewAssignment = () => {
      error: false,
      message: "",
   });
-  // const [joinedDateError, setJoinedDateError] = React.useState({
-  //   error: false,
-  //   message: "",
-  // });
 
   React.useEffect(() => {
     setEnabled(true);
@@ -76,8 +72,13 @@ const CreateNewAssignment = () => {
     await axios
       .post("/assignment", data, headers)
       .then(function (response) {
-        //dispatch(getUserCreate('sortByCreateUser', response.status));
-        console.log(response);
+
+        dispatch({
+          type: 'GET_MESSAGE',
+          payload: {
+              sort_at: 'sortByEditAssignment' || ''
+          },
+      })
         history.push("/manage-assignment");
       })
       .catch(function () {

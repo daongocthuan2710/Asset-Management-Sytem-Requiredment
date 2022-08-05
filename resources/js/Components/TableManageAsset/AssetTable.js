@@ -17,17 +17,6 @@ export default function AssetTable({
     handleGetUserById, handleDeleteAsset,
     setPage
 }) {
-    const sort_at = useSelector(
-        (state) => state.assetEditReducer.sort_at
-    );
-    //   console.log('sort_at',sort_at);
-    //   if(sort_at === 'sortByEditAsset'){
-    //     array.push('sortByEditUser');
-
-    //   }
-    //   if(sort_at ===  'sortByCreateAsset'){
-    //     array.push('sortByCreateUser');
-    //   }
 
     const dispatch = useDispatch();
     async function handleOpenEditAssetForm(e, assetId = "") {

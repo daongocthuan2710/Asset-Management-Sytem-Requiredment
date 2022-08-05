@@ -14,7 +14,7 @@ import assignmentEditReducer from "../../../Reducers/assignment.reducer";
 import {Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-
+import {Scrollbars} from 'react-custom-scrollbars-2';
 
 
 export default function EditAssignmentForm() {
@@ -99,10 +99,6 @@ export default function EditAssignmentForm() {
         }
     }
 
-    function handleShowButtonSave(e) {
-        //
-}
-
     // Get data to show when reload page
     async function fetcDataAssignmentById(){
           const respone = await AssignmentService.getAssignmentEdit(assignmentId);
@@ -130,8 +126,7 @@ export default function EditAssignmentForm() {
 
     useEffect(() => {
     setDisableSave(true);
-    console.log('assignedDate',assignedDate,'note',note,'select',select);
-    if (assignedDate !== "" && note !== "")
+    if (assignedDate !== '' && (note !== "" && note !== null) && select == true)
         setDisableSave(false);
     }, [assignedDate, note, select]);
 
@@ -188,6 +183,8 @@ export default function EditAssignmentForm() {
                     </Col>
                 </Row>
                 <Row>
+                <Scrollbars style = {{width:"100%" , height: '300px'}}>
+                    
                     <ul className="list-unstyled fs-6">
                     {userList.filter(
                     (item) =>
@@ -208,6 +205,7 @@ export default function EditAssignmentForm() {
                         </Dropdown.Item>
                         ))}
                     </ul>
+                </Scrollbars>
                 </Row>
             </Container>
             </div>
@@ -255,6 +253,7 @@ export default function EditAssignmentForm() {
                     </Col>
                 </Row>
                 <Row>
+                <Scrollbars style = {{width:"100%" , height: '300px'}}>
                     <ul className="list-unstyled fs-6">
                     {AssetList.filter(
                     (item) =>
@@ -275,6 +274,7 @@ export default function EditAssignmentForm() {
                         </Dropdown.Item>
                         ))}
                     </ul>
+                </Scrollbars>
                 </Row>
             </Container>
             </div>
@@ -293,7 +293,6 @@ export default function EditAssignmentForm() {
                 <Row>
                     <Form
                         className="fs-5"
-                        onChange={(e) => handleShowButtonSave(e)}
                     >
                         <Form.Group className="mb-3" controlId="UserSelectForm">
                             <Row>
@@ -348,7 +347,7 @@ export default function EditAssignmentForm() {
                                         type="date"
                                         defaultValue={assignmentInfo.assigned_date || ''}
                                         className="fs-5"
-                                        onChange = {(e) => {setAssignedDate(e.target.value || assignmentInfo.assigned_date)}}
+                                        onChange = {(e) => {setAssignedDate(e.target.value); setSelect(true)}}
                                     ></Form.Control>
                                 </Col>
                             </Row>
@@ -368,7 +367,7 @@ export default function EditAssignmentForm() {
                                         as="textarea"
                                         rows={3}
                                         defaultValue={assignmentInfo.note || ''}
-                                        onChange = {(e) => {setNote(e.target.value || assignmentInfo.note)}}
+                                        onChange = {(e) => {setNote(e.target.value); setSelect(true)}}
                                         className="fs-5"
                                     />
                                 </Col>

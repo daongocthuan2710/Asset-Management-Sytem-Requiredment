@@ -66,6 +66,12 @@ export default function EditForm() {
                 setModalBody(message)
                 setTimeout(
                     () => {const displayValue = false;
+                        dispatch({
+                            type: 'GET_MESSAGE',
+                            payload: {
+                                sort_at: 'sortByEditUser' || ''
+                            },
+                        });
                         dispatch(getUserEdit(displayValue, userId,'sortByEditUser'))},
                     1500);
             }

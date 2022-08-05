@@ -102,9 +102,11 @@ export default function AssignmentTable({
                             <td>{item.state.name}</td>
 
                             <td className="td-without_border">
-                                        <FaPencilAlt
-                                            onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton'
-                                        />
+                            {
+                                item.state.code===0?
+                                <FaPencilAlt onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton' />
+                                : <FaPencilAlt color='gray'/>
+                            }
                                         {" "}
                                         {"  "}
                                         &nbsp;

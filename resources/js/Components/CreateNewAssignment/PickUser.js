@@ -83,7 +83,7 @@ export default function PickUser(props) {
 
     for (let i = 0; i < array.length; i++) {
       if (i === 0) {
-        url += "?" + array[i];
+        url += "?no-paginate&" + array[i];
       } else {
         url += "&" + array[i];
       }
@@ -282,8 +282,8 @@ export default function PickUser(props) {
               )}
             </tbody>
           </Table>
-        <div className="d-flex justify-content-between">
-            {page > 0 ? (
+        <div className="d-flex justify-content-end">
+            {/* {page > 0 ? (
               <Pagination
               className="mb-0 mr-2"
                 activePage={page}
@@ -302,7 +302,7 @@ export default function PickUser(props) {
               />
             ) : (
               ""
-            )}
+            )} */}
           
           <div>
             <Button id="usSaveButton" onClick={() => { toggleShow(); props.setUserName(user) }}>Save</Button>

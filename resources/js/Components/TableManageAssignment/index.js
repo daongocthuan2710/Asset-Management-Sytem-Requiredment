@@ -37,13 +37,12 @@ export default function ManageAssignment() {
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
   );
-  const sort_at = useSelector(
-    (state) => state.assetEditReducer.sort_at
-  );
+
   const sort_at_get_mesage = useSelector(
     (state) => state.assetGetMessageReducer.sort_at
   );
 
+  console.log('sort_at_get_mesage',sort_at_get_mesage);
   const [tableHeader, setTableHeader] = React.useState([
     {
       name: "No.",
@@ -118,7 +117,7 @@ export default function ManageAssignment() {
       }
     }
 
-    if (sort_at === 'sortByEditAssignment') {
+    if (sort_at_get_mesage === 'sortByEditAssignment') {
       array.push('sortByEditAssignment');
     }
     if (sort_at_get_mesage === 'sortByCreateAssignment') {
@@ -146,7 +145,7 @@ export default function ManageAssignment() {
     if (page) {
       array.push(`page=${page}`);
     }
-    console.log(sort_create_at);
+
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "No.") {
