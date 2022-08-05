@@ -27,4 +27,14 @@ class ManageAssignmentService extends BaseService
         return $this->manageAssignmentRepository->getAll($request, $sanctumUser);
     }
 
+    public function getById($id)
+    {
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->manageAssignmentRepository->getById($id);
+    }
 }

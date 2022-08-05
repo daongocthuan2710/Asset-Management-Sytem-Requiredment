@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.gif";
-import assetService from "../../Services/asset.service";
+import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
 import AssignmentTable from "./AssignmentTable";
 import FilterByState from "./FilterByState";
@@ -433,10 +433,10 @@ export default function ManageAssignment() {
   }
   const [assignment, setAssignment] = React.useState([]);
 
-  const handleGetAssignmentById = async (assetId) => {
-    const response = await assetService.getAssetById(assetId);
+  const handleGetAssignmentById = async (assignmentId) => {
+    const response = await assignmentService.getAssignmentById(assignmentId);
     setModal(true);
-    console.log(response);
+    console.log(response.data.data);
     setAssignment(response.data.data);
   }
 

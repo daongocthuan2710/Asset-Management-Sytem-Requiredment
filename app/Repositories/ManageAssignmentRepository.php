@@ -34,4 +34,11 @@ class ManageAssignmentRepository extends BaseRepository
 
         return AssignmentResource::collection($data->paginate(config('app.limit')));
     }
+
+    public function getById($id)
+    {
+        $data = $this->query->findOrFail($id);
+
+        return new AssignmentResource($data);
+    }
 }

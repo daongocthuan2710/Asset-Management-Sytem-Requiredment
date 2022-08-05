@@ -16,7 +16,7 @@ import moment from "moment";
 export default function AssignmentTable({
     data, Nodata, tableHeader,
     handleSort, handleOpenEditForm,
-    handleGetUserById, handleDeleteAsset
+    handleGetAssignmentById, handleDeleteAsset
 }) {
     const sort_at = useSelector(
         (state) => state.assetEditReducer.sort_at
@@ -93,7 +93,7 @@ export default function AssignmentTable({
                 {data.length > 0 ? (
                     data.length > 0 &&
                     data.map((item) => (
-                        <tr key={item.id} onClick={() => handleGetUserById(item.id)}>
+                        <tr key={item.id} onClick={() => handleGetAssignmentById(item.id)}>
                             <td>{item.id}</td>
                             <td>{item.asset.asset_code}</td>
                             <td>{item.asset.name}</td>
