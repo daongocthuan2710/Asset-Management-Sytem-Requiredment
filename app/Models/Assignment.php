@@ -154,4 +154,24 @@ class Assignment extends Model
         $users = User::where('location', $location)->pluck('id');
         return $query->whereIn('staff_id', $users);
     }
+    
+    public function scopeSortByEditAssignment($querry, $request)
+    {
+        return $querry
+            ->when($request->has('sortByEditAssignment'), function ($query) use ($request) {
+                $query
+                    ->orderBy("updated_at", 'desc');
+            });
+    }
+
+    public function scopeSortByCreateAssignment($querry, $request)
+    {
+        return $querry
+            ->when($request->has('sortByCreateAssignment'), function ($query) use ($request) {
+                $query
+                    ->orderBy("created_at", 'desc');
+            });
+    }
+
+    
 }

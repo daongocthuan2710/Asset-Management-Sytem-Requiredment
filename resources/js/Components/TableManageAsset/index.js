@@ -108,7 +108,7 @@ export default function ManageAsset() {
   }
 
 
- 
+
 
 
     if (FilterByState) {
@@ -131,7 +131,7 @@ export default function ManageAsset() {
     if (page) {
       array.push(`page=${page}`);
     }
-    console.log(sort_create_at);
+
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "Asset Code") {
@@ -450,10 +450,10 @@ export default function ManageAsset() {
         />
         <div id="secondFilterAsset">
         <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory}  />
-          
+
         </div>
       </div>
-        
+
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}

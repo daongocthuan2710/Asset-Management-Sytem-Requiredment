@@ -19,6 +19,12 @@ class AssetService {
         return response;
     }
 
+    async getAssetList() {
+        const endpoint = `/asset?sortByName=asc&sortByAssetCode=desc&sortByCategory=desc&search=&no-paginate`;
+        const response = await Repository.get(endpoint);
+        return response;
+    }
+
     async getAssetById(assetId) {
         const endpoint = `/asset/${assetId}`;
         const response = await Repository.get(endpoint);

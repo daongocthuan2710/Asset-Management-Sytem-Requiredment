@@ -43,6 +43,8 @@ class ManageAssignmentRepository extends BaseRepository
             ->sortByAssignedBy($request)
             ->sortByAssignedDate($request)
             ->sortByAssignedState($request)
+            ->sortByEditAssignment($request)
+            ->sortByCreateAssignment($request)
             ->location($sanctumUser->location);
 
         return AssignmentResource::collection($data->paginate(config('app.limit')));
@@ -80,7 +82,6 @@ class ManageAssignmentRepository extends BaseRepository
     public function getById($id)
     {
         $data = $this->query->findOrFail($id);
-
         return new AssignmentResource($data);
     }
 }

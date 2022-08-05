@@ -32,7 +32,7 @@ class UpdateAssetRequest extends FormRequest
     {
         return [
             'name' => ['string', 'required'],
-            // 'specification' => ['string'],
+            'specification' => ['string'],
             'installed_date' => ['date', 'required'],
             'state' => ['integer', 'required', 'max:1', 'min:-2'],
         ];

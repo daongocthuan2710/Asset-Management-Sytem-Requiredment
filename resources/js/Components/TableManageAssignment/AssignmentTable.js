@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 import Table from "react-bootstrap/Table";
-import { getAssetEdit } from "../../Actions/asset.action";
-import { useDispatch,useSelector } from "react-redux";
+import { getAssignmentEdit } from "../../Actions/assignment.action";
 import assetEditReducer from "../../Reducers/asset.reducer";
+import AssignmentService from "../../Services/assignment.service";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom";
 import {
     FaAngleDown,
     FaAngleUp,
@@ -13,6 +14,7 @@ import {
     FaUndo
 } from "react-icons/fa";
 import moment from "moment";
+import { Redirect , Navigate} from "react-router-dom";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
@@ -20,37 +22,21 @@ export default function AssignmentTable({
     handleSort, handleOpenEditForm,
     handleGetAssignmentById, handleDeleteAssignment
 }) {
-    const sort_at = useSelector(
-        (state) => state.assetEditReducer.sort_at
-      );
-    //   console.log('sort_at',sort_at);
-    //   if(sort_at === 'sortByEditAsset'){
-    //     array.push('sortByEditUser');
+    let history = useHistory();
 
-    //   }
-    //   if(sort_at ===  'sortByCreateAsset'){
-    //     array.push('sortByCreateUser');
-    //   }
-
-    const dispatch = useDispatch();
-    async function handleOpenEditAssetForm(e, assetId = "") {
+    async function handleOpenEditAssetForm(e, assignmentId = "") {
       e.stopPropagation();
-      const data = {
-        assetId: assetId,
-        displayValue: true,
-        sort_at:''
-    }
-      const response = await dispatch(getAssetEdit(data));
-      handleShowMessage(response);
+        const response = await AssignmentService.getAssignmentEdit(assignmentId);
+      handleShowMessage(response,assignmentId);
     }
 
-    function handleShowMessage(response) {
+    function handleShowMessage(response,assignmentId) {
         const message = response.data == undefined ? response.message : response.data.message;
         const code = response.code;
         switch (code) {
           case 200:
             {
-              //
+                history.push(`/edit-assignment/${assignmentId}`);
             }
             break;
           case 422:
@@ -64,6 +50,17 @@ export default function AssignmentTable({
               });
             }
             break;
+            case 401:
+                {
+                  Swal.fire({
+                    position: "center",
+                    icon: "info",
+                    title: message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                }
+                break;
         }
 
       }
@@ -105,9 +102,10 @@ export default function AssignmentTable({
                             <td>{item.state.name}</td>
 
                             <td className="td-without_border">
-                                     <FaPencilAlt
+                                        <FaPencilAlt
                                             onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton'
-                                        />{" "}
+                                        />
+                                        {" "}
                                         {"  "}
                                         &nbsp;
                                 {
