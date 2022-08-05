@@ -15,12 +15,14 @@ class ManageUserController extends Controller
     {
         $this->ManageUserService = $manageUserService;
     }
-
     public function index()
     {
         return $this->ManageUserService->getAll();
     }
-
+    public function search($keyword)
+    {
+        return $this->ManageUserService->search($keyword);
+    }
     public function show($id)
     {
         return $this->ManageUserService->show($id);

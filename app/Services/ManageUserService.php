@@ -24,6 +24,27 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->getAll();
     }
+    public function search($keyword)
+    {
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        } else {
+            $location = $sanctumUser->location;
+            $users = $this->userModel->select('user.*')->where('user.location', $location);
+            if ($keyword !== null) {
+                $keyword = strtoupper($keyword);
+                $users->where(function ($q) use ($keyword) {
+                    return $q
+                        ->whereRaw("UPPER(concat(first_name, ' ', last_name)) LIKE '%" . $keyword . "%'")
+                        ->orWhere('staff_code', 'like', "%$keyword%");
+                });
+            }
+            return response()->json([
+                'users' => $users->get()
+            ], 200);
+        }
+    }
     public function store($data)
     {
         //check admin
@@ -51,7 +72,7 @@ class ManageUserService extends BaseService
             $staff_code = $this->createNewStaffCode($id);
             $password = Hash::make($this->generatePassword($username, $dob));
             $location = $sanctumUser->location;
-//             $password = $this->generatePassword($username, $dob);
+            //             $password = $this->generatePassword($username, $dob);
             $user->update([
                 "staff_code" => $staff_code,
                 "username" => $username,
@@ -108,7 +129,7 @@ class ManageUserService extends BaseService
             ]);
         } else {
             return response()->json([
-            'disable' => $assignment
+                'disable' => $assignment
             ]);
         }
     }

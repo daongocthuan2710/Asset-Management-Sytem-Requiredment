@@ -8,8 +8,6 @@ import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.gif";
-import DisableUser from "../DisableUser";
-import userService from "../../Services/user.service";
 import assetService from "../../Services/asset.service";
 import CustomPagination from "./CustomPagination";
 import AssetTable from "./AssetTable";
@@ -29,10 +27,11 @@ export default function ManageAsset() {
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
   const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
-  const [filterCategory, setFilterCategory] = React.useState([]);
+  const [filterCategory, setFilterCategory] = React.useState(['3']);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
+  
 
 
   const sort_create_at = useSelector(
@@ -44,8 +43,6 @@ export default function ManageAsset() {
   const sort_at_get_mesage = useSelector(
     (state) => state.assetGetMessageReducer.sort_at
   );
-  console.log(sort_at ," tao la sort aray");
-  console.log(sort_at_get_mesage ," tao la sort_at_get_mesage");
 
   const [tableHeader, setTableHeader] = React.useState([
     {
@@ -104,18 +101,12 @@ export default function ManageAsset() {
       }
     }
     
-    console.log(sort ," tao la sort aray 2");
-
     if(sort_at === 'sortByEditAsset'){
       array.push('sortByEditAsset');
   }
     if(sort_at_get_mesage=== 'sortByCreateAsset'){
       array.push('sortByCreateAsset');
   }
-
-
- 
-
 
     if (FilterByState) {
       if (FilterByState.length > 0) {
@@ -137,7 +128,7 @@ export default function ManageAsset() {
     if (page) {
       array.push(`page=${page}`);
     }
-    console.log(sort_create_at);
+
     if (sort) {
       sort.forEach((item) => {
         if (item.key === "Asset Code") {
@@ -181,16 +172,28 @@ export default function ManageAsset() {
   };
 
   const handleFilterCategory = (id) => {
-    setPage(1);
+    
     const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
 
     const index = tempFilterCategory.findIndex((e) => e === id);
-    if (index === -1) {
+    const indexAll = tempFilterCategory.findIndex((e) => e === "3");
+
+    if (index === -1 && indexAll !== -1) {
+      tempFilterCategory[0] = id;
+    }
+
+    if (index === -1 ) {
       tempFilterCategory.push(id);
-    } else {
+    }
+
+    if (index !== -1 && indexAll === -1) {
       tempFilterCategory.splice(index, 1);
     }
 
+    if (index !== -1 && tempFilterCategory.length === 1) {
+      tempFilterCategory[0] = "3";
+    }
+  
     setFilterCategory(tempFilterCategory);
 
     let temp_filter_state;
@@ -223,8 +226,6 @@ export default function ManageAsset() {
     });
   };
   const handleFilter = (key, value) => {
-    setPage(1);
-
     let arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
     if (key !== 'All') {
       const findIndex = arrayStateTemp.findIndex((item) => item.key === 'All');
@@ -265,7 +266,6 @@ export default function ManageAsset() {
       temp_page = page;
     }
 
-    setPage(1);
 
     getApiUser({
       FilterByState: arrayStateTemp,
@@ -276,7 +276,6 @@ export default function ManageAsset() {
     });
   };
   const handleSearch = (e, value) => {
-    setPage(1);
     e.preventDefault();
     setCurrentSearch(value);
 
@@ -311,7 +310,6 @@ export default function ManageAsset() {
   };
   const handlePageChange = (pageNumber) => {
     setPage(pageNumber);
-
     let temp_filter_state;
     let temp_search;
     let temp_filter_category;
@@ -342,7 +340,6 @@ export default function ManageAsset() {
     });
   };
   const handleSort = (key, value) => {
-    setPage(1);
     let temp_filter_state;
     let temp_page;
     let temp_search;
@@ -364,13 +361,17 @@ export default function ManageAsset() {
       temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
     }
 
-    const tempSortArray = [];
+    const tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     const tempHeader = JSON.parse(JSON.stringify(tableHeader));
+
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
+
     if (value) {
-      tempSortArray.push({ key, value });
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
@@ -380,21 +381,23 @@ export default function ManageAsset() {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
+        if (i === 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
       }
       setSortArray(tempSortArray);
     }
 
     if (!value) {
-      tempSortArray.push({ key, value });
+      setSortArray([]);
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'asc';
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 4) {
-          tempHeader[i].isSortASC = false;
-          tempHeader[i].isSortDESC = true;
-        }
+        if (i != 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }``
       }
     }
 
@@ -462,10 +465,10 @@ export default function ManageAsset() {
         />
         <div id="secondFilterAsset">
         <FilterByCategory handleFilter={handleFilterCategory} filterCategory={filterCategory}  />
-          
+
         </div>
       </div>
-        
+
         <div id="search-create" className="d-flex search-create">
           <SearchCreate
             currentSearch={currentSearch}
@@ -480,6 +483,7 @@ export default function ManageAsset() {
             data={data}
             tableHeader={tableHeader}
             Nodata={Nodata}
+            setPage={setPage}
             handleSort={handleSort}
             handleOpenEditForm={handleOpenEditForm}
             handleGetUserById={handleGetUserById}

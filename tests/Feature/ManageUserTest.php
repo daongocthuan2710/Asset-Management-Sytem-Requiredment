@@ -32,21 +32,7 @@ class ManageUserTest extends TestCase
         $viewUser->assertStatus(401);
     }
 
-    public function test_admin_manage_user_successfully()
-    {
-        $response = $this->postJson('api/login', [
-            "username" => "bichvht",
-            "password" => "12345"
-        ]);
-        $response->assertStatus(200);
-        $token = $response->getData()->token;
-
-        $viewUser = $this->getJson('api/manageUser', [
-            'Authorization' => "Bearer $token"
-        ]);
-        $viewUser->assertStatus(200);
-    }
-    public function test_admin_view_user_in_the_same_location()
+    public function test_admin_view_user_in_the_same_location_only()
     {
         $response = $this->postJson('api/login', [
             "username" => "tuandc",
@@ -60,6 +46,11 @@ class ManageUserTest extends TestCase
         ]);
         $viewUser->assertStatus(200)->assertJsonFragment([
             "location" => "HCM"
+        ])->assertJsonMissing([
+            "location" => "HN"
+        ])->assertJsonMissing([
+            "location" => "DN"
         ]);
     }
+    
 }

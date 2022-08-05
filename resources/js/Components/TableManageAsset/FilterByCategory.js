@@ -15,9 +15,7 @@ export default function FilterByCategory({
     handleFilter,
     arrayState,
     filterCategory
-}) 
-
-{
+}) {
     React.useEffect(() => {
         getApiCategory();
     }, []);
@@ -25,10 +23,10 @@ export default function FilterByCategory({
     const token = localStorage.getItem("token");
     const headers = { headers: { Authorization: `Bearer ${token}` } };
     const getApiCategory = async () => {
-    await axios.get("/api/category", headers)
-    .then(function (response) {
-        setCategory(response.data.category);
-      })
+        await axios.get("/api/category", headers)
+            .then(function (response) {
+                setCategory(response.data.category);
+            })
     }
 
     const checkId = (id) => {
@@ -43,8 +41,8 @@ export default function FilterByCategory({
             return false;
         }
     }
-  
-    return (    
+
+    return (
         <>
             <Dropdown onSelect={() => handleFilter}>
                 <Dropdown.Toggle className="filter-button d-flex align-items-center justity-content-center ">
@@ -55,18 +53,26 @@ export default function FilterByCategory({
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Form>
-                   
-                    { category.length > 0 && category.map((item, index) => (
-                    <Form.Check key ={index}
+                        <Form.Check key={"All"}
                             type="checkbox"
                             id="checkbox-all"
                             className="mx-4 my-2 font-weight-bold"
-                            label={item.name}
-                            checked={checkId(item.id)}
-                            onChange={() => handleFilter(item.id)}
-                            eventKey={item.id}
+                            label={"All"}
+                            checked={checkId("3")}
+                            onChange={() => handleFilter("3")}
+                            eventKey={"3"}
                         />
-))}
+                        {category.length > 0 && category.map((item, index) => (
+                            <Form.Check key={index}
+                                type="checkbox"
+                                id="checkbox-all"
+                                className="mx-4 my-2 font-weight-bold"
+                                label={item.name}
+                                checked={checkId(item.id)}
+                                onChange={() => handleFilter(item.id)}
+                                eventKey={item.id}
+                            />
+                        ))}
                     </Form>
                 </Dropdown.Menu>
             </Dropdown>

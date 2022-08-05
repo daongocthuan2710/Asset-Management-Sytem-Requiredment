@@ -9,6 +9,12 @@ class Asset extends Model
 {
     use HasFactory;
 
+    public const ASSIGNED_STATE = 2;
+    public const AVAILABLE_STATE = 1;
+    public const NOT_AVAILABLE = 0;
+    public const WAITING_FOR_RECYCLING = -1;
+    public const RECYCLED = -2;
+
     protected $table = 'asset';
     protected $fillable = [
         'asset_code',
@@ -41,9 +47,12 @@ class Asset extends Model
 
     public function scopeFilterByCategory($query, $request)
     {
+        $filterByCategory = explode(',', $request->query('filterByCategory'));
+        if (in_array(3, $filterByCategory)) {
+            return $query;
+        }
         return $query
-            ->when($request->has('filterByCategory'), function ($query) use ($request) {
-                $filterByCategory = explode(',', $request->query('filterByCategory'));
+            ->when($request->has('filterByCategory'), function ($query) use ($filterByCategory) {
                 $query->whereIn("category_id", $filterByCategory);
             });
     }

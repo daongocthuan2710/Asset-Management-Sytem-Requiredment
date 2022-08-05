@@ -33,6 +33,7 @@ export default function EditAssetForm() {
     );
 
     const dispatch = useDispatch();
+
     function handleCloseEditForm(e) {
         e.preventDefault();
         const data = {
@@ -69,34 +70,34 @@ export default function EditAssetForm() {
     function handleShowMessage(code, message, assetId) {
         console.log(code, message, assetId);
         setShowModal(true);
-        switch (code) {
-            case 200:
-                {
-                    setModalHeader("Success");
-                    setModalBody(message);
-                    setTimeout(() => {
-                        const data = {
-                            assetId: assetId,
-                            displayValue: false,
-                            sort_at: "sortByEditAsset",
-                        };
-                        dispatch(getAssetEdit(data));
-                    }, 1500);
-                }
-                break;
-            case 422:
-                setModalHeader("Failed!");
-                setModalBody(message);
-                setTimeout(() => {
-                    setShowModal(false);
-                }, 1500);
-                break;
+        if (code === 200) {
+            setModalHeader("Success");
+            setModalBody(message);
+            setTimeout(() => {
+                const data = {
+                    assetId: assetId,
+                    displayValue: false,
+                    sort_at: "sortByEditAsset",
+                };
+                dispatch(getAssetEdit(data));
+            }, 1500);
+        } else {
+            setModalHeader("Failed!");
+            setModalBody(message);
         }
+        setTimeout(() => {
+            setShowModal(false);
+        }, 1500);
     }
 
-    function handleShowButtonSave() {
-        setDisableSave(false);
+    const handleEditForm = (e) => {
+        console.log(e.target.form[0].value, e.target.form[2].value, e.target.form[3].value);
+        if(e.target.form[0].value === '' || e.target.form[2].value === '' || e.target.form[3].value === ''){
+            setDisableSave(true);
+        }
+        else setDisableSave(false);
     }
+
     return (
         <>
             <Container id="containerFormEdit">
@@ -109,7 +110,7 @@ export default function EditAssetForm() {
                 <Row>
                     <Form
                         className="fs-5"
-                        onChange={() => handleShowButtonSave()}
+                        onChange={(e) => handleEditForm(e)}
                     >
                         <Form.Group className="mb-3" controlId="NameForm">
                             <Row>
@@ -139,6 +140,7 @@ export default function EditAssetForm() {
                                 </Col>
                                 <Col md={8}>
                                     <select
+                                        id='assetCategoryDisable'
                                         className="form-select fs-5"
                                         defaultValue={assetEditInfo.category}
                                         disabled
@@ -194,7 +196,9 @@ export default function EditAssetForm() {
                                 </Col>
                             </Row>
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="StateForm">
+                        <Form.Group
+                            className="mb-3"
+                            controlId="StateForm">
                             <Row>
                                 <Col md={4}>
                                     <Form.Label className="mx-4">
