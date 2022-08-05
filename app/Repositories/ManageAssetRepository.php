@@ -25,7 +25,6 @@ class ManageAssetRepository extends BaseRepository
     {
         $data = $this->query
             ->where('location', $sanctumUser->location)
-            ->where('state', '!=', -1)
             ->search($request)
             ->filterByCategory($request)
             ->filterByState($request)
