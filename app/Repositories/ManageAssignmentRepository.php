@@ -77,4 +77,10 @@ class ManageAssignmentRepository extends BaseRepository
             'message' => 'Assignment deleted successfully'
         ], 200);
     }
+    public function getById($id)
+    {
+        $data = $this->query->findOrFail($id);
+
+        return new AssignmentResource($data);
+    }
 }

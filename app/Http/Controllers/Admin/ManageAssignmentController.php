@@ -43,7 +43,7 @@ class ManageAssignmentController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->manageAssignmentService->getById($id);
     }
 
     /**

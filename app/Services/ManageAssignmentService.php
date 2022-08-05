@@ -159,4 +159,14 @@ class ManageAssignmentService extends BaseService
             return response()->json(['message' => 'You can delete this assignment'], 200);
         }
     }
+    public function getById($id)
+    {
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->manageAssignmentRepository->getById($id);
+    }
 }

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export default function DeleteAssignment(props) {
     const [show, setShow] = useState(Boolean(props.show));
-    const [canDelete, setCanDelete] = useState(false);
+    const [canDelete, setCanDelete] = useState(true);
 
     const handleDeleteAssignment = async (e) => {
         try {

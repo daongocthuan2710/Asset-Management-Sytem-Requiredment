@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Table } from "react-bootstrap";
 import { FaRegWindowClose } from "react-icons/fa"
 import moment from "moment";
+import { assign } from "lodash";
 export default function AssignmentDetailModal({
     modal, assignment,
     setModal
@@ -24,66 +25,35 @@ export default function AssignmentDetailModal({
                 <Modal.Body>
                     <div className="d-flex">
                         <p className="w-25">Asset Code</p>
-                        <p className="w-75">{assignment.asset_code}</p>
+                        <p className="w-75">{assignment.asset && assignment.asset.asset_code}</p>
                     </div>
                     <div className="d-flex">
                         <p className="w-25">Asset Name</p>
-                        <p className="w-75">{assignment.name}</p>
+                        <p className="w-75">{assignment.asset && assignment.asset.name}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Category</p>
-                        <p className="w-75">{assignment.category && assignment.category.name}</p>
+                        <p className="w-25">Specification</p>
+                        <p className="w-75">{assignment.asset && assignment.asset.specification}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Installed Date</p>
-                        <p className="w-75">{assignment.installed_date}</p>
+                        <p className="w-25">Assigned to</p>
+                        <p className="w-75">{assignment.staff && assignment.staff.username}</p>
+                    </div>
+                    <div className="d-flex">
+                        <p className="w-25">Assigned by</p>
+                        <p className="w-75">{assignment.assigned_by && assignment.assigned_by.username}</p>
+                    </div>
+                    <div className="d-flex">
+                        <p className="w-25">Assigned Date</p>
+                        <p className="w-75">{assignment.assigned_date}</p>
                     </div>
                     <div className="d-flex">
                         <p className="w-25">State</p>
                         <p className="w-75">{assignment.state && assignment.state.name}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Location</p>
-                        <p className="w-75">{assignment.location}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p className="w-25">Specification</p>
-                        <p className="w-75">{assignment.specification}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p className="w-25">History</p>
-                        <p className="w-75">
-                            {
-                                assignment.history ? (
-                                    <Table bordered hover id="asset-history">
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Assigned to</th>
-                                                <th>Assigned by</th>
-                                                <th>Returned date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                ) : (
-                                    <span>No Data</span>
-                                )
-                            }
-                        </p>
+                        <p className="w-25">Note</p>
+                        <p className="w-75">{assignment.note}</p>
                     </div>
                 </Modal.Body>
             </Modal>

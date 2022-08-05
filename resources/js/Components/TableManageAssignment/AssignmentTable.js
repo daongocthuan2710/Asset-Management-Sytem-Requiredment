@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import Table from "react-bootstrap/Table";
 import { getAssetEdit } from "../../Actions/asset.action";
@@ -15,8 +16,9 @@ import moment from "moment";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
+    // eslint-disable-next-line no-unused-vars
     handleSort, handleOpenEditForm,
-    handleGetUserById, handleDeleteAssignment
+    handleGetAssignmentById, handleDeleteAssignment
 }) {
     const sort_at = useSelector(
         (state) => state.assetEditReducer.sort_at
@@ -93,7 +95,7 @@ export default function AssignmentTable({
                 {data.length > 0 ? (
                     data.length > 0 &&
                     data.map((item) => (
-                        <tr key={item.id} onClick={() => handleGetUserById(item.id)}>
+                        <tr key={item.id} onClick={() => handleGetAssignmentById(item.id)}>
                             <td>{item.id}</td>
                             <td>{item.asset.asset_code}</td>
                             <td>{item.asset.name}</td>

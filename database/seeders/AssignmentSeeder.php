@@ -15,6 +15,7 @@ class AssignmentSeeder extends Seeder
      */
     public function run()
     {
+       
         Assignment::create(["asset_id" => "21", "assigned_by" => 20, "staff_id" => 6, "assigned_date" => "2021-11-10", "state" => -1]);
         Assignment::create(["asset_id" => "5", "assigned_by" => 38, "staff_id" => 13, "assigned_date" => "2022-07-10", "state" => 0]);
         Assignment::create(["asset_id" => "26", "assigned_by" => 38, "staff_id" => 6, "assigned_date" => "2020-05-30", "state" => 0]);
