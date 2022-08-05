@@ -79,6 +79,7 @@ class ManageAssignmentService extends BaseService
             $sanctumUser = auth('sanctum')->user();
             $user = User::find($request->staff_id);
             $asset = Asset::find($request->asset_id);
+            $assignment = Assignment::find($id);
             //if user is not existed
             if (!$user) {
                 return response()->json([
@@ -110,7 +111,7 @@ class ManageAssignmentService extends BaseService
                 );
             }
             //if asset is not available
-            if ($asset->state !== 1) {
+            if ($asset->state !== 1 && $asset->id != $assignment->asset_id) {
                 return response()->json(
                     [
                         "message" => "Asset is not available",

@@ -58,9 +58,17 @@ class ManageAssignmentRepository extends BaseRepository
     public function update($request, $id)
     {
         $assignment = Assignment::query()->findOrFail($id);
+        //update old asset state = 1
+        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        $asset->update(['state' => 1]);
+        //update assigned_by
         $sanctumUser = auth('sanctum')->user();
+        //update query
         $assignment->update($request->all());
         $assignment->update(['assigned_by' => $sanctumUser->id]);
+        //update new asset state = 2
+        $newAsset = Asset::query()->findOrFail($request->asset_id);
+        $newAsset->update(['state' => 2]);
         return response()->json([
             'message' => 'Assignment updated successfully'
         ], 200);
@@ -74,6 +82,8 @@ class ManageAssignmentRepository extends BaseRepository
     public function destroy($id)
     {
         $assignment = Assignment::query()->findOrFail($id);
+        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        $asset->update(['state' => 1]);
         $assignment->delete();
         return response()->json([
             'message' => 'Assignment deleted successfully'
