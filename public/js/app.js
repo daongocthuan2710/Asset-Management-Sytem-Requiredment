@@ -4111,7 +4111,8 @@ function AssetTable(_ref) {
       handleSort = _ref.handleSort,
       handleOpenEditForm = _ref.handleOpenEditForm,
       handleGetUserById = _ref.handleGetUserById,
-      handleDeleteAsset = _ref.handleDeleteAsset;
+      handleDeleteAsset = _ref.handleDeleteAsset,
+      setPage = _ref.setPage;
   var sort_at = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
     return state.assetEditReducer.sort_at;
   }); //   console.log('sort_at',sort_at);
@@ -4186,6 +4187,7 @@ function AssetTable(_ref) {
     }
   }
 
+  if (data.length === 0) setPage(1);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_6__["default"], {
     responsive: "md",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("thead", {
@@ -4193,9 +4195,7 @@ function AssetTable(_ref) {
         children: data.length > 0 ? tableHeader.map(function (item, index) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("th", {
             onClick: function onClick() {
-              if (item.name !== "Username") {
-                handleSort(item.name, item.isSortASC);
-              }
+              handleSort(item.name, item.isSortASC);
             },
             children: [item.name, "\xA0", item.isSortASC && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaAngleDown, {}), item.isSortDESC && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_7__.FaAngleUp, {})]
           }, index);
@@ -4287,8 +4287,8 @@ function CustomPagination(_ref) {
       linkClassNext: "page-next",
       activeLinkClass: "pagination-active",
       hideFirstLastPages: true,
-      onChange: function onChange(page) {
-        return handlePageChange(page);
+      onChange: function onChange(pageNumber) {
+        return handlePageChange(pageNumber);
       }
     }) : ""
   });
@@ -4422,8 +4422,18 @@ function FilterByCategory(_ref) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_4__.FaFilter, {})
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Menu, {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
-          children: category.length > 0 && category.map(function (item, index) {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Check, {
+            type: "checkbox",
+            id: "checkbox-all",
+            className: "mx-4 my-2 font-weight-bold",
+            label: "All",
+            checked: checkId("All"),
+            onChange: function onChange() {
+              return handleFilter("All");
+            },
+            eventKey: "All"
+          }, "All"), category.length > 0 && category.map(function (item, index) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Check, {
               type: "checkbox",
               id: "checkbox-all",
@@ -4435,7 +4445,7 @@ function FilterByCategory(_ref) {
               },
               eventKey: item.id
             }, index);
-          })
+          })]
         })
       })]
     })
@@ -4676,7 +4686,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.css */ "./resources/js/Components/TableManageAsset/style.css");
 /* harmony import */ var notiflix_build_notiflix_loading_aio__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! notiflix/build/notiflix-loading-aio */ "./node_modules/notiflix/build/notiflix-loading-aio.js");
 /* harmony import */ var notiflix_build_notiflix_loading_aio__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(notiflix_build_notiflix_loading_aio__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! react-bootstrap/Row */ "./node_modules/react-bootstrap/esm/Row.js");
+/* harmony import */ var react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! react-bootstrap/Row */ "./node_modules/react-bootstrap/esm/Row.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
@@ -4684,21 +4694,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Actions_user_action__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Actions/user.action */ "./resources/js/Actions/user.action.jsx");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _assets_Nodata_gif__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../assets/Nodata.gif */ "./resources/assets/Nodata.gif");
-/* harmony import */ var _DisableUser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../DisableUser */ "./resources/js/Components/DisableUser/index.js");
-/* harmony import */ var _Services_user_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../Services/user.service */ "./resources/js/Services/user.service.jsx");
-/* harmony import */ var _Services_asset_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../Services/asset.service */ "./resources/js/Services/asset.service.jsx");
-/* harmony import */ var _CustomPagination__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./CustomPagination */ "./resources/js/Components/TableManageAsset/CustomPagination.js");
-/* harmony import */ var _AssetTable__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./AssetTable */ "./resources/js/Components/TableManageAsset/AssetTable.js");
-/* harmony import */ var _FilterByState__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./FilterByState */ "./resources/js/Components/TableManageAsset/FilterByState.js");
-/* harmony import */ var _SearchCreate__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./SearchCreate */ "./resources/js/Components/TableManageAsset/SearchCreate.js");
-/* harmony import */ var _AssetDetailModal__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./AssetDetailModal */ "./resources/js/Components/TableManageAsset/AssetDetailModal.js");
-/* harmony import */ var _DeleteAsset__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../DeleteAsset */ "./resources/js/Components/DeleteAsset/index.js");
-/* harmony import */ var _FilterByCategory__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./FilterByCategory */ "./resources/js/Components/TableManageAsset/FilterByCategory.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_19__);
-/* harmony import */ var _Reducers_asset_reducer__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../../Reducers/asset.reducer */ "./resources/js/Reducers/asset.reducer.jsx");
-/* harmony import */ var _Reducers_getMessageTopSort_reducer__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../Reducers/getMessageTopSort.reducer */ "./resources/js/Reducers/getMessageTopSort.reducer.jsx");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _Services_asset_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../Services/asset.service */ "./resources/js/Services/asset.service.jsx");
+/* harmony import */ var _CustomPagination__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./CustomPagination */ "./resources/js/Components/TableManageAsset/CustomPagination.js");
+/* harmony import */ var _AssetTable__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./AssetTable */ "./resources/js/Components/TableManageAsset/AssetTable.js");
+/* harmony import */ var _FilterByState__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./FilterByState */ "./resources/js/Components/TableManageAsset/FilterByState.js");
+/* harmony import */ var _SearchCreate__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./SearchCreate */ "./resources/js/Components/TableManageAsset/SearchCreate.js");
+/* harmony import */ var _AssetDetailModal__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./AssetDetailModal */ "./resources/js/Components/TableManageAsset/AssetDetailModal.js");
+/* harmony import */ var _DeleteAsset__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../DeleteAsset */ "./resources/js/Components/DeleteAsset/index.js");
+/* harmony import */ var _FilterByCategory__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./FilterByCategory */ "./resources/js/Components/TableManageAsset/FilterByCategory.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_17___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_17__);
+/* harmony import */ var _Reducers_asset_reducer__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../Reducers/asset.reducer */ "./resources/js/Reducers/asset.reducer.jsx");
+/* harmony import */ var _Reducers_getMessageTopSort_reducer__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../../Reducers/getMessageTopSort.reducer */ "./resources/js/Reducers/getMessageTopSort.reducer.jsx");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return generator._invoke = function (innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; }(innerFn, self, context), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; this._invoke = function (method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); }; } function maybeInvokeDelegate(delegate, context) { var method = delegate.iterator[context.method]; if (undefined === method) { if (context.delegate = null, "throw" === context.method) { if (delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel; context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method"); } return ContinueSentinel; } var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) { if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; } return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (object) { var keys = []; for (var key in object) { keys.push(key); } return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) { "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); } }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
@@ -4718,8 +4726,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
 
 
 
@@ -4819,8 +4825,6 @@ function ManageAsset() {
   var sort_at_get_mesage = (0,react_redux__WEBPACK_IMPORTED_MODULE_7__.useSelector)(function (state) {
     return state.assetGetMessageReducer.sort_at;
   });
-  console.log(sort_at, " tao la sort aray");
-  console.log(sort_at_get_mesage, " tao la sort_at_get_mesage");
 
   var _React$useState21 = react__WEBPACK_IMPORTED_MODULE_0__.useState([{
     name: "Asset Code",
@@ -4905,8 +4909,6 @@ function ManageAsset() {
                 }
               }
 
-              console.log(sort, " tao la sort aray 2");
-
               if (sort_at === 'sortByEditAsset') {
                 array.push('sortByEditAsset');
               }
@@ -4972,21 +4974,21 @@ function ManageAsset() {
                 svgColor: "rgb(220 53 69)",
                 backgroundColor: "rgba(255, 255, 255, 0.44)"
               });
-              _context.next = 16;
+              _context.next = 15;
               return axios__WEBPACK_IMPORTED_MODULE_4___default().get(url, {
                 headers: {
                   Authorization: "Bearer " + localStorage.getItem("token")
                 }
               });
 
-            case 16:
+            case 15:
               response = _context.sent;
               notiflix_build_notiflix_loading_aio__WEBPACK_IMPORTED_MODULE_3__.Loading.remove();
               setData(response.data.data);
               setTotal(response.data.meta.total);
               return _context.abrupt("return", response.data);
 
-            case 21:
+            case 20:
             case "end":
               return _context.stop();
           }
@@ -5000,7 +5002,6 @@ function ManageAsset() {
   }();
 
   var handleFilterCategory = function handleFilterCategory(id) {
-    setPage(1);
     var tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
     var index = tempFilterCategory.findIndex(function (e) {
       return e === id;
@@ -5044,7 +5045,6 @@ function ManageAsset() {
   };
 
   var handleFilter = function handleFilter(key, value) {
-    setPage(1);
     var arrayStateTemp = JSON.parse(JSON.stringify(arrayState));
 
     if (key !== 'All') {
@@ -5099,7 +5099,6 @@ function ManageAsset() {
       temp_page = page;
     }
 
-    setPage(1);
     getApiUser({
       FilterByState: arrayStateTemp,
       page: temp_page,
@@ -5110,7 +5109,6 @@ function ManageAsset() {
   };
 
   var handleSearch = function handleSearch(e, value) {
-    setPage(1);
     e.preventDefault();
     setCurrentSearch(value);
     var temp_filter_state;
@@ -5176,7 +5174,6 @@ function ManageAsset() {
   };
 
   var handleSort = function handleSort(key, value) {
-    setPage(1);
     var temp_filter_state;
     var temp_page;
     var temp_search;
@@ -5205,12 +5202,13 @@ function ManageAsset() {
     });
 
     if (value) {
+      console.log('value', value);
       tempSortArray.push({
         key: key,
         value: value
       });
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'desc';
+      tempSortArray[0].value = 'asc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
 
@@ -5230,7 +5228,7 @@ function ManageAsset() {
         value: value
       });
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'asc';
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = true;
       tempHeader[indexHeader].isSortDESC = false;
 
@@ -5325,7 +5323,7 @@ function ManageAsset() {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return _Services_asset_service__WEBPACK_IMPORTED_MODULE_11__["default"].getAssetById(assetId);
+              return _Services_asset_service__WEBPACK_IMPORTED_MODULE_9__["default"].getAssetById(assetId);
 
             case 2:
               response = _context2.sent;
@@ -5346,62 +5344,63 @@ function ManageAsset() {
     };
   }();
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
     className: "containermanageuser",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_DeleteAsset__WEBPACK_IMPORTED_MODULE_17__["default"], {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_DeleteAsset__WEBPACK_IMPORTED_MODULE_15__["default"], {
       show: deleteAsset.show,
       id: deleteAsset.id
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("h5", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("h5", {
       style: {
         color: "red",
         fontWeight: "bold"
       },
       children: "Asset List "
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
       id: "filter-search",
       className: "d-flex justify-content-between type-seach-create",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsxs)("div", {
         className: "d-flex ml-2",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_FilterByState__WEBPACK_IMPORTED_MODULE_14__["default"], {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_FilterByState__WEBPACK_IMPORTED_MODULE_12__["default"], {
           currentButton: currentButton,
           handleFilter: handleFilter,
           arrayState: arrayState
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("div", {
           id: "secondFilterAsset",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_FilterByCategory__WEBPACK_IMPORTED_MODULE_18__["default"], {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_FilterByCategory__WEBPACK_IMPORTED_MODULE_16__["default"], {
             handleFilter: handleFilterCategory,
             filterCategory: filterCategory
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("div", {
         id: "search-create",
         className: "d-flex search-create",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_SearchCreate__WEBPACK_IMPORTED_MODULE_15__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_SearchCreate__WEBPACK_IMPORTED_MODULE_13__["default"], {
           currentSearch: currentSearch,
           handleSearch: handleSearch,
           setCurrentSearch: setCurrentSearch
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_23__["default"], {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_21__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("div", {
         id: "table-manage-user",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_AssetTable__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_AssetTable__WEBPACK_IMPORTED_MODULE_11__["default"], {
           data: data,
           tableHeader: tableHeader,
           Nodata: _assets_Nodata_gif__WEBPACK_IMPORTED_MODULE_8__["default"],
+          setPage: setPage,
           handleSort: handleSort,
           handleOpenEditForm: handleOpenEditForm,
           handleGetUserById: handleGetUserById,
           handleDeleteAsset: handleDeleteAsset
         })
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_23__["default"], {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_CustomPagination__WEBPACK_IMPORTED_MODULE_12__["default"], {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(react_bootstrap_Row__WEBPACK_IMPORTED_MODULE_21__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_CustomPagination__WEBPACK_IMPORTED_MODULE_10__["default"], {
         total: total,
         page: page,
         handlePageChange: handlePageChange
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_22__.jsx)(_AssetDetailModal__WEBPACK_IMPORTED_MODULE_16__["default"], {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)(_AssetDetailModal__WEBPACK_IMPORTED_MODULE_14__["default"], {
       modal: modal,
       user: user,
       setModal: setModal
@@ -6416,6 +6415,7 @@ function ManageAssignment() {
     setPage(1);
     var temp_filter_state;
     var temp_search;
+    var temp_sort;
 
     if (arrayState.length > 0) {
       temp_filter_state = JSON.parse(JSON.stringify(arrayState));
@@ -6425,11 +6425,16 @@ function ManageAssignment() {
       temp_search = currentSearch;
     }
 
+    if (sortArray.length > 0) {
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
+    }
+
     setFilterByDate(date);
     getApiAssignment({
       FilterByDate: date,
       FilterByState: temp_filter_state,
-      search: temp_search
+      search: temp_search,
+      sort: temp_sort
     });
   };
 
@@ -6468,7 +6473,6 @@ function ManageAssignment() {
     }
 
     setArrayState(arrayStateTemp);
-    var temp_page;
     var temp_search;
     var temp_sort;
     var temp_filter_date;
@@ -6478,7 +6482,7 @@ function ManageAssignment() {
     }
 
     if (sortArray.length > 0) {
-      temp_sort = JSON.parse(JSON.stringify(arrayStateTemp));
+      temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
     if (currentSearch !== "") {
@@ -6487,9 +6491,8 @@ function ManageAssignment() {
 
     getApiAssignment({
       FilterByState: arrayStateTemp,
-      // page: temp_page,
       search: temp_search,
-      // sort: temp_sort,
+      sort: temp_sort,
       FilterByDate: temp_filter_date
     });
   };
@@ -6534,7 +6537,7 @@ function ManageAssignment() {
     setPage(pageNumber);
     var temp_filter_state;
     var temp_search;
-    var temp_filter_category;
+    var temp_filter_date;
     var temp_sort;
 
     if (arrayState.length > 0) {
@@ -6545,8 +6548,8 @@ function ManageAssignment() {
       temp_search = currentSearch;
     }
 
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
 
     if (sortArray.length > 0) {
@@ -6558,16 +6561,15 @@ function ManageAssignment() {
       search: temp_search,
       page: pageNumber,
       sort: temp_sort,
-      FilterByCategory: temp_filter_category
+      FilterByDate: temp_filter_date
     });
   };
 
   var handleSort = function handleSort(key, value) {
-    setPage(1);
     var temp_filter_state;
     var temp_page;
     var temp_search;
-    var temp_filter_category;
+    var temp_filter_date;
 
     if (arrayState.length > 0) {
       temp_filter_state = JSON.parse(JSON.stringify(arrayState));
@@ -6577,21 +6579,24 @@ function ManageAssignment() {
       temp_search = currentSearch;
     }
 
-    if (filterCategory.length > 0) {
-      temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
+    if (page) {
+      temp_page = page;
     }
 
-    var tempSortArray = [];
+    if (filterByDate.length > 0) {
+      temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
+    }
+
+    var tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     var tempHeader = JSON.parse(JSON.stringify(tableHeader));
     var indexHeader = tempHeader.findIndex(function (item) {
       return item.name === key;
     });
 
     if (value) {
-      tempSortArray.push({
-        key: key,
-        value: value
-      });
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
@@ -6602,23 +6607,23 @@ function ManageAssignment() {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
+
+        if (i === 7) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
       }
 
       setSortArray(tempSortArray);
     }
 
     if (!value) {
-      tempSortArray.push({
-        key: key,
-        value: value
-      });
+      setSortArray([]);
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'asc';
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
 
       for (var _i2 = 0; _i2 < tempHeader.length; _i2++) {
-        if (_i2 != indexHeader && _i2 != 4) {
+        if (_i2 != 7) {
           tempHeader[_i2].isSortASC = true;
           tempHeader[_i2].isSortDESC = false;
         }
@@ -6631,7 +6636,7 @@ function ManageAssignment() {
       search: temp_search,
       page: temp_page,
       sort: tempSortArray,
-      FilterByCategory: temp_filter_category
+      FilterByDate: temp_filter_date
     });
   };
 
