@@ -280,7 +280,7 @@ export default function PickAsset(props) {
 
                 ))
               ) : (
-                <img id="img-nodata" src={Nodata}></img>
+                <img id="nodataimg-create" src={Nodata} />
               )}
             </tbody>
           </Table>
