@@ -27,10 +27,11 @@ export default function ManageAsset() {
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
   const [deleteAsset, setDeleteAsset] = React.useState({ show: false, id: 0 });
-  const [filterCategory, setFilterCategory] = React.useState([]);
+  const [filterCategory, setFilterCategory] = React.useState(['3']);
   const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([{ key: 'Assigned', value: '2' }, { key: 'Available', value: '1' }, { key: 'Not Available', value: '0' }]);
+  
 
 
   const sort_create_at = useSelector(
@@ -107,10 +108,6 @@ export default function ManageAsset() {
       array.push('sortByCreateAsset');
   }
 
-
-
-
-
     if (FilterByState) {
       if (FilterByState.length > 0) {
         if (FilterByState && FilterByState !== "3") {
@@ -175,15 +172,28 @@ export default function ManageAsset() {
   };
 
   const handleFilterCategory = (id) => {
+    
     const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
 
     const index = tempFilterCategory.findIndex((e) => e === id);
-    if (index === -1) {
+    const indexAll = tempFilterCategory.findIndex((e) => e === "3");
+
+    if (index === -1 && indexAll !== -1) {
+      tempFilterCategory[0] = id;
+    }
+
+    if (index === -1 ) {
       tempFilterCategory.push(id);
-    } else {
+    }
+
+    if (index !== -1 && indexAll === -1) {
       tempFilterCategory.splice(index, 1);
     }
 
+    if (index !== -1 && tempFilterCategory.length === 1) {
+      tempFilterCategory[0] = "3";
+    }
+  
     setFilterCategory(tempFilterCategory);
 
     let temp_filter_state;
@@ -351,20 +361,27 @@ export default function ManageAsset() {
       temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
     }
 
-    const tempSortArray = [];
+    const tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     const tempHeader = JSON.parse(JSON.stringify(tableHeader));
+
 
     const indexHeader = tempHeader.findIndex((item) => item.name === key);
 
+
     if (value) {
-      console.log('value', value);
-      tempSortArray.push({ key, value });
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'asc';
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
       for (let i = 0; i < tempHeader.length; i++) {
         if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+        if (i === 4) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -373,16 +390,14 @@ export default function ManageAsset() {
     }
 
     if (!value) {
-      tempSortArray.push({ key, value });
+      setSortArray([]);
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'desc';
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
+      tempSortArray[0].value = 'asc';
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 4) {
-          tempHeader[i].isSortASC = false;
-          tempHeader[i].isSortDESC = true;
-        }
+        if (i != 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }``
       }
     }
 

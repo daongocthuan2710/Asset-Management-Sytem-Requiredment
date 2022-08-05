@@ -58,9 +58,9 @@ export default function FilterByCategory({
                             id="checkbox-all"
                             className="mx-4 my-2 font-weight-bold"
                             label={"All"}
-                            checked={checkId("All")}
-                            onChange={() => handleFilter("All")}
-                            eventKey={"All"}
+                            checked={checkId("3")}
+                            onChange={() => handleFilter("3")}
+                            eventKey={"3"}
                         />
                         {category.length > 0 && category.map((item, index) => (
                             <Form.Check key={index}

@@ -41,9 +41,12 @@ class Asset extends Model
 
     public function scopeFilterByCategory($query, $request)
     {
+        $filterByCategory = explode(',', $request->query('filterByCategory'));
+        if (in_array(3, $filterByCategory)) {
+            return $query;
+        }
         return $query
-            ->when($request->has('filterByCategory'), function ($query) use ($request) {
-                $filterByCategory = explode(',', $request->query('filterByCategory'));
+            ->when($request->has('filterByCategory'), function ($query) use ($filterByCategory) {
                 $query->whereIn("category_id", $filterByCategory);
             });
     }

@@ -6632,11 +6632,11 @@ function FilterByCategory(_ref) {
             id: "checkbox-all",
             className: "mx-4 my-2 font-weight-bold",
             label: "All",
-            checked: checkId("All"),
+            checked: checkId("3"),
             onChange: function onChange() {
-              return handleFilter("All");
+              return handleFilter("3");
             },
-            eventKey: "All"
+            eventKey: "3"
           }, "All"), category.length > 0 && category.map(function (item, index) {
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Check, {
               type: "checkbox",
@@ -6988,7 +6988,7 @@ function ManageAsset() {
       deleteAsset = _React$useState12[0],
       setDeleteAsset = _React$useState12[1];
 
-  var _React$useState13 = react__WEBPACK_IMPORTED_MODULE_0__.useState([]),
+  var _React$useState13 = react__WEBPACK_IMPORTED_MODULE_0__.useState(['3']),
       _React$useState14 = _slicedToArray(_React$useState13, 2),
       filterCategory = _React$useState14[0],
       setFilterCategory = _React$useState14[1];
@@ -7208,11 +7208,24 @@ function ManageAsset() {
     var index = tempFilterCategory.findIndex(function (e) {
       return e === id;
     });
+    var indexAll = tempFilterCategory.findIndex(function (e) {
+      return e === "3";
+    });
+
+    if (index === -1 && indexAll !== -1) {
+      tempFilterCategory[0] = id;
+    }
 
     if (index === -1) {
       tempFilterCategory.push(id);
-    } else {
+    }
+
+    if (index !== -1 && indexAll === -1) {
       tempFilterCategory.splice(index, 1);
+    }
+
+    if (index !== -1 && tempFilterCategory.length === 1) {
+      tempFilterCategory[0] = "3";
     }
 
     setFilterCategory(tempFilterCategory);
@@ -7397,25 +7410,28 @@ function ManageAsset() {
       temp_filter_category = JSON.parse(JSON.stringify(filterCategory));
     }
 
-    var tempSortArray = [];
+    var tempSortArray = [{
+      key: '',
+      value: ''
+    }];
     var tempHeader = JSON.parse(JSON.stringify(tableHeader));
     var indexHeader = tempHeader.findIndex(function (item) {
       return item.name === key;
     });
 
     if (value) {
-      console.log('value', value);
-      tempSortArray.push({
-        key: key,
-        value: value
-      });
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'asc';
+      tempSortArray[0].value = 'desc';
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
 
       for (var i = 0; i < tempHeader.length; i++) {
         if (i != indexHeader && i != 4) {
+          tempHeader[i].isSortASC = true;
+          tempHeader[i].isSortDESC = false;
+        }
+
+        if (i === 4) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -7425,20 +7441,17 @@ function ManageAsset() {
     }
 
     if (!value) {
-      tempSortArray.push({
-        key: key,
-        value: value
-      });
+      setSortArray([]);
       tempSortArray[0].key = key;
-      tempSortArray[0].value = 'desc';
-      tempHeader[indexHeader].isSortASC = true;
-      tempHeader[indexHeader].isSortDESC = false;
+      tempSortArray[0].value = 'asc';
 
       for (var _i2 = 0; _i2 < tempHeader.length; _i2++) {
-        if (_i2 != indexHeader && _i2 != 4) {
-          tempHeader[_i2].isSortASC = false;
-          tempHeader[_i2].isSortDESC = true;
+        if (_i2 != 4) {
+          tempHeader[_i2].isSortASC = true;
+          tempHeader[_i2].isSortDESC = false;
         }
+
+        "";
       }
     }
 
