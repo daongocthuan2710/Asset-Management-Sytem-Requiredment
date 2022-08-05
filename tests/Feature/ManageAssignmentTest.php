@@ -6,8 +6,9 @@ use Tests\TestCase;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\AssetSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\AssignmentSeeder;
 
-class ManageAssetTest extends TestCase
+class ManageAssignmentTest extends TestCase
 {
     public function setUp(): void
     {
@@ -15,27 +16,29 @@ class ManageAssetTest extends TestCase
         $this->seed(CategorySeeder::class);
         $this->seed(AssetSeeder::class);
         $this->seed(UserSeeder::class);
+        $this->seed(AssignmentSeeder::class);
     }
+
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function test_staff_could_not_access()
+    public function test_staff_could_not_manage_assginment()
     {
         $santumUser = $this->getSanctum("tuandd", "12345");
 
-        $viewAsset = $this->getJson('api/asset', [
+        $viewAsset = $this->getJson('api/assignment', [
             'Authorization' => "Bearer $santumUser->token"
         ]);
         $viewAsset->assertStatus(401);
     }
 
-    public function test_admin_can_only_manage_asset_in_the_same_location()
+    public function test_admin_can_manage_assignment_in_the_same_location_only()
     {
         $santumUser = $this->getSanctum("quytc", "12345");
 
-        $viewAsset = $this->getJson('api/asset', [
+        $viewAsset = $this->getJson('api/assignment', [
             'Authorization' => "Bearer $santumUser->token"
         ]);
         $viewAsset->assertStatus(200)->assertJsonFragment([
@@ -44,18 +47,6 @@ class ManageAssetTest extends TestCase
             "location" => "HCM"
         ])->assertJsonMissing([
             "location" => "DN"
-        ]);
-    }
-
-    public function test_admin_can_view_asset_detail()
-    {
-        $santumUser = $this->getSanctum("bichvht", "12345");
-
-        $viewAsset = $this->getJson('api/asset/5', [
-            'Authorization' => "Bearer $santumUser->token"
-        ]);
-        $viewAsset->assertStatus(200)->assertJsonFragment([
-            "id" => 5
         ]);
     }
 

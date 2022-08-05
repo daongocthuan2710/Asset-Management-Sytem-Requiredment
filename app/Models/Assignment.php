@@ -23,12 +23,12 @@ class Assignment extends Model
         return $this->belongsTo(Asset::class);
     }
 
-    public function assigned_by()
+    public function assignedBy()
     {
         return $this->belongsTo(User::class, 'assigned_by');
     }
 
-    public function staff_id()
+    public function staffId()
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
@@ -41,7 +41,7 @@ class Assignment extends Model
                 $query
                     ->whereRelation("asset", "asset_code", "ilike", "%{$search}%")
                     ->orWhereRelation("asset", "name", "ilike", "%{$search}%")
-                    ->orWhereRelation("staff_id", "username", "ilike", "%{$search}%");
+                    ->orWhereRelation("staffId", "username", "ilike", "%{$search}%");
             });
     }
 
@@ -110,7 +110,7 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedTo'), function ($query) use ($request) {
                 $sortByAssignedTo = $request->query('sortByAssignedTo');
                 $query
-                    ->with('staff_id')
+                    ->with('staffId')
                     ->orderBy(
                         User::select('username')->whereColumn('user.id', 'assignment.staff_id'),
                         $sortByAssignedTo
@@ -124,7 +124,7 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedBy'), function ($query) use ($request) {
                 $sortByAssignedBy = $request->query('sortByAssignedBy');
                 $query
-                    ->with('assigned_by')
+                    ->with('assignedBy')
                     ->orderBy(
                         User::select('username')->whereColumn('user.id', 'assignment.assigned_by'),
                         $sortByAssignedBy
@@ -154,7 +154,7 @@ class Assignment extends Model
         $users = User::where('location', $location)->pluck('id');
         return $query->whereIn('staff_id', $users);
     }
-    
+
     public function scopeSortByEditAssignment($querry, $request)
     {
         return $querry
@@ -172,6 +172,4 @@ class Assignment extends Model
                     ->orderBy("created_at", 'desc');
             });
     }
-
-    
 }

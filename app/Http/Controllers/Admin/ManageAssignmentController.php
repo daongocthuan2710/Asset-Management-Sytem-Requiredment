@@ -16,14 +16,14 @@ class ManageAssignmentController extends Controller
     {
         $this->manageAssignmentService = $manageAssignmentService;
     }
- 
+
         //
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function index(Request $request)
     {
         return $this->manageAssignmentService->getAll($request);

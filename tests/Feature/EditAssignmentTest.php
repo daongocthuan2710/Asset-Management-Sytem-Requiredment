@@ -191,17 +191,4 @@ class EditAssignmentTest extends TestCase
         $this->json('PUT', "api/assignment/$id", $body)
             ->assertStatus(200);
     }
-
-    public function test_success_update_assignment_without_note_filled()
-    {
-        $id = 10; //location: DN, state: 0
-        $body = [
-            'asset_id' => 27, //state: available, location: DN
-            'staff_id' => 25, //state: 1, location: DN
-            'assigned_date' => '2020-01-01',
-        ];
-        Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-        $this->json('PUT', "api/assignment/$id", $body)
-            ->assertStatus(200);
-    }
 }
