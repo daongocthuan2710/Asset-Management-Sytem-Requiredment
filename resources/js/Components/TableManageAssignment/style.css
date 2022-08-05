@@ -193,3 +193,11 @@ tbody{
 #button-assigned-date{
     width: 180px;
 }
+#staff-asset-name{
+    white-space: nowrap; 
+    width: 100px; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    /* border: 1px solid #000000; */
+    /* color: #e73943; */
+}

@@ -95,7 +95,7 @@ export default function AssignmentTable({
                         <tr key={item.id} onClick={() => handleGetAssignmentById(item.id)}>
                             <td>{item.id}</td>
                             <td>{item.asset.asset_code}</td>
-                            <td>{item.asset.name}</td>
+                            <td ><p id="staff-asset-name">{item.asset.name}</p></td>
                             <td>{item.staff.username}</td>
                             <td>{item.assigned_by.username}</td>
                             <td>{moment(item.assigned_date).format('DD-MM-YYYY')}</td>

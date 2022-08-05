@@ -9,6 +9,12 @@ class Asset extends Model
 {
     use HasFactory;
 
+    public const ASSIGNED_STATE = 2;
+    public const AVAILABLE_STATE = 1;
+    public const NOT_AVAILABLE = 0;
+    public const WAITING_FOR_RECYCLING = -1;
+    public const RECYCLED = -2;
+
     protected $table = 'asset';
     protected $fillable = [
         'asset_code',

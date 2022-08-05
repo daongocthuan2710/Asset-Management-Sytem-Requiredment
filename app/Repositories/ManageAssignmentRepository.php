@@ -58,17 +58,17 @@ class ManageAssignmentRepository extends BaseRepository
     public function update($request, $id)
     {
         $assignment = Assignment::query()->findOrFail($id);
-        //update old asset state = 1
+        //update old asset state = available
         $asset = Asset::query()->findOrFail($assignment->asset_id);
-        $asset->update(['state' => 1]);
+        $asset->update(['state' => Asset::AVAILABLE_STATE]);
         //update assigned_by
         $sanctumUser = auth('sanctum')->user();
         //update query
         $assignment->update($request->all());
         $assignment->update(['assigned_by' => $sanctumUser->id]);
-        //update new asset state = 2
+        //update new asset state = assigned
         $newAsset = Asset::query()->findOrFail($request->asset_id);
-        $newAsset->update(['state' => 2]);
+        $newAsset->update(['state' => Asset::ASSIGNED_STATE]);
         return response()->json([
             'message' => 'Assignment updated successfully'
         ], 200);
