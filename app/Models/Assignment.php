@@ -28,7 +28,7 @@ class Assignment extends Model
         return $this->belongsTo(User::class, 'assigned_by');
     }
 
-    public function staffId()
+    public function staff()
     {
         return $this->belongsTo(User::class, 'staff_id');
     }
@@ -41,7 +41,7 @@ class Assignment extends Model
                 $query
                     ->whereRelation("asset", "asset_code", "ilike", "%{$search}%")
                     ->orWhereRelation("asset", "name", "ilike", "%{$search}%")
-                    ->orWhereRelation("staffId", "username", "ilike", "%{$search}%");
+                    ->orWhereRelation("staff", "username", "ilike", "%{$search}%");
             });
     }
 
@@ -110,7 +110,7 @@ class Assignment extends Model
             ->when($request->has('sortByAssignedTo'), function ($query) use ($request) {
                 $sortByAssignedTo = $request->query('sortByAssignedTo');
                 $query
-                    ->with('staffId')
+                    ->with('staff')
                     ->orderBy(
                         User::select('username')->whereColumn('user.id', 'assignment.staff_id'),
                         $sortByAssignedTo
