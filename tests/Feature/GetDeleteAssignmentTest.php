@@ -44,12 +44,12 @@ class GetDeleteAssignmentTest extends TestCase
         $this->json('GET', "api/can-delete-assignment/$id")
             ->assertStatus(401);
     }
-    public function test_delete_accepted_assignment(){
-        $id = 9; //staff_location: DN, state: 1
-        Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-        $this->json('GET', "api/can-delete-assignment/$id")
-            ->assertStatus(422);
-    }
+    // public function test_delete_accepted_assignment(){
+    //     $id = 9; //staff_location: DN, state: 1
+    //     Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
+    //     $this->json('GET', "api/can-delete-assignment/$id")
+    //         ->assertStatus(422);
+    // }
     public function test_success_get_can_delete_assignment(){
         $id = 10; //staff_location: DN, state: 0
         Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
