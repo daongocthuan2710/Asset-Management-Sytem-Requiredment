@@ -72,6 +72,12 @@ export default function EditAssignmentForm() {
                     setModalBody(message);
                     setTimeout(() => {
                         setShowModal(false);
+                        dispatch({
+                            type: 'GET_MESSAGE',
+                            payload: {
+                                sort_at: 'sortByEditAssignment' || ''
+                            },
+                        })
                         history.push(`/manage-assignment`);
                     }, 1500);
                 }
