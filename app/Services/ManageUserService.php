@@ -133,7 +133,7 @@ class ManageUserService extends BaseService
             ]);
         } else {
             return response()->json([
-                'disable' => $assignment
+                'disable' => true
             ]);
         }
     }
