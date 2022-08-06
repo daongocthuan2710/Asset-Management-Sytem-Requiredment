@@ -27,20 +27,36 @@ export default function EditAssignmentForm() {
     const [assetInfo, setAssetInfo] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     const [note, setNote] = useState('');
-    const [assignedDate, setAssignedDate] = useState('');
+    const [assignedDate, setAssignedDate] = useState(new Date().toISOString().slice(0, 10));
     const [select, setSelect] = useState(false);
     const [items, setItems] = useState([]);
-    const assignmentEditInfo = useSelector(
-        (state) => state.assignmentEditReducer.assignmentEditInfo
-    );
+
     let history = useHistory();
     const assignmentId = Number.parseInt(window.location.pathname.split("/").at(-1));
-
+    const [assignedDateError, setAssignedDateError] = React.useState({
+        error: false,
+        message: "",
+     });
     const dispatch = useDispatch();
     function handleCloseEditForm(e) {
         e.preventDefault();
         history.push(`/manage-assignment`);
     }
+
+    // Validate date
+    const assignedDateCheck = (date) => {
+        if (new Date(date) < new Date()) {
+          setAssignedDateError({
+            error: true,
+            message: "Only current or future date. Please select a different date",
+          });
+          setAssignedDate('');
+        } else {
+          setAssignedDate(date);
+          setSelect(true);
+          setAssignedDateError({ error: false, message: "" });
+        }
+      };
 
     // Action
     async function handleUpdateAssignmentInfo(e) {
@@ -60,7 +76,7 @@ export default function EditAssignmentForm() {
                 ? response.message
                 : response.data.message;
         const code = response.code;
-        handleShowMessage(code, message, assignmentEditInfo.id);
+        handleShowMessage(code, message);
     }
 
     function handleShowMessage(code, message) {
@@ -139,7 +155,8 @@ export default function EditAssignmentForm() {
 
     useEffect(() => {
     setDisableSave(true);
-    if ((assignedDate !== '' && assignedDate !== null) && (note !== "" && note !== null) && select == true)
+    if ((assignedDate !== '' && assignedDate !== null && new Date(assignedDate) >= new Date() )
+    && (note !== "" && note !== null) && select == true)
         setDisableSave(false);
     }, [assignedDate, note, select]);
 
@@ -306,7 +323,6 @@ export default function EditAssignmentForm() {
                 <Row>
                     <Form
                         className="fs-5"
-                        onChange = {console.log('e')}
                     >
                         <Form.Group className="mb-3" controlId="UserSelectForm">
                             <Row>
@@ -362,9 +378,13 @@ export default function EditAssignmentForm() {
                                         value={assignedDate}
                                         required
                                         className="fs-5"
-                                        onChange = {(e) => {setAssignedDate(e.target.value); setSelect(true);}}
-                                        isInvalid = {false}
+                                        min={new Date().toISOString().slice(0, 10)}
+                                        onChange = {(e) => {assignedDateCheck(e.target.value)}}
+                                        isInvalid = {assignedDateError.error}
                                     ></Form.Control>
+                                    { <Form.Control.Feedback type="invalid">
+                                    {assignedDateError.message}
+                                    </Form.Control.Feedback> }
                                 </Col>
                             </Row>
                         </Form.Group>
