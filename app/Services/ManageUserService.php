@@ -66,14 +66,17 @@ class ManageUserService extends BaseService
                     "joined_date" => $data['joined_date'],
                     "admin" => $data['admin'],
                     "gender" => $data['gender'],
+                    "location" => $data['location'],
                 ]
             );
             $id = $user->id;
             $username = $this->createNewUserName($first_name, $last_name, $id);
             $staff_code = $this->createNewStaffCode($id);
             $password = Hash::make($this->generatePassword($username, $dob));
-            $location = $sanctumUser->location;
-            //             $password = $this->generatePassword($username, $dob);
+            $location = $data['location'];
+            if (!$location) {
+                $location = $sanctumUser->location;
+            }
             $user->update([
                 "staff_code" => $staff_code,
                 "username" => $username,
