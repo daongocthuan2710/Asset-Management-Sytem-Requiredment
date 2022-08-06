@@ -14,6 +14,9 @@ export default function Sidebar() {
     const pathName = arrayPath[1]
     let activePath = null
     switch (pathName) {
+        case 'create-asset':
+            activePath = '/manage-asset'
+            break
         case 'create-user':
             activePath = '/manage-user'
             break
