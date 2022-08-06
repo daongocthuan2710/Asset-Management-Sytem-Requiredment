@@ -18,19 +18,23 @@ export default function Header() {
 
     const assetEditReducer = useSelector((state) => state.assetEditReducer.value);
     const userEditReducer = useSelector((state) => state.userEditReducer.value);
-    console.log('assetEditReducer',assetEditReducer)
-    console.log('userEditReducer',userEditReducer)
 
     const location = useLocation()
     const arrayPath = location.pathname.split('/')
     const pathName = arrayPath[1]
     let currentPage = null
     switch (pathName) {
+        case 'create-assignment':
+            currentPage = 'Manage Assignment > Create New Assignment'
+            break
+        case 'edit-assignment':
+            currentPage = 'Manage Assignment > Edit Assignment'
+            break
         case 'create-asset':
-            currentPage = 'Manage Asset -> Create New Asset'
+            currentPage = 'Manage Asset > Create New Asset'
             break
         case 'create-user':
-            currentPage = 'Manage User -> Create New User'
+            currentPage = 'Manage User > Create New User'
             break
         case 'manage-user':
             currentPage = 'Manage User'
@@ -78,7 +82,7 @@ export default function Header() {
     return (
         <>
             <header>
-                {userEditReducer ? <h5>Manage User -> Edit User</h5> : assetEditReducer ? <h5>Manage Asset -> Edit Asset</h5> : <h5>{currentPage}</h5>}
+                {userEditReducer ? <h5>Manage User > Edit User</h5> : assetEditReducer ? <h5>Manage Asset > Edit Asset</h5> : <h5>{currentPage}</h5>}
                 <DropdownButton
                     as={ButtonGroup}
                     key={'down'}

@@ -5,7 +5,7 @@ import './style.scss'
 import { useDispatch, useSelector } from "react-redux"
 import { updateTitleHeader } from "../../Actions"
 import nashtechlogo from "../../../assets/nashtech_logo.svg";
-import {Link, useLocation} from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 
 export default function Sidebar() {
@@ -14,6 +14,12 @@ export default function Sidebar() {
     const pathName = arrayPath[1]
     let activePath = null
     switch (pathName) {
+        case 'edit-assignment':
+            activePath = '/manage-assignment'
+            break
+        case 'create-assignment':
+            activePath = '/manage-assignment'
+            break
         case 'create-asset':
             activePath = '/manage-asset'
             break
