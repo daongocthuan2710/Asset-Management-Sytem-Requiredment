@@ -24,12 +24,12 @@ export default function EditAssignmentForm() {
     const [disableSave, setDisableSave] = useState(true);
     const [assignmentInfo, setAssignmentInfo] = useState([]);
     const [userList, setUserList] = useState([]);
-    const [AssetList, setAssetList] = useState([]);
     const [assetInfo, setAssetInfo] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     const [note, setNote] = useState('');
     const [assignedDate, setAssignedDate] = useState('');
     const [select, setSelect] = useState(false);
+    const [items, setItems] = useState([]);
     const assignmentEditInfo = useSelector(
         (state) => state.assignmentEditReducer.assignmentEditInfo
     );
@@ -62,8 +62,7 @@ export default function EditAssignmentForm() {
         handleShowMessage(code, message, assignmentEditInfo.id);
     }
 
-    function handleShowMessage(code, message, assignmentEditInfoId) {
-        console.log(code, message, assignmentEditInfoId);
+    function handleShowMessage(code, message) {
         setShowModal(true);
         switch (code) {
             case 200:
@@ -107,6 +106,11 @@ export default function EditAssignmentForm() {
           setAssetInfo(respone.data.asset);
           setAssignedDate(respone.data.assigned_date);
           setNote(respone.data.note);
+          setItems(items => [...items,{
+            id: respone.data.asset.id,
+            asset_code: respone.data.asset.asset_code,
+            name: respone.data.asset.name
+        }])
     }
 
     async function fetcDataUserList(){
@@ -116,8 +120,16 @@ export default function EditAssignmentForm() {
 
     async function fetcDataAssetList(){
           const respone = await AssetService.getAssetList();
-          setAssetList(respone.data.data);
+          respone.data.data.map((item) => (
+            setItems(items => [...items,{
+                id: item.id,
+                asset_code: item.asset_code,
+                name: item.name
+            }])
+         ))
+
     }
+
     useEffect(() => {
         fetcDataAssignmentById();
         fetcDataUserList();
@@ -184,7 +196,7 @@ export default function EditAssignmentForm() {
                 </Row>
                 <Row>
                 <Scrollbars style = {{width:"100%" , height: '300px'}}>
-                    
+
                     <ul className="list-unstyled fs-6">
                     {userList.filter(
                     (item) =>
@@ -255,7 +267,7 @@ export default function EditAssignmentForm() {
                 <Row>
                 <Scrollbars style = {{width:"100%" , height: '300px'}}>
                     <ul className="list-unstyled fs-6">
-                    {AssetList.filter(
+                    {items.filter(
                     (item) =>
                         {
                             if(searchAsset == ""){
