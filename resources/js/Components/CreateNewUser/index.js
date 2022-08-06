@@ -30,7 +30,6 @@ const CreateNewUser = () => {
         if (type == null || type == 0)
             setShowLocation(false)
     }, [type])
-    console.log(showLocation);
     React.useEffect(() => {
         setEnabled(true);
         if (
@@ -46,7 +45,18 @@ const CreateNewUser = () => {
     }, [firstName, lastName, dateOfBirth, gender, type, joinedDate, location]);
 
     const dateOfBirthCheck = (date) => {
-        if (new Date(date).getFullYear() > new Date().getFullYear() - 18) {
+        let optimizedBirthday = date.replace(/-/g, "/");
+
+        //set date based on birthday at 01:00:00 hours GMT+0100 (CET)
+        let myBirthday = new Date(optimizedBirthday);
+
+        // set current day on 01:00:00 hours GMT+0100 (CET)
+        let currentDate = new Date().toJSON().slice(0, 10) + ' 01:00:00';
+
+        // calculate age comparing current date and borthday
+        let myAge = ~~((Date.now(currentDate) - myBirthday) / (31557600000));
+
+        if (myAge < 18) {
             setDateOfBirthError({
                 error: true,
                 message: "User is under 18. Please select a different date",
@@ -56,6 +66,16 @@ const CreateNewUser = () => {
             setDateOfBirth(date);
             setDateOfBirthError({ error: false, message: "" });
         }
+        // if (new Date(date).getFullYear() > new Date().getFullYear() - 18) {
+        //     setDateOfBirthError({
+        //         error: true,
+        //         message: "User is under 18. Please select a different date",
+        //     });
+        //     setDateOfBirth("");
+        // } else {
+        //     setDateOfBirth(date);
+        //     setDateOfBirthError({ error: false, message: "" });
+        // }
     };
 
     const joinDateCheck = (date) => {
@@ -99,7 +119,7 @@ const CreateNewUser = () => {
                 history.push("/manage-user");
             })
             .catch(function () {
-                setMess("First name or last name has invalid characters");
+                // setMess("First name or last name has invalid characters");
             });
     };
     return (
