@@ -29,8 +29,7 @@ class CreateAssignmentRequest extends FormRequest
         return [
             'staff_id' => ['integer', 'required', 'exists:user,id'],
             'asset_id' => ['integer', 'required', 'exists:asset,id'],
-            'assigned_date' => ['date','required', 'after_or_equal:today'],
-            'note' => ['string','required','max:128'],
+            'assigned_date' => ['date', 'required', 'after_or_equal:today'],
         ];
     }
     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator)
