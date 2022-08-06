@@ -35,6 +35,7 @@ export default function EditAssignmentForm() {
     );
     let history = useHistory();
     const assignmentId = Number.parseInt(window.location.pathname.split("/").at(-1));
+
     const dispatch = useDispatch();
     function handleCloseEditForm(e) {
         e.preventDefault();
@@ -138,7 +139,7 @@ export default function EditAssignmentForm() {
 
     useEffect(() => {
     setDisableSave(true);
-    if (assignedDate !== '' && (note !== "" && note !== null) && select == true)
+    if ((assignedDate !== '' && assignedDate !== null) && (note !== "" && note !== null) && select == true)
         setDisableSave(false);
     }, [assignedDate, note, select]);
 
@@ -305,6 +306,7 @@ export default function EditAssignmentForm() {
                 <Row>
                     <Form
                         className="fs-5"
+                        onChange = {console.log('e')}
                     >
                         <Form.Group className="mb-3" controlId="UserSelectForm">
                             <Row>
@@ -357,9 +359,11 @@ export default function EditAssignmentForm() {
                                 <Col md={7}>
                                     <Form.Control
                                         type="date"
-                                        defaultValue={assignmentInfo.assigned_date || ''}
+                                        value={assignedDate}
+                                        required
                                         className="fs-5"
-                                        onChange = {(e) => {setAssignedDate(e.target.value); setSelect(true)}}
+                                        onChange = {(e) => {setAssignedDate(e.target.value); setSelect(true);}}
+                                        isInvalid = {false}
                                     ></Form.Control>
                                 </Col>
                             </Row>
