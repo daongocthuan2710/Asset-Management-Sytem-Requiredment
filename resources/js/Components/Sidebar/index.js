@@ -75,12 +75,22 @@ export default function Sidebar() {
     }, [handleClickSidebar])
 
     const dataBindingGrid = () => sidebarRoutes.map((item, index) => {
+        const arrTitle = item.split('-')
+        let title = ''
+        if (arrTitle.length <= 2) {
+            title = arrTitle
+                .map(char => char.charAt(0).toUpperCase() + char.slice(1))
+                .join(" ")
+        } else {
+            title = arrTitle.map((word) => {
+                if (word !== 'for') return word[0].toUpperCase() + word.substring(1)
+                else return word[0] + word.substring(1)
+            }).join(" ")
+        }
         return (
             <ListGroup.Item key={index} href={`/${item}`}>
                 <Link to={`/${item}`} data-name={item} onClick={e => handleClickSidebar(e)}>
-                    {item.split('-')
-                        .map(char => char.charAt(0).toUpperCase() + char.slice(1))
-                        .join(" ")}
+                    {title}
                 </Link>
             </ListGroup.Item>
         )
