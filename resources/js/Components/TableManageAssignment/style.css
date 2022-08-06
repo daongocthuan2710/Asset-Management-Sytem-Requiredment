@@ -201,3 +201,28 @@ tbody{
     /* border: 1px solid #000000; */
     /* color: #e73943; */
 }
+
+.react-datepicker__day--keyboard-selected{
+    background-color: rgb(220 53 69) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+.datePicker {
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    width: 0;
+    position: absolute;
+  }
+  #menu-datepicker{
+   border: none;
+   width: 0px;
+   height: 0px;
+   padding: 0px;
+   margin: 0px;
+   /* display: none; */
+  }
+  .react-datepicker-popper{
+    transform: translate(0px,7px) !important;
+  }
+  

@@ -172,26 +172,28 @@ export default function ManageAsset() {
   };
 
   const handleFilterCategory = (id) => {
-    
-    const tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
+    let tempFilterCategory = JSON.parse(JSON.stringify(filterCategory));
 
     const index = tempFilterCategory.findIndex((e) => e === id);
     const indexAll = tempFilterCategory.findIndex((e) => e === "3");
-
-    if (index === -1 && indexAll !== -1) {
-      tempFilterCategory[0] = id;
-    }
-
-    if (index === -1 ) {
+    
+    if (index === -1 && id !== "3") {
+      if (indexAll !== -1) {
+        tempFilterCategory.splice(indexAll, 1);
+      }
       tempFilterCategory.push(id);
     }
 
-    if (index !== -1 && indexAll === -1) {
-      tempFilterCategory.splice(index, 1);
+    if (indexAll === -1 && id === "3") {
+      tempFilterCategory = ["3"];
     }
 
-    if (index !== -1 && tempFilterCategory.length === 1) {
-      tempFilterCategory[0] = "3";
+    if (index !== -1 && id !== "3") {
+      if (tempFilterCategory.length === 1) {
+        tempFilterCategory = ["3"];
+      } else {
+        tempFilterCategory.splice(index, 1);
+      }
     }
   
     setFilterCategory(tempFilterCategory);

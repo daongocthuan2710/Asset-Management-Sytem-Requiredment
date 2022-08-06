@@ -5,7 +5,7 @@ import './style.scss'
 import { useDispatch, useSelector } from "react-redux"
 import { updateTitleHeader } from "../../Actions"
 import nashtechlogo from "../../../assets/nashtech_logo.svg";
-import {Link, useLocation} from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 
 export default function Sidebar() {
@@ -14,6 +14,15 @@ export default function Sidebar() {
     const pathName = arrayPath[1]
     let activePath = null
     switch (pathName) {
+        case 'edit-assignment':
+            activePath = '/manage-assignment'
+            break
+        case 'create-assignment':
+            activePath = '/manage-assignment'
+            break
+        case 'create-asset':
+            activePath = '/manage-asset'
+            break
         case 'create-user':
             activePath = '/manage-user'
             break
@@ -66,12 +75,22 @@ export default function Sidebar() {
     }, [handleClickSidebar])
 
     const dataBindingGrid = () => sidebarRoutes.map((item, index) => {
+        const arrTitle = item.split('-')
+        let title = ''
+        if (arrTitle.length <= 2) {
+            title = arrTitle
+                .map(char => char.charAt(0).toUpperCase() + char.slice(1))
+                .join(" ")
+        } else {
+            title = arrTitle.map((word) => {
+                if (word !== 'for') return word[0].toUpperCase() + word.substring(1)
+                else return word[0] + word.substring(1)
+            }).join(" ")
+        }
         return (
             <ListGroup.Item key={index} href={`/${item}`}>
                 <Link to={`/${item}`} data-name={item} onClick={e => handleClickSidebar(e)}>
-                    {item.split('-')
-                        .map(char => char.charAt(0).toUpperCase() + char.slice(1))
-                        .join(" ")}
+                    {title}
                 </Link>
             </ListGroup.Item>
         )

@@ -9,17 +9,32 @@ import { useSelector, useDispatch } from "react-redux";
 import LogOut from '../LogOut';
 import { getUserInfo } from '../../Actions/user.action';
 // eslint-disable-next-line no-unused-vars
+import assetEditReducer from "../../Reducers/asset.reducer";
+import userEditReducer from "../../Reducers/userEdit.reducer";
 import homeReducer from "../../Reducers/home.reducer";
 import { useLocation } from "react-router-dom";
 
 export default function Header() {
+
+    const assetEditReducer = useSelector((state) => state.assetEditReducer.value);
+    const userEditReducer = useSelector((state) => state.userEditReducer.value);
+
     const location = useLocation()
     const arrayPath = location.pathname.split('/')
     const pathName = arrayPath[1]
     let currentPage = null
     switch (pathName) {
+        case 'create-assignment':
+            currentPage = 'Manage Assignment > Create New Assignment'
+            break
+        case 'edit-assignment':
+            currentPage = 'Manage Assignment > Edit Assignment'
+            break
+        case 'create-asset':
+            currentPage = 'Manage Asset > Create New Asset'
+            break
         case 'create-user':
-            currentPage = 'Manage User'
+            currentPage = 'Manage User > Create New User'
             break
         case 'manage-user':
             currentPage = 'Manage User'
@@ -67,7 +82,7 @@ export default function Header() {
     return (
         <>
             <header>
-                <h5>{currentPage}</h5>
+                {userEditReducer ? <h5>Manage User > Edit User</h5> : assetEditReducer ? <h5>Manage Asset > Edit Asset</h5> : <h5>{currentPage}</h5>}
                 <DropdownButton
                     as={ButtonGroup}
                     key={'down'}
