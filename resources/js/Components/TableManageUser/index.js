@@ -25,7 +25,7 @@ import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch,useSelector } from "react-redux";
 import userEditReducer from "../../Reducers/userEdit.reducer";
-import Nodata from "../../../assets/Nodata.gif";
+import Nodata from "../../../assets/Nodata.png";
 import { Link } from "react-router-dom";
 import DisableUser from "../DisableUser";
 import Modal from 'react-bootstrap/Modal';

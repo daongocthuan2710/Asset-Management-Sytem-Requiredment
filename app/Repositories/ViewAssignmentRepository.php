@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Resources\AssignmentResource;
 use App\Models\Assignment;
 use App\Repositories\BaseRepository;
+use Carbon\Carbon;
 
 class ViewAssignmentRepository extends BaseRepository
 {
@@ -18,6 +19,7 @@ class ViewAssignmentRepository extends BaseRepository
 
         $data = $this->query
             ->where('staff_id', $santumUser->id)
+            // ->where('assigned_date', '<=' , now())
             ->search($request)
             ->filterByState($request)
             ->filterByDate($request)

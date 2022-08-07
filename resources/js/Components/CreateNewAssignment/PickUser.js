@@ -14,7 +14,7 @@ import { Col, Button, Modal, Container } from "react-bootstrap"
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
-import Nodata from "../../../assets/Nodata.gif";
+import Nodata from "../../../assets/Nodata.png";
 import userService from "../../Services/user.service";
 
 export default function PickUser(props) {
