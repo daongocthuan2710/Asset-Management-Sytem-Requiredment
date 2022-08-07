@@ -24,22 +24,39 @@ export default function EditAssignmentForm() {
     const [disableSave, setDisableSave] = useState(true);
     const [assignmentInfo, setAssignmentInfo] = useState([]);
     const [userList, setUserList] = useState([]);
-    const [AssetList, setAssetList] = useState([]);
     const [assetInfo, setAssetInfo] = useState([]);
     const [userInfo, setUserInfo] = useState([]);
     const [note, setNote] = useState('');
-    const [assignedDate, setAssignedDate] = useState('');
+    const [assignedDate, setAssignedDate] = useState(new Date().toISOString().slice(0, 10));
     const [select, setSelect] = useState(false);
-    const assignmentEditInfo = useSelector(
-        (state) => state.assignmentEditReducer.assignmentEditInfo
-    );
+    const [items, setItems] = useState([]);
+
     let history = useHistory();
     const assignmentId = Number.parseInt(window.location.pathname.split("/").at(-1));
+    const [assignedDateError, setAssignedDateError] = React.useState({
+        error: false,
+        message: "",
+     });
     const dispatch = useDispatch();
     function handleCloseEditForm(e) {
         e.preventDefault();
         history.push(`/manage-assignment`);
     }
+
+    // Validate date
+    const assignedDateCheck = (date) => {
+        if (new Date(date) < new Date()) {
+          setAssignedDateError({
+            error: true,
+            message: "Only current or future date. Please select a different date",
+          });
+          setAssignedDate('');
+        } else {
+          setAssignedDate(date);
+          setSelect(true);
+          setAssignedDateError({ error: false, message: "" });
+        }
+      };
 
     // Action
     async function handleUpdateAssignmentInfo(e) {
@@ -59,11 +76,10 @@ export default function EditAssignmentForm() {
                 ? response.message
                 : response.data.message;
         const code = response.code;
-        handleShowMessage(code, message, assignmentEditInfo.id);
+        handleShowMessage(code, message);
     }
 
-    function handleShowMessage(code, message, assignmentEditInfoId) {
-        console.log(code, message, assignmentEditInfoId);
+    function handleShowMessage(code, message) {
         setShowModal(true);
         switch (code) {
             case 200:
@@ -107,6 +123,11 @@ export default function EditAssignmentForm() {
           setAssetInfo(respone.data.asset);
           setAssignedDate(respone.data.assigned_date);
           setNote(respone.data.note);
+          setItems(items => [...items,{
+            id: respone.data.asset.id,
+            asset_code: respone.data.asset.asset_code,
+            name: respone.data.asset.name
+        }])
     }
 
     async function fetcDataUserList(){
@@ -116,8 +137,16 @@ export default function EditAssignmentForm() {
 
     async function fetcDataAssetList(){
           const respone = await AssetService.getAssetList();
-          setAssetList(respone.data.data);
+          respone.data.data.map((item) => (
+            setItems(items => [...items,{
+                id: item.id,
+                asset_code: item.asset_code,
+                name: item.name
+            }])
+         ))
+
     }
+
     useEffect(() => {
         fetcDataAssignmentById();
         fetcDataUserList();
@@ -126,7 +155,8 @@ export default function EditAssignmentForm() {
 
     useEffect(() => {
     setDisableSave(true);
-    if (assignedDate !== '' && (note !== "" && note !== null) && select == true)
+    if ((assignedDate !== '' && assignedDate !== null && new Date(assignedDate) >= new Date() )
+    && (note !== "" && note !== null) && select == true)
         setDisableSave(false);
     }, [assignedDate, note, select]);
 
@@ -184,7 +214,7 @@ export default function EditAssignmentForm() {
                 </Row>
                 <Row>
                 <Scrollbars style = {{width:"100%" , height: '300px'}}>
-                    
+
                     <ul className="list-unstyled fs-6">
                     {userList.filter(
                     (item) =>
@@ -255,7 +285,7 @@ export default function EditAssignmentForm() {
                 <Row>
                 <Scrollbars style = {{width:"100%" , height: '300px'}}>
                     <ul className="list-unstyled fs-6">
-                    {AssetList.filter(
+                    {items.filter(
                     (item) =>
                         {
                             if(searchAsset == ""){
@@ -345,10 +375,16 @@ export default function EditAssignmentForm() {
                                 <Col md={7}>
                                     <Form.Control
                                         type="date"
-                                        defaultValue={assignmentInfo.assigned_date || ''}
+                                        value={assignedDate}
+                                        required
                                         className="fs-5"
-                                        onChange = {(e) => {setAssignedDate(e.target.value); setSelect(true)}}
+                                        min={new Date().toISOString().slice(0, 10)}
+                                        onChange = {(e) => {assignedDateCheck(e.target.value)}}
+                                        isInvalid = {assignedDateError.error}
                                     ></Form.Control>
+                                    { <Form.Control.Feedback type="invalid">
+                                    {assignedDateError.message}
+                                    </Form.Control.Feedback> }
                                 </Col>
                             </Row>
                         </Form.Group>
