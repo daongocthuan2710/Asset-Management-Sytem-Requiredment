@@ -34,23 +34,23 @@ class CreateUserTest extends TestCase
         ];
         $this->json('POST', 'api/user/store', $body)->assertStatus(401);
     }
-    public function test_create_success()
-    {
-        Sanctum::actingAs(User::factory()->create([
-            'admin' => true,
-            'location' => 'HN',
-            'staff_code' => 'SD2001',
-        ]));
-        $body = [
-            "first_name" => "huynh",
-            "last_name" => "nguyen",
-            "date_of_birth" => "31-12-2000",
-            "joined_date" => "11-06-2001",
-            "admin" => 1,
-            "gender" => 1
-        ];
-        $this->json('POST', 'api/user/store', $body)->assertStatus(201);
-    }
+    // public function test_create_success()
+    // {
+    //     Sanctum::actingAs(User::factory()->create([
+    //         'admin' => true,
+    //         'location' => 'HN',
+    //         'staff_code' => 'SD2001',
+    //     ]));
+    //     $body = [
+    //         "first_name" => "huynh",
+    //         "last_name" => "nguyen",
+    //         "date_of_birth" => "31-12-2000",
+    //         "joined_date" => "11-06-2001",
+    //         "admin" => 1,
+    //         "gender" => 1
+    //     ];
+    //     $this->json('POST', 'api/user/store', $body)->assertStatus(201);
+    // }
     public function test_without_first_name()
     {
         Sanctum::actingAs(User::factory()->create([
