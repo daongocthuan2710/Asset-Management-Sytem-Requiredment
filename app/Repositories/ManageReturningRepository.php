@@ -16,9 +16,14 @@ class ManageReturningRepository extends BaseRepository
 
     public function getAll($request)
     {
-        $data = $this->query;
 
-        return ReturningResource::collection($data->paginate(config('app.limit')));
+        return $this->query->with('asset')->get();
+
+        // $data = $this->query;
+
+        // return ReturningResource::collection($data->paginate(config('app.limit')));
     }
+
+
 
 }

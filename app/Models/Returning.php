@@ -28,4 +28,9 @@ class Returning extends Model
     {
         return $this->belongsTo(User::class, 'requested_by');
     }
+
+    public function asset()
+    {
+        return $this->assignment->asset;
+    }
 }
