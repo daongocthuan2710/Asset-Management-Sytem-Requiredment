@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ManageAssetController;
 use App\Http\Controllers\Admin\ManageAssignmentController;
 use App\Http\Controllers\Admin\ManageCateController;
+use App\Http\Controllers\Admin\ManageReturningController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
@@ -48,4 +49,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
     Route::resource('/assignment', ManageAssignmentController::class);
     Route::resource('/view-assignment', ViewAssignmentController::class);
+    Route::resource('/returning', ManageReturningController::class);
 });
