@@ -9,6 +9,10 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    public const ACCEPT_STATE = 1;
+    public const WAITING_STATE = 0;
+    public const DECLINE_STATE = -1;
+
     protected $table = 'assignment';
     protected $fillable = [
         'asset_id',

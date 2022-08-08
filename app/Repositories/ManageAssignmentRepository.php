@@ -96,7 +96,12 @@ class ManageAssignmentRepository extends BaseRepository
     }
     public function response($request, $id)
     {
-        Assignment::query()->findOrFail($id)->update(['state' => $request->response ? 1 : -1]);
+        $assignment = Assignment::query()->findOrFail($id);
+        $assignment->update(['state' => $request->response ? Assignment::ACCEPT_STATE : Assignment::DECLINE_STATE]);
+        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        if (!$request->response) {
+            $asset->update(['state' => Asset::AVAILABLE_STATE]);
+        }
         return response()->json([
             'message' => 'Assignment updated successfully',
         ], 200);
