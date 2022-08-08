@@ -4,7 +4,6 @@ import Sidebar from "../Sidebar";
 import "./style.scss";
 import { ManageUser } from "../TableManageUser";
 import CreateNewUser from "../CreateNewUser";
-// no khong hieu o khuc nay`
 import Test from "../Test";
 import ManageAsset from "../TableManageAsset";
 import assetEditReducer from "../../Reducers/asset.reducer";
@@ -16,6 +15,7 @@ import CreateNewAssignment from "../CreateNewAssignment";
 import EditAssetForm from "../ManageAsset/EditAsset";
 import EditAssignmentForm from "../ManageAssignment/EditAssignment";
 import ManageAssignment from "../TableManageAssignment";
+import TableHome from "../TableHome";
 
 export default function BodySection() {
     const assetEditReducer = useSelector((state) => state.assetEditReducer.value);
@@ -28,10 +28,13 @@ export default function BodySection() {
             <div className="body-content col-lg-9 col-md-6 col-sm-12">
                 <Switch>
                     <Route exact path="/">
-                        <div>HOME</div>
+                    <TableHome/>
                     </Route>
                     <Route path="/home">
-                        <div>HOME</div>
+                    <TableHome/>
+                    </Route>
+                    <Route path="/HomePage">
+                    <TableHome/>
                     </Route>
                     <Route path="/manage-user">
                         {userEditReducer ? <EditForm /> : <ManageUser />}

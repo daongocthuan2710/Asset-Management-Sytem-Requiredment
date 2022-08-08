@@ -25,7 +25,7 @@ import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch,useSelector } from "react-redux";
 import userEditReducer from "../../Reducers/userEdit.reducer";
-import Nodata from "../../../assets/Nodata.gif";
+import Nodata from "../../../assets/Nodata.png";
 import { Link } from "react-router-dom";
 import DisableUser from "../DisableUser";
 import Modal from 'react-bootstrap/Modal';
@@ -37,7 +37,7 @@ export const ManageUser = () => {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [disableUser, setDisableUser] = React.useState({ show: false, id: 0 });
+  const [disableUser, setDisableUser] = React.useState({ show: false, id: 0, type: '' });
   const [modal, setModal] = React.useState(false);
 
    const sort_update_at = useSelector(
@@ -85,12 +85,35 @@ const sort_create_at = useSelector(
     getApiUser();
 
   }, []);
-  const handleDisableUser = (e,id) => {
+  const handleDisableUser = async (e, id) => {
     e.stopPropagation();
-    setDisableUser({ show: true, id: id });
-    console.log(disableUser);
-    setTimeout(() => setDisableUser({show:false ,id:id}), 1);
+    const response = await axios.get(`/api/can-disable/${id}`);
+    const disable = response.data.disable
+    if (disable) {
+        setDisableUser({show: true, id: id, type: 'delete'})
+    }
+    else {
+        setDisableUser({show: true, id: id, type: 'warning'})
+    }
   }
+
+  const handleDisableUserDialog = async () => {
+    try {
+        const token = localStorage.getItem('token')
+        const headers = {headers: {Authorization: `Bearer ${token}`}};
+        const id = disableUser.id
+        await axios.get(`/api/disable/${id}`, headers);
+        setDisableUser({ show: false, id: 0, type: '' })
+        window.location.reload();
+    } catch (e) {
+        const error = new Error("Something went wrong");
+        throw error;
+    }
+}
+
+    const handleClose = () => {
+        setDisableUser({ show: false, id: 0, type: '' })
+    }
 
   const getApiUser = async ({
     filter = undefined,
@@ -350,7 +373,7 @@ const sort_create_at = useSelector(
 
   return (
     <div className="containermanageuser">
-      <DisableUser show={disableUser.show} id={disableUser.id} />
+      <DisableUser {...disableUser} handleDisableUserDialog = {handleDisableUserDialog} handleClose ={handleClose} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>User List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <Dropdown onSelect={() => handleFilter}>

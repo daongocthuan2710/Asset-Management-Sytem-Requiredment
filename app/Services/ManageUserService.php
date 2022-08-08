@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Assignment;
 use App\Models\User;
 use App\Services\BaseService;
 use App\Repositories\ManageUserRepository;
@@ -65,14 +66,17 @@ class ManageUserService extends BaseService
                     "joined_date" => $data['joined_date'],
                     "admin" => $data['admin'],
                     "gender" => $data['gender'],
+                    "location" => $data['location'],
                 ]
             );
             $id = $user->id;
             $username = $this->createNewUserName($first_name, $last_name, $id);
             $staff_code = $this->createNewStaffCode($id);
             $password = Hash::make($this->generatePassword($username, $dob));
-            $location = $sanctumUser->location;
-            //             $password = $this->generatePassword($username, $dob);
+            $location = $data['location'];
+            if (!$location) {
+                $location = $sanctumUser->location;
+            }
             $user->update([
                 "staff_code" => $staff_code,
                 "username" => $username,
@@ -122,14 +126,17 @@ class ManageUserService extends BaseService
     }
     public function canDisable($id)
     {
-        $assignment = false;
-        if ($assignment) {
+        $assignment = Assignment::where('assigned_by', $id)
+            ->orWhere('staff_id', $id)
+            ->count();
+        if ($assignment > 0) {
             return response()->json([
-                'disable' => $assignment
+                'message' => "Assignment available",
+                'disable' => false
             ]);
         } else {
             return response()->json([
-                'disable' => $assignment
+                'disable' => true
             ]);
         }
     }

@@ -161,6 +161,7 @@ tbody{
 }
 #img-nodata{
     margin-left: 140px;
+    width: 50%;
 }
 #filter-search{
     width: 1180px;

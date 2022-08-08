@@ -8,7 +8,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch, useSelector } from "react-redux";
-import Nodata from "../../../assets/Nodata.gif";
+import Nodata from "../../../assets/Nodata.png";
 import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
 import AssignmentTable from "./AssignmentTable";
