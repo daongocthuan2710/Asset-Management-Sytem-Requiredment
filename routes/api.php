@@ -36,9 +36,7 @@ Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
 Route::get('/can-delete-assignment/{id}', [ManageAssignmentController::class, 'canDelete']);
 
 // Route::resource('/login', AuthenticationController::class);
-Route::resource('/assignment', ManageAssignmentController::class);
-Route::resource('/category', ManageCateController::class);
-Route::resource('/asset', ManageAssetController::class);
+
 Route::get('/asset/search/{keyword}', [ManageAssetController::class, 'search']);
 Route::get('/asset/{id}/can-delete', [ManageAssetController::class, 'canDestroy']);
 Route::post('/login', [AuthenticationController::class, 'index']);
@@ -47,7 +45,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthenticationController::class, 'logout']);
     Route::resource('/profile', ProfileController::class);
     Route::get('/manageUser', [ManageUserController::class, 'manageUser']);
+    Route::resource('/category', ManageCateController::class);
+    Route::resource('/asset', ManageAssetController::class);
     Route::resource('/assignment', ManageAssignmentController::class);
     Route::resource('/view-assignment', ViewAssignmentController::class);
     Route::resource('/returning', ManageReturningController::class);
+    Route::post('/assignment/{assignment}/return', [ManageReturningController::class, 'store']);
 });
