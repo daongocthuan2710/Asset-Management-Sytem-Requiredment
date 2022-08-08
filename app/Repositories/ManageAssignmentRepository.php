@@ -93,5 +93,11 @@ class ManageAssignmentRepository extends BaseRepository
     {
         $data = $this->query->findOrFail($id);
         return new AssignmentResource($data);
+    public function response($request, $id)
+    {
+        Assignment::query()->findOrFail($id)->update(['state' => $request->response ? 1 : -1]);
+        return response()->json([
+            'message' => 'Assignment updated successfully',
+        ], 200);
     }
 }
