@@ -204,14 +204,6 @@ class ManageAssignmentService extends BaseService
     }
     public function response($request, $id)
     {
-        if ($this->checkResponsePermission($request, $id) !== null) {
-            return $this->checkResponsePermission($request, $id);
-        } else {
-            return $this->manageAssignmentRepository->response($request, $id);
-        }
-    }
-    public function checkResponsePermission($request, $id)
-    {
         $sanctumUser = auth('sanctum')->user();
         if (!$sanctumUser) {
             return response()->json(['message' => 'Unauthorized'], 401);
@@ -229,6 +221,6 @@ class ManageAssignmentService extends BaseService
         if ($assignment->state !== 0) {
             return response()->json(['message' => 'You cannot response to accepted or declined assignment'], 422);
         }
-        return null;
+        return $this->manageAssignmentRepository->response($request, $id);
     }
 }

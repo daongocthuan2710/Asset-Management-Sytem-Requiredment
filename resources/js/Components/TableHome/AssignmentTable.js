@@ -9,121 +9,121 @@ import { useHistory } from "react-router-dom";
 import {
     FaAngleDown,
     FaAngleUp,
-    FaPencilAlt,
-    FaRegTimesCircle,
     FaUndo
 } from "react-icons/fa";
 import moment from "moment";
 import { Redirect , Navigate} from "react-router-dom";
+import {BsCheckLg, BsXLg} from "react-icons/all";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
     // eslint-disable-next-line no-unused-vars
-    handleSort, handleOpenEditForm,
-    handleGetAssignmentById, handleDeleteAssignment
+    handleSort, handleResponse,
+    handleGetAssignmentById
 }) {
     let history = useHistory();
 
     async function handleOpenEditAssetForm(e, assignmentId = "") {
-      e.stopPropagation();
+        e.stopPropagation();
         const response = await AssignmentService.getAssignmentEdit(assignmentId);
-      handleShowMessage(response,assignmentId);
+        handleShowMessage(response, assignmentId);
     }
 
-    function handleShowMessage(response,assignmentId) {
+    function handleShowMessage(response, assignmentId) {
         const message = response.data == undefined ? response.message : response.data.message;
         const code = response.code;
         switch (code) {
-          case 200:
-            {
+            case 200: {
                 history.push(`/edit-assignment/${assignmentId}`);
             }
-            break;
-          case 422:
-            {
-              Swal.fire({
-                position: "center",
-                icon: "info",
-                title: message,
-                showConfirmButton: false,
-                timer: 2000,
-              });
-            }
-            break;
-            case 401:
-                {
-                  Swal.fire({
+                break;
+            case 422: {
+                Swal.fire({
                     position: "center",
                     icon: "info",
                     title: message,
                     showConfirmButton: false,
                     timer: 2000,
-                  });
-                }
+                });
+            }
+                break;
+            case 401: {
+                Swal.fire({
+                    position: "center",
+                    icon: "info",
+                    title: message,
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            }
                 break;
         }
 
-      }
+    }
+
     return (
         <Table id="table-assignment" responsive="md">
             <thead>
-                <tr>
-                    {data.length > 0
-                        ? tableHeader.map((item, index) => {
-                            return (
-                                <th
-                                    key={index}
-                                    onClick={() => {
-                                        if (item.name !== "Username") {
-                                            handleSort(item.name, item.isSortASC);
-                                        }
-                                    }}
-                                >
-                                    {item.name}&nbsp;
-                                    {item.isSortASC && <FaAngleDown />}
-                                    {item.isSortDESC && <FaAngleUp />}
-                                </th>
-                            );
-                        })
-                        :''}
-                </tr>
+            <tr>
+                {data.length > 0
+                    ? tableHeader.map((item, index) => {
+                        return (
+                            <th
+                                key={index}
+                                onClick={() => {
+                                    if (item.name !== "Username") {
+                                        handleSort(item.name, item.isSortASC);
+                                    }
+                                }}
+                            >
+                                {item.name}&nbsp;
+                                {item.isSortASC && <FaAngleDown/>}
+                                {item.isSortDESC && <FaAngleUp/>}
+                            </th>
+                        );
+                    })
+                    : ''}
+            </tr>
             </thead>
             <tbody>
-                {data.length > 0 ? (
-                    data.length > 0 &&
-                    data.map((item) => (
-                        <tr key={item.id} onClick={() => handleGetAssignmentById(item.id)}>
-                            <td>{item.id}</td>
-                            <td>{item.asset.asset_code}</td>
-                            <td ><p id="staff-asset-name">{item.asset.name}</p></td>
-                            <td>{item.staff.username}</td>
-                            <td>{item.assigned_by.username}</td>
-                            <td>{moment(item.assigned_date).format('DD-MM-YYYY')}</td>
-                            <td>{item.state.name}</td>
+            {data.length > 0 ? (
+                data.length > 0 &&
+                data.map((item) => (
+                    <tr key={item.id} onClick={() => handleGetAssignmentById(item.id)}>
+                        <td>{item.id}</td>
+                        <td>{item.asset.asset_code}</td>
+                        <td><p id="staff-asset-name">{item.asset.name}</p></td>
+                        <td>{item.staff.username}</td>
+                        <td>{item.assigned_by.username}</td>
+                        <td>{moment(item.assigned_date).format('DD-MM-YYYY')}</td>
+                        <td>{item.state.name}</td>
 
-                            <td className="td-without_border">
+                        <td className="td-without_border">
                             {
-                                item.state.code===0?
-                                <FaPencilAlt onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton' />
-                                : <FaPencilAlt color='gray'/>
+                                item.state.code === 0 ?
+                                    <BsCheckLg onClick={(e) => handleResponse(e, item.id, true)}
+                                               aria-disabled={item.state.code !== 2} id='editUserButton'/>
+                                    : <BsCheckLg color='gray'/>
                             }
-                                        {" "}
-                                        {"  "}
-                                        &nbsp;
-                                {
-                                    item.state.code === 1 ?
-                                        <FaRegTimesCircle color='gray'/>
-                                        : <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2 }
-                                                            onClick={(e) => handleDeleteAssignment(e, item.id)} type="button"/>
-                                }
-                                {" "}{" "} &nbsp;
-                                        <FaUndo id="undo-icon"/>
-                            </td>
-                        </tr>
-                    ))
-                ) : (
-                    <img id="img-nodata" src={Nodata}></img>
-                )}
+                            {" "}
+                            {"  "}
+                            &nbsp;
+                            {
+                                item.state.code === 1 ?
+                                    <BsXLg color='gray'/>
+                                    : <BsXLg className="delete-icon" aria-disabled={item.state.code !== 2}
+                                             onClick={(e) => handleResponse(e, item.id, false)} type="button"/>
+                            }
+                            {" "}
+                            {" "}
+                            &nbsp;
+                            <FaUndo id="undo-icon"/>
+                        </td>
+                    </tr>
+                ))
+            ) : (
+                <img id="img-nodata" src={Nodata}></img>
+            )}
             </tbody>
         </Table>
     );

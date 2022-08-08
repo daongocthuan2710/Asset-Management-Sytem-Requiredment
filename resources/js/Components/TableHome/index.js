@@ -17,6 +17,7 @@ import DeleteAsset from "../DeleteAsset";
 
 import _ from "lodash";
 import DeleteAssignment from "../DeleteAssignment";
+import ResponseAssignment from "../ResponseAssignment";
 
 
 export default function TableHome() {
@@ -25,7 +26,7 @@ export default function TableHome() {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [deleteAssignment, setDeleteAssignment] = React.useState({ show: false, id: 0 });
+  const [responseAssignment, setResponseAssignment] = React.useState({ show: false, id: 0, res: true});
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [filterByDate, setFilterByDate] = React.useState([]);
   const [modal, setModal] = React.useState(false);
@@ -86,13 +87,6 @@ export default function TableHome() {
       FilterByState: arrayState,
     });
   }, []);
-
-  const handleDeleteAssignment = (e, id) => {
-    e.stopPropagation();
-    console.log("id", id);
-    setDeleteAssignment({ show: true, id: id});
-    setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
-  }
 
 
   const getApiAssignment = async ({
@@ -255,7 +249,7 @@ export default function TableHome() {
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
-  
+
     getApiAssignment({
       FilterByState: arrayStateTemp,
       search: temp_search,
@@ -400,36 +394,15 @@ export default function TableHome() {
   };
 
   const dispatch = useDispatch();
-  async function handleOpenEditForm(e, userId = "") {
+
+  async function handleResponse(e, id, res) {
     e.stopPropagation();
-    const displayValue = true;
-    const response = await dispatch(getUserEdit(displayValue, userId));
-    handleShowMessage(response);
+    setResponseAssignment({show: true, id: id, res: res});
+    setTimeout(() => {
+        setResponseAssignment({show: false})
+    }, 1)
   }
 
-  function handleShowMessage(response) {
-    const message =
-      response.data == undefined ? response.message : response.data.message;
-    const code = response.code;
-    switch (code) {
-      case 200:
-        {
-          //
-        }
-        break;
-      case 401:
-        {
-          Swal.fire({
-            position: "center",
-            icon: "info",
-            title: message,
-            showConfirmButton: false,
-            timer: 2000,
-          });
-        }
-        break;
-    }
-  }
   const [assignment, setAssignment] = React.useState([]);
 
   const handleGetAssignmentById = async (assignmentId) => {
@@ -441,7 +414,7 @@ export default function TableHome() {
 
   return (
     <div className="containermanageuser">
-      <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
+      <ResponseAssignment show={responseAssignment.show} id={responseAssignment.id} res={responseAssignment.res}/>
       <h5 style={{ color: "red", fontWeight: "bold" }}> My Assignment </h5>
       <Row>
         <div id="table-manage-user">
@@ -450,9 +423,8 @@ export default function TableHome() {
             tableHeader={tableHeader}
             Nodata={Nodata}
             handleSort={handleSort}
-            handleOpenEditForm={handleOpenEditForm}
+            handleResponse={handleResponse}
             handleGetAssignmentById={handleGetAssignmentById}
-            handleDeleteAssignment={handleDeleteAssignment}
           />
         </div>
       </Row>
