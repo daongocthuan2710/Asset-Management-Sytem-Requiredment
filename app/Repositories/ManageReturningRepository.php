@@ -17,7 +17,7 @@ class ManageReturningRepository extends BaseRepository
     public function getAll($request)
     {
 
-        return $this->query->with('asset')->get();
+        return $this->query->with('assignment.asset')->get();
 
         // $data = $this->query;
 

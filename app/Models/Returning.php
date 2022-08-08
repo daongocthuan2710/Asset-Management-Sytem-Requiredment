@@ -31,6 +31,6 @@ class Returning extends Model
 
     public function asset()
     {
-        return $this->assignment->asset;
+        return $this->belongsTo(Assignment::class)->asset();
     }
 }
