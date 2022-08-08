@@ -34,6 +34,7 @@ Route::post('/user/store', [ManageUserController::class, 'store']);
 Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
 Route::get('/can-delete-assignment/{id}', [ManageAssignmentController::class, 'canDelete']);
+Route::get('/report', [ManageAssetController::class, 'report']);
 
 // Route::resource('/login', AuthenticationController::class);
 Route::resource('/assignment', ManageAssignmentController::class);
