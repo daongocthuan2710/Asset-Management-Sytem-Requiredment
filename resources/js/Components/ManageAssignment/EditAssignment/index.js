@@ -45,7 +45,7 @@ export default function EditAssignmentForm() {
 
     // Validate date
     const assignedDateCheck = (date) => {
-        if (new Date(date) < new Date()) {
+        if (new Date(date) < new Date().toISOString().slice(0, 10)) {
           setAssignedDateError({
             error: true,
             message: "Only current or future date. Please select a different date",
@@ -155,7 +155,7 @@ export default function EditAssignmentForm() {
 
     useEffect(() => {
     setDisableSave(true);
-    if ((assignedDate !== '' && assignedDate !== null && new Date(assignedDate) >= new Date() )
+    if ((assignedDate !== '' && assignedDate !== null && assignedDate >= new Date().toISOString().slice(0, 10) )
     && (note !== "" && note !== null) && select == true)
         setDisableSave(false);
     }, [assignedDate, note, select]);
