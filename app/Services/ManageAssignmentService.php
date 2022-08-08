@@ -201,6 +201,7 @@ class ManageAssignmentService extends BaseService
         }
 
         return $this->manageAssignmentRepository->getById($id);
+    }
     public function response($request, $id)
     {
         if ($this->checkResponsePermission($request, $id) !== null) {
