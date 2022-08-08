@@ -16,14 +16,19 @@ class ManageReturningRepository extends BaseRepository
 
     public function getAll($request)
     {
+        $data = $this->query
+            ->search($request)
+            ->filterByState($request)
+            ->filterByDate($request)
+            ->sortByNo($request)
+            ->sortByAssetCode($request)
+            ->sortByAssetName($request)
+            ->sortByRequestedBy($request)
+            ->sortByAssignedDate($request)
+            ->sortByAcceptedBy($request)
+            ->sortByReturnedDate($request)
+            ->sortByState($request);
 
-        return $this->query->with('assignment.asset')->get();
-
-        // $data = $this->query;
-
-        // return ReturningResource::collection($data->paginate(config('app.limit')));
+        return ReturningResource::collection($data->paginate(config('app.limit')));
     }
-
-
-
 }
