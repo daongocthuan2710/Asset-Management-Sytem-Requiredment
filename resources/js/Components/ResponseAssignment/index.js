@@ -8,9 +8,9 @@ export default function ResponseAssignment(props) {
 
     const handleResponse = async () => {
         try {
-            const token = localStorage.getItem('token')
-            const headers = {headers: {Authorization: `Bearer ${token}`}};
-            await axios.post(`/api/response-assignment/${response.id}?response=${response.res? 1 : 0}`, headers);
+            console.log('response', response);
+            const headers = {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }};
+            await axios.post(`/api/response-assignment/${response.id}`, {response: response.res ? 1 : 0}, headers);
             setResponse({...response, show: false});
             window.location.reload();
         } catch (e) {

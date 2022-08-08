@@ -109,10 +109,10 @@ export default function AssignmentTable({
                             {"  "}
                             &nbsp;
                             {
-                                item.state.code === 1 ?
-                                    <BsXLg color='gray'/>
-                                    : <BsXLg className="delete-icon" aria-disabled={item.state.code !== 2}
+                                item.state.code === 0 ?
+                                    <BsXLg className="delete-icon" aria-disabled={item.state.code !== 2}
                                              onClick={(e) => handleResponse(e, item.id, false)} type="button"/>
+                                    : <BsXLg color='gray'/>
                             }
                             {" "}
                             {" "}
