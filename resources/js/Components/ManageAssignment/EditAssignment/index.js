@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { Row, Container, Col } from "reactstrap";
-import { useSelector, useDispatch } from "react-redux";
+import {useDispatch } from "react-redux";
 import AssignmentService from "../../../Services/assignment.service";
 import UserService from "../../../Services/user.service";
 import AssetService from "../../../Services/asset.service";
@@ -45,19 +45,25 @@ export default function EditAssignmentForm() {
 
     // Validate date
     const assignedDateCheck = (date) => {
-        if (new Date(date) < new Date().toISOString().slice(0, 10)) {
+        setAssignedDate(date);
+        if (date < new Date().toISOString().slice(0, 10)) {
           setAssignedDateError({
             error: true,
             message: "Only current or future date. Please select a different date",
           });
-          setAssignedDate('');
         } else {
-          setAssignedDate(date);
           setSelect(true);
           setAssignedDateError({ error: false, message: "" });
         }
       };
 
+      useEffect(() => {
+        assignedDateCheck(assignedDate);
+        setDisableSave(true);
+        if ((assignedDate !== '' && assignedDate !== null && assignedDate >= new Date().toISOString().slice(0, 10) )
+        && (note !== "" && note !== null) && select == true)
+            setDisableSave(false);
+        }, [assignedDate, note, select]);
     // Action
     async function handleUpdateAssignmentInfo(e) {
         e.preventDefault();
@@ -153,12 +159,6 @@ export default function EditAssignmentForm() {
         fetcDataAssetList();
       }, [])
 
-    useEffect(() => {
-    setDisableSave(true);
-    if ((assignedDate !== '' && assignedDate !== null && assignedDate >= new Date().toISOString().slice(0, 10) )
-    && (note !== "" && note !== null) && select == true)
-        setDisableSave(false);
-    }, [assignedDate, note, select]);
 
     function handleSelectUser(e,user){
         setSelect(true);

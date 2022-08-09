@@ -13,6 +13,7 @@ class Returning extends Model
     public const WAITING_FOR_RETURNING = 0;
     public const COMPLETED = 1;
 
+    protected $fillable = ['state','returned_date'];
 
     public function assignment()
     {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from "react";
 import Table from "react-bootstrap/Table";
@@ -14,7 +15,7 @@ import {
     FaUndo
 } from "react-icons/fa";
 import moment from "moment";
-import { Redirect , Navigate} from "react-router-dom";
+import CompleteReturningRequest from "../CompleteReturningRequestModal";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
@@ -125,6 +126,7 @@ export default function AssignmentTable({
                     <img id="img-nodata" src={Nodata}></img>
                 )}
             </tbody>
+            <CompleteReturningRequest/>
         </Table>
     );
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateReturningRequest;
 use App\Services\ManageReturningService;
 use Illuminate\Http\Request;
 
@@ -53,9 +54,9 @@ class ManageReturningController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id) //UpdateReturningRequest
     {
-        //
+        return $this->manageReturningService->update($request, $id);
     }
 
     /**
