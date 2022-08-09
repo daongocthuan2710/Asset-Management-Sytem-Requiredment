@@ -55,7 +55,9 @@ export default function ReturningTable({
                 {data.length > 0 ? (
                     data.length > 0 &&
                     data.map((item) => (
-                        <tr key={item.id} onClick={() => handleGetAssignmentById(item.id)}>
+                        <tr key={item.id} onClick={() => {
+                           handleGetAssignmentById(item.id);
+                            }}>
                             <td>{item.id}</td>
                             <td>{item.assignment.asset.asset_code}</td>
                             <td >{item.assignment.asset.name}</td>
@@ -70,7 +72,10 @@ export default function ReturningTable({
                             {
                                 item.returning_state == "Waiting for returning" ?
                                     <>
-                                        <FaCheck onClick={() => handleShowModalCompleteReturning(item.id)} id='editUserButton' />
+                                       <FaCheck onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleShowModalCompleteReturning(item.id);
+                                       }} id='editUserButton' />
                                         &nbsp;
                                         <FaTimes/>
                                     </>
@@ -89,7 +94,7 @@ export default function ReturningTable({
                 )}
             </tbody>
         </Table>
-        <CompleteReturningRequest show = {show} returningId = {returningId}/>
+        <CompleteReturningRequest show={show} closeModal={() => setShow(false)} returningId={returningId}/>
     </>
     );
 }

@@ -7,7 +7,7 @@ import ReturningService from "../../Services/returning.service";
 // import "./style.scss"
 
 export default function CompleteReturningRequest(props) {
-    const [show, setShow] = useState(Boolean(props.show))
+    const [show, setShow] = useState(props.show)
     const [showModal, setShowModal] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [modalBody, setModalBody] = useState("");
@@ -67,16 +67,17 @@ export default function CompleteReturningRequest(props) {
     const handleClose = () => setShow(false);
 
 
-    useEffect(() => {
-        // eslint-disable-next-line react/prop-types
-        if (props.show) setShow(Boolean(true))
-    }, [props])
+    // useEffect(() => {
+    //     // eslint-disable-next-line react/prop-types
+    //     if (props.show) setShow(Boolean(true))
+    // }, [props])
 
     return (
         <>
             <Modal style={{ marginTop: '222px !important' }}
-                show={show}
+                show={props.show}
                 backdrop="static"
+                onHide={() => props.closeModal()}
                 keyboard={false}
             >
                 <Modal.Header>
@@ -96,7 +97,7 @@ export default function CompleteReturningRequest(props) {
                                             Yes
                                         </Button>
                                         <b>&emsp;</b>
-                                        <Button onClick={handleClose}
+                                        <Button onClick={() => props.closeModal()}
                                                 id="pwCancelButton"
                                                 variant="light">
                                             No

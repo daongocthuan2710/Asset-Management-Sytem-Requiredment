@@ -443,7 +443,6 @@ export default function ManageAssignment() {
   const handleGetAssignmentById = async (assignmentId) => {
     const response = await assignmentService.getAssignmentById(assignmentId);
     setModal(true);
-    console.log(response.data.data);
     setAssignment(response.data.data);
   }
 
