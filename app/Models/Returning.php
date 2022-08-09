@@ -84,9 +84,13 @@ class Returning extends Model
             ->when($request->has('sortByAssetCode'), function ($query) use ($request) {
                 $sortByAssetCode = $request->query('sortByAssetCode');
                 $query
-                    ->join('assignment', 'assignment.id', 'returning.assignment_id')
-                    ->join('asset', 'assignment.asset_id', 'asset.id')
-                    ->orderBy('asset.asset_code', $sortByAssetCode);
+                    ->with('assignment.asset')
+                    ->orderBy(
+                        Asset::select('asset_code')
+                            ->join('assignment', 'returning.assignment_id', 'assignment.id')
+                            ->whereColumn('assignment.asset_id', 'asset.id'),
+                        $sortByAssetCode
+                    );
             });
     }
 
@@ -96,9 +100,13 @@ class Returning extends Model
             ->when($request->has('sortByAssetName'), function ($query) use ($request) {
                 $sortByAssetName = $request->query('sortByAssetName');
                 $query
-                    ->join('assignment', 'assignment.id', 'returning.assignment_id')
-                    ->join('asset', 'assignment.asset_id', 'asset.id')
-                    ->orderBy('asset.name', $sortByAssetName);
+                    ->with('assignment.asset')
+                    ->orderBy(
+                        Asset::select('asset.name')
+                            ->join('assignment', 'returning.assignment_id', 'assignment.id')
+                            ->whereColumn('assignment.asset_id', 'asset.id'),
+                        $sortByAssetName
+                    );
             });
     }
 
@@ -110,7 +118,7 @@ class Returning extends Model
                 $query
                     ->with('requestedBy')
                     ->orderBy(
-                        User::select('username')->whereColumn('user.id', 'assignment.requested_by'),
+                        User::select('username')->whereColumn('user.id', 'returning.requested_by'),
                         $sortByRequestedBy
                     );
             });
@@ -137,7 +145,7 @@ class Returning extends Model
                 $query
                     ->with('acceptedBy')
                     ->orderBy(
-                        User::select('username')->whereColumn('user.id', 'assignment.accepted_by'),
+                        User::select('username')->whereColumn('user.id', 'returning.accepted_by'),
                         $sortByAcceptedBy
                     );
             });
@@ -160,5 +168,4 @@ class Returning extends Model
                 $query->orderBy("state", $sortByState);
             });
     }
-    
 }
