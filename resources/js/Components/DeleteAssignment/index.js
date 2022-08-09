@@ -51,7 +51,7 @@ export default function DeleteAssignment(props) {
                     <div id='modalText'>
                         <p>
                             {
-                                canDelete ? 'Do you want delete this assignment?' : 'Somethings went wrong! You can not delete this assignment.'
+                                canDelete ? 'Do you want to delete this assignment?' : 'Somethings went wrong! You can not delete this assignment.'
                             }
                         </p>
                         {canDelete ? <>

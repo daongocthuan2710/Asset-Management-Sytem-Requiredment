@@ -63,7 +63,7 @@ export default function DeleteAsset(props) {
                     <Modal.Body>
                         <div id='modalText'>
                             <p>
-                                Do you want delete this asset?
+                                Do you want to delete this asset?
                             </p>
                             <Button
                                 onClick={handleDisableUser}
