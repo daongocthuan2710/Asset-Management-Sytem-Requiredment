@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Returning;
 use App\Models\User;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReturningResource extends JsonResource
@@ -15,11 +17,23 @@ class ReturningResource extends JsonResource
      */
     public function toArray($request)
     {
+        $stateName = $this->state;
+        switch ($stateName) {
+            case Returning::WAITING_FOR_RETURNING:
+                $stateName = 'Waiting for returning';
+                break;
+            case Returning::COMPLETED:
+                $stateName = 'Completed';
+                break;
+        }
+
         return [
             'id' => $this->id,
             'assignment' => new AssignmentResource($this->assignment),
             'accepted_by' => new UserResource(User::findOrFail($this->accepted_by)),
             'requested_by' => new UserResource(User::findOrFail($this->requested_by)),
+            'return_date' => $this->returned_date,
+            'returning_state' => $stateName,
         ];
     }
 }

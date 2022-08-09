@@ -11,15 +11,17 @@ import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.png";
 import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
-import AssignmentTable from "./AssignmentTable";
+import ReturningTable from "./ReturningTable";
+import FilterByState from "./FilterByState";
+import Search from "./Search";
 import AssignmentDetailModal from "./AssignmentDetailModal";
 import DeleteAsset from "../DeleteAsset";
-
+import FilterByReturnedDate from "./FilterByReturnedDate";
 import _ from "lodash";
 import DeleteAssignment from "../DeleteAssignment";
 
 
-export default function TableHome() {
+export default function ManageAssignment() {
   const [currentButton, setFilter] = React.useState(["3"]);
   const [currentSearch, setCurrentSearch] = React.useState("");
   const [page, setPage] = React.useState(1);
@@ -58,12 +60,7 @@ export default function TableHome() {
       isSortDESC: false,
     },
     {
-      name: "Assigned to",
-      isSortASC: true,
-      isSortDESC: false,
-    },
-    {
-      name: "Assigned by",
+      name: "Requested by",
       isSortASC: true,
       isSortDESC: false,
     },
@@ -72,17 +69,29 @@ export default function TableHome() {
       isSortASC: true,
       isSortDESC: false,
     },
+
     {
-      name: "State",
+        name: "Accepted by",
+        isSortASC: true,
+        isSortDESC: false,
+      },
+    {
+      name: "Returned Date",
       isSortASC: true,
       isSortDESC: false,
     },
+    {
+        name: "State",
+        isSortASC: true,
+        isSortDESC: false,
+      },    
+    
   ]);
 
   const [data, setData] = React.useState([]);
 
   React.useEffect(() => {
-    getApiAssignment({
+    getApiReturningRequest({
       FilterByState: arrayState,
     });
   }, []);
@@ -95,14 +104,14 @@ export default function TableHome() {
   }
 
 
-  const getApiAssignment = async ({
+  const getApiReturningRequest = async ({
     FilterByDate = undefined,
     FilterByState = undefined,
     search = undefined,
     page = 1,
     sort = undefined,
   } = {}) => {
-    let url = "api/view-assignment";
+    let url = "api/returning";
     let array = [];
     console.log(FilterByDate)
 
@@ -115,12 +124,7 @@ export default function TableHome() {
       }
     }
 
-    if (sort_at_get_mesage === 'sortByEditAssignment') {
-      array.push('sortByEditAssignment');
-    }
-    if (sort_at_get_mesage === 'sortByCreateAssignment') {
-      array.push('sortByCreateAssignment');
-    }
+
 
 
     if (FilterByState) {
@@ -155,18 +159,21 @@ export default function TableHome() {
         if (item.key === "Asset Name") {
           array.push(`sortByAssetName=${item.value}`);
         }
-        if (item.key === "Assigned to") {
-          array.push(`sortByAssignedTo=${item.value}`);
-        }
-        if (item.key === "Assigned by") {
-          array.push(`sortByAssignedBy=${item.value}`);
+        if (item.key === "Requested by") {
+          array.push(`sortByRequestedBy=${item.value}`);
         }
         if (item.key === "Assigned Date") {
           array.push(`sortByAssignedDate=${item.value}`);
         }
-        if (item.key === "State") {
-          array.push(`sortByState=${item.value}`);
+        if (item.key === "Accepted by") {
+          array.push(`sortByAcceptedBy=${item.value}`);
         }
+        if (item.key === "Returned Date") {
+          array.push(`sortByReturnedDate=${item.value}`);
+        }
+        if (item.key === "State") {
+            array.push(`sortByState=${item.value}`);
+          }
       });
     }
 
@@ -190,6 +197,7 @@ export default function TableHome() {
       },
     });
     Loading.remove();
+    console.log("response", response);
     setData(response.data.data);
     setTotal(response.data.meta.total);
     return response.data;
@@ -212,7 +220,7 @@ export default function TableHome() {
 
 
     setFilterByDate(date);
-    getApiAssignment({
+    getApiReturningRequest({
       FilterByDate: date,
       FilterByState: temp_filter_state,
       search: temp_search,
@@ -256,7 +264,7 @@ export default function TableHome() {
       temp_search = currentSearch;
     }
   
-    getApiAssignment({
+    getApiReturningRequest({
       FilterByState: arrayStateTemp,
       search: temp_search,
       sort: temp_sort,
@@ -289,7 +297,7 @@ export default function TableHome() {
       temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
-    getApiAssignment({
+    getApiReturningRequest({
       FilterByState: temp_filter_state,
       search: value,
       page: temp_page,
@@ -321,7 +329,7 @@ export default function TableHome() {
       temp_sort = JSON.parse(JSON.stringify(sortArray));
     }
 
-    getApiAssignment({
+    getApiReturningRequest({
       FilterByState: temp_filter_state,
       search: temp_search,
       page: pageNumber,
@@ -364,11 +372,11 @@ export default function TableHome() {
       tempHeader[indexHeader].isSortASC = false;
       tempHeader[indexHeader].isSortDESC = true;
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != indexHeader && i != 7) {
+        if (i != indexHeader && i != 8) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
-        if (i === 7) {
+        if (i === 8) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -381,7 +389,7 @@ export default function TableHome() {
       tempSortArray[0].key = key;
       tempSortArray[0].value = 'asc';
       for (let i = 0; i < tempHeader.length; i++) {
-        if (i != 7) {
+        if (i != 8) {
           tempHeader[i].isSortASC = true;
           tempHeader[i].isSortDESC = false;
         }
@@ -390,7 +398,7 @@ export default function TableHome() {
 
 
     setTableHeader(tempHeader);
-    getApiAssignment({
+    getApiReturningRequest({
       FilterByState: temp_filter_state,
       search: temp_search,
       page: temp_page,
@@ -433,18 +441,40 @@ export default function TableHome() {
   const [assignment, setAssignment] = React.useState([]);
 
   const handleGetAssignmentById = async (assignmentId) => {
-    const response = await assignmentService.viewAssignmentById(assignmentId);
+    const response = await assignmentService.getAssignmentById(assignmentId);
     setModal(true);
+    console.log(response.data.data);
     setAssignment(response.data.data);
   }
 
   return (
     <div className="containermanageuser">
       <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
-      <h5 style={{ color: "red", fontWeight: "bold" }}> My Assignment </h5>
+      <h5 style={{ color: "red", fontWeight: "bold" }}>Assignment List </h5>
+      <div id="filter-search" className="d-flex justify-content-between type-seach-create">
+        <div className="d-flex ml-2">
+          <FilterByState
+            currentButton={currentButton}
+            handleFilter={handleFilter}
+            arrayState={arrayState}
+          />
+          <div id="secondFilterAsset">
+            <FilterByReturnedDate handleFilterDate={handleFilterDate} />
+
+          </div>
+        </div>
+
+        <div id="search-create" className="d-flex justify-content-end search-create">
+          <Search
+            currentSearch={currentSearch}
+            handleSearch={handleSearch}
+            setCurrentSearch={setCurrentSearch}
+          />
+        </div>
+      </div>
       <Row>
         <div id="table-manage-user">
-          <AssignmentTable
+          <ReturningTable
             data={data}
             tableHeader={tableHeader}
             Nodata={Nodata}
