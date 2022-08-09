@@ -13,10 +13,9 @@ import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
 import AssignmentTable from "./AssignmentTable";
 import AssignmentDetailModal from "./AssignmentDetailModal";
-import DeleteAsset from "../DeleteAsset";
 
-import _ from "lodash";
 import DeleteAssignment from "../DeleteAssignment";
+import CreateReturn from "../CreateReturn";
 
 
 export default function TableHome() {
@@ -26,6 +25,7 @@ export default function TableHome() {
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
   const [deleteAssignment, setDeleteAssignment] = React.useState({ show: false, id: 0 });
+  const [createReturn, setCreateReturn] = React.useState({ show: false, id: 0 });
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [filterByDate, setFilterByDate] = React.useState([]);
   const [modal, setModal] = React.useState(false);
@@ -89,11 +89,16 @@ export default function TableHome() {
 
   const handleDeleteAssignment = (e, id) => {
     e.stopPropagation();
-    console.log("id", id);
     setDeleteAssignment({ show: true, id: id});
     setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
   }
 
+  const handleCreateReturn = (e, id) => {
+      e.stopPropagation();
+      console.log("handleCreateReturn", id);
+      setCreateReturn({ show: true, id: id});
+      setTimeout(() => setCreateReturn({ show: false, id: id }), 1);
+  }
 
   const getApiAssignment = async ({
     FilterByDate = undefined,
@@ -255,7 +260,7 @@ export default function TableHome() {
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
-  
+
     getApiAssignment({
       FilterByState: arrayStateTemp,
       search: temp_search,
@@ -441,6 +446,7 @@ export default function TableHome() {
   return (
     <div className="containermanageuser">
       <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
+      <CreateReturn show={createReturn.show} id={createReturn.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}> My Assignment </h5>
       <Row>
         <div id="table-manage-user">
@@ -452,6 +458,7 @@ export default function TableHome() {
             handleOpenEditForm={handleOpenEditForm}
             handleGetAssignmentById={handleGetAssignmentById}
             handleDeleteAssignment={handleDeleteAssignment}
+            handleCreateReturn={handleCreateReturn}
           />
         </div>
       </Row>
