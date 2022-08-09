@@ -14,7 +14,7 @@ import {
     FaUndo
 } from "react-icons/fa";
 import moment from "moment";
-import { Redirect , Navigate} from "react-router-dom";
+import { Redirect, Navigate } from "react-router-dom";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
@@ -25,45 +25,45 @@ export default function AssignmentTable({
     let history = useHistory();
 
     async function handleOpenEditAssetForm(e, assignmentId = "") {
-      e.stopPropagation();
+        e.stopPropagation();
         const response = await AssignmentService.getAssignmentEdit(assignmentId);
-      handleShowMessage(response,assignmentId);
+        handleShowMessage(response, assignmentId);
     }
 
-    function handleShowMessage(response,assignmentId) {
+    function handleShowMessage(response, assignmentId) {
         const message = response.data == undefined ? response.message : response.data.message;
         const code = response.code;
         switch (code) {
-          case 200:
-            {
-                history.push(`/edit-assignment/${assignmentId}`);
-            }
-            break;
-          case 422:
-            {
-              Swal.fire({
-                position: "center",
-                icon: "info",
-                title: message,
-                showConfirmButton: false,
-                timer: 2000,
-              });
-            }
-            break;
+            case 200:
+                {
+                    history.push(`/edit-assignment/${assignmentId}`);
+                }
+                break;
+            case 422:
+                {
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                }
+                break;
             case 401:
                 {
-                  Swal.fire({
-                    position: "center",
-                    icon: "info",
-                    title: message,
-                    showConfirmButton: false,
-                    timer: 2000,
-                  });
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
                 }
                 break;
         }
 
-      }
+    }
     return (
         <Table id="table-assignment" responsive="md">
             <thead>
@@ -74,9 +74,7 @@ export default function AssignmentTable({
                                 <th
                                     key={index}
                                     onClick={() => {
-                                        if (item.name !== "Username") {
-                                            handleSort(item.name, item.isSortASC);
-                                        }
+                                        handleSort(item.name, item.isSortASC);
                                     }}
                                 >
                                     {item.name}&nbsp;
@@ -85,7 +83,7 @@ export default function AssignmentTable({
                                 </th>
                             );
                         })
-                        :''}
+                        : ''}
                 </tr>
             </thead>
             <tbody>
@@ -102,22 +100,22 @@ export default function AssignmentTable({
                             <td>{item.state.name}</td>
 
                             <td className="td-without_border">
-                            {
-                                item.state.code===0?
-                                <FaPencilAlt onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2 } id='editUserButton' />
-                                : <FaPencilAlt color='gray'/>
-                            }
-                                        {" "}
-                                        {"  "}
-                                        &nbsp;
+                                {
+                                    item.state.code === 0 ?
+                                        <FaPencilAlt onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2} id='editUserButton' />
+                                        : <FaPencilAlt color='gray' />
+                                }
+                                {" "}
+                                {"  "}
+                                &nbsp;
                                 {
                                     item.state.code === 1 ?
-                                        <FaRegTimesCircle color='gray'/>
-                                        : <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2 }
-                                                            onClick={(e) => handleDeleteAssignment(e, item.id)} type="button"/>
+                                        <FaRegTimesCircle color='gray' />
+                                        : <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2}
+                                            onClick={(e) => handleDeleteAssignment(e, item.id)} type="button" />
                                 }
                                 {" "}{" "} &nbsp;
-                                        <FaUndo id="undo-icon"/>
+                                <FaUndo id="undo-icon" />
                             </td>
                         </tr>
                     ))

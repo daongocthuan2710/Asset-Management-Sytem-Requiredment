@@ -433,9 +433,8 @@ export default function TableHome() {
   const [assignment, setAssignment] = React.useState([]);
 
   const handleGetAssignmentById = async (assignmentId) => {
-    const response = await assignmentService.getAssignmentById(assignmentId);
+    const response = await assignmentService.viewAssignmentById(assignmentId);
     setModal(true);
-    console.log(response.data.data);
     setAssignment(response.data.data);
   }
 

@@ -18,5 +18,11 @@ class AssignmentService {
         const response = await Repository.put(endpoint);
         return response;
     }
+
+    async viewAssignmentById(id) {
+        const endpoint = `/view-assignment/${id}`;
+        const response = await Repository.get(endpoint);
+        return response;
+    }
 }
 export default new AssignmentService();
