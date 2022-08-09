@@ -68,7 +68,7 @@ class ManageReturningService extends BaseService
         if ($user->location != $sanctumUser->location) {
             return response()->json(
                 [
-                    "message" => "You can't assign asset to user in other location",
+                    "message" => "You can't complete returning having asset in other location",
                 ],
                 400
             );

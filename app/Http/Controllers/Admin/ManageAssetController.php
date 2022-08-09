@@ -93,4 +93,8 @@ class ManageAssetController extends Controller
     {
         return $this->manageAssetService->assignmentValid($id);
     }
+    public function report(Request $request)
+    {
+        return $this->manageAssetService->report($request);
+    }
 }

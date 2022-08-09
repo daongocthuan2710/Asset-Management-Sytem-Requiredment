@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
@@ -6,7 +7,7 @@ import ReturningService from "../../Services/returning.service";
 // import "./style.scss"
 
 export default function CompleteReturningRequest(props) {
-    const [show, setShow] = useState(true) //Boolean(props.show)
+    const [show, setShow] = useState(Boolean(props.show))
     const [showModal, setShowModal] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [modalBody, setModalBody] = useState("");
@@ -16,10 +17,10 @@ export default function CompleteReturningRequest(props) {
     }, [show])
 
     //Handle save button
-    const handleUpdateAssignmentInfo = async () => {
+    const handleUpdateReturningInfo = async () => {
         setShow(false);
         const data = {
-            returningId: 29,
+            returningId: props.returningId,
             state : 1
         }
 
@@ -89,7 +90,7 @@ export default function CompleteReturningRequest(props) {
                                 </Row>
                                 <Row className = "text-start">
                                     <Col>
-                                        <Button onClick={handleUpdateAssignmentInfo}
+                                        <Button onClick={handleUpdateReturningInfo}
                                                 id="pwSaveButton"
                                                 variant="primary">
                                             Yes

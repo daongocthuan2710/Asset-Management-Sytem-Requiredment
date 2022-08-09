@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Resources\AssetResource;
 use App\Http\Resources\EditAssetResource;
+use App\Http\Resources\ReportResource;
 use App\Http\Resources\UserResource;
 use App\Models\Asset;
 use App\Repositories\BaseRepository;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use JetBrains\PhpStorm\NoReturn;
 use phpDocumentor\Reflection\Types\Integer;
+use Illuminate\Database\Eloquent\Builder;
 
 class ManageAssetRepository extends BaseRepository
 {
