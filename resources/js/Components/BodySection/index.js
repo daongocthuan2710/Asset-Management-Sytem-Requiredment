@@ -17,6 +17,7 @@ import EditAssignmentForm from "../ManageAssignment/EditAssignment";
 import ManageAssignment from "../TableManageAssignment";
 import TableHome from "../TableHome";
 import TableReport from "../TableReport";
+import TableReturning from "../TableReturning";
 
 export default function BodySection() {
     const assetEditReducer = useSelector((state) => state.assetEditReducer.value);
@@ -59,7 +60,7 @@ export default function BodySection() {
                         <EditAssignmentForm />
                     </Route>
                     <Route path="/request-for-returning">
-                        <Test />
+                        <TableReturning />
                     </Route>
                     <Route path="/report">
                         <TableReport />

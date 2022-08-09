@@ -84,11 +84,9 @@ class Returning extends Model
             ->when($request->has('sortByAssetCode'), function ($query) use ($request) {
                 $sortByAssetCode = $request->query('sortByAssetCode');
                 $query
-                    ->with('assignment.asset')
-                    ->orderBy(
-                        Asset::select('asset_code')->whereColumn('asset.id', 'assignment.asset_id'),
-                        $sortByAssetCode
-                    );
+                    ->join('assignment', 'assignment.id', 'returning.assignment_id')
+                    ->join('asset', 'assignment.asset_id', 'asset.id')
+                    ->orderBy('asset.asset_code', $sortByAssetCode);
             });
     }
 
@@ -98,11 +96,9 @@ class Returning extends Model
             ->when($request->has('sortByAssetName'), function ($query) use ($request) {
                 $sortByAssetName = $request->query('sortByAssetName');
                 $query
-                    ->with('assignment.asset')
-                    ->orderBy(
-                        Asset::select('asset_name')->whereColumn('asset.id', 'assignment.asset_id'),
-                        $sortByAssetName
-                    );
+                    ->join('assignment', 'assignment.id', 'returning.assignment_id')
+                    ->join('asset', 'assignment.asset_id', 'asset.id')
+                    ->orderBy('asset.name', $sortByAssetName);
             });
     }
 
@@ -164,4 +160,5 @@ class Returning extends Model
                 $query->orderBy("state", $sortByState);
             });
     }
+    
 }
