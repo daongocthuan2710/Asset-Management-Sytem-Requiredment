@@ -33,7 +33,8 @@ class AssetResource extends JsonResource
                 break;
         }
         $installedDate = date("d/m/Y", strtotime($this->installed_date));
-        return [
+
+        $assetArray = [
             'asset_code' => $this->asset_code,
             'category' => new CategoryResource($this->category),
             'name' => $this->name,
@@ -46,5 +47,11 @@ class AssetResource extends JsonResource
             'installed_date' => $installedDate,
             'specification' => $this->specification
         ];
+
+        if (request()->route()->uri() === 'api/asset/{asset}') {
+            $assetArray['returning'] = ReturningResource::collection($this->returning);
+        }
+
+        return $assetArray;
     }
 }

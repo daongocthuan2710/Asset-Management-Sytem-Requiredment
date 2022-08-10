@@ -34,6 +34,11 @@ class Asset extends Model
         return $this->hasMany(Assignment::class);
     }
 
+    public function returning()
+    {
+        return $this->hasManyThrough(Returning::class, Assignment::class);
+    }
+    
     public function scopeSearch($query, $request)
     {
         return $query
