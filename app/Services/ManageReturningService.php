@@ -27,7 +27,8 @@ class ManageReturningService extends BaseService
 
     public function getAll($request)
     {
-        return $this->manageReturningRepository->getAll($request);
+        $sanctumUser = auth('sanctum')->user();
+        return $this->manageReturningRepository->getAll($request,$sanctumUser);
     }
     public function store(Assignment $assignment)
     {

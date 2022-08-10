@@ -17,7 +17,7 @@ class ManageReturningRepository extends BaseRepository
         $this->query = Returning::query();
     }
 
-    public function getAll($request)
+    public function getAll($request, $sanctumUser)
     {
         $data = $this->query
             ->search($request)
@@ -30,7 +30,9 @@ class ManageReturningRepository extends BaseRepository
             ->sortByAssignedDate($request)
             ->sortByAcceptedBy($request)
             ->sortByReturnedDate($request)
-            ->sortByState($request);
+            ->sortByState($request)
+            ->sortByEditReturning($request)
+            ->location($sanctumUser->location);
 
         return ReturningResource::collection($data->paginate(config('app.limit')));
     }

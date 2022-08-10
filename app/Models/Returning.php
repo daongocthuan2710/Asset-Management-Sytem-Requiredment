@@ -176,4 +176,19 @@ class Returning extends Model
                 $query->orderBy("state", $sortByState);
             });
     }
+
+    public function scopeSortByEditReturning($query, $request)
+    {
+        return $query
+            ->when($request->has('sortByEditReturning'), function ($query) use ($request) {
+                $sortByEditReturning = $request->query('sortByEditReturning');
+                $query->orderBy("updated_at", $sortByEditReturning);
+            });
+    }
+
+    public function scopeLocation($query, $location)
+    {
+        $users = User::where('location', $location)->pluck('id');
+        return $query->whereIn('requested_by', $users);
+    }
 }

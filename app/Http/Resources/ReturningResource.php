@@ -34,6 +34,7 @@ class ReturningResource extends JsonResource
             'requested_by' => new UserResource(User::findOrFail($this->requested_by)),
             'return_date' => $this->returned_date,
             'returning_state' => $stateName,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
