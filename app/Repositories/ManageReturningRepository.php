@@ -62,4 +62,14 @@ class ManageReturningRepository extends BaseRepository
         ], 200);
     }
 
+    public function delete($id){
+
+        $returning = Returning::query()->findOrFail($id);
+        $assignment = Assignment::query()->findOrFail($returning->assignment_id);
+        $assignment->update(['state' => Assignment::ACCEPTED]);
+        $returning->delete();
+        return response()->json([
+            'message' => 'Returning delete successfully'
+        ], 200);
+    }
 }

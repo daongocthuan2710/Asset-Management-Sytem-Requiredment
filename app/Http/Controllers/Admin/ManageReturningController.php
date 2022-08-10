@@ -67,6 +67,6 @@ class ManageReturningController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->manageReturningService->delete($id);
     }
 }

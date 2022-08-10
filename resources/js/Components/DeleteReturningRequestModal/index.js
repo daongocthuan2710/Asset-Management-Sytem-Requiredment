@@ -4,24 +4,19 @@
 import {Button, Col, Container, Modal, Row} from "react-bootstrap";
 import React, {useState} from "react";
 import ReturningService from "../../Services/returning.service";
-import { useDispatch} from "react-redux";
-
 // import "./style.scss"
 
-export default function CompleteReturningRequest(props) {
+export default function DeleteReturningRequest(props) {
     const [showModal, setShowModal] = useState(false);
     const [modalHeader, setModalHeader] = useState("");
     const [modalBody, setModalBody] = useState("");
 
-    //Handle save button
-    const handleUpdateReturningInfo = async () => {
-        props.closeModal()
-        const data = {
-            returningId: props.returningId,
-            state : 1
-        }
 
-        const response = await ReturningService.updateReturningInfo(data);
+    //Handle save button
+    const handleDeleteReturningInfo = async () => {
+        props.closeModal()
+
+        const response = await ReturningService.deleteReturningInfo(props.returningId);
         const message =
             response.data == undefined
                 ? response.message
@@ -30,7 +25,6 @@ export default function CompleteReturningRequest(props) {
         handleShowMessage(code, message);
     }
 
-    const dispatch = useDispatch();
     function handleShowMessage(code, message) {
         setShowModal(true);
         switch (code) {
@@ -41,12 +35,6 @@ export default function CompleteReturningRequest(props) {
                     setTimeout(() => {
                         setShowModal(false);
                     }, 2000);
-                    dispatch({
-                        type: 'GET_MESSAGE',
-                        payload: {
-                            sort_at: 'sortByEditReturning',
-                        },
-                    })
                 }
                 break;
 
@@ -60,18 +48,16 @@ export default function CompleteReturningRequest(props) {
                     setShowModal(false);
                 }, 2000);
                 break;
-
         }
-
-
     }
+
 
     return (
         <>
             <Modal
                 show={props.show}
-                backdrop="static"
                 onHide={() => props.closeModal()}
+                backdrop="static"
                 keyboard={false}
             >
                 <Modal.Header>
@@ -81,11 +67,11 @@ export default function CompleteReturningRequest(props) {
                     {
                         <Container id='pwChangePasswordFirstContainer' style={{width: "max-content"}}>
                                 <Row>
-                                    <p style={{marginBottom: "-1px"}}>Do you want to mark this returning request as 'Completed'?</p>
+                                    <p style={{marginBottom: "-1px"}}>Do you want to cancel this returning request?</p>
                                 </Row>
                                 <Row className = "text-start">
                                     <Col>
-                                        <Button onClick={handleUpdateReturningInfo}
+                                        <Button onClick={handleDeleteReturningInfo}
                                                 id="pwSaveButton"
                                                 variant="primary">
                                             Yes

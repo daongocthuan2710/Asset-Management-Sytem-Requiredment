@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
 import "./toast.css";
 import Button from "react-bootstrap/Button";
@@ -8,8 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import userEditReducer from "../../../Reducers/userEdit.reducer";
 import UserService from "../../../Services/user.service";
 import { getUserEdit } from "../../../Actions/user.action";
-import Swal from "sweetalert2";
-import {InputGroup, Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 
 
 export default function EditForm() {
@@ -86,10 +85,19 @@ export default function EditForm() {
         }
     }
 
+        // Validate date
+          useEffect(() => {
+            handleDateOfBirthCheck(date);
+            handleJoinDateCheck(joinDate);
+            }, [date,joinDate]);
+
     const handleDateOfBirthCheck = (e)=>{
         setDate(e);
         if (new Date(e).getFullYear() > (new Date().getFullYear()-18)) {
-            setDateOfBirthError({error: true, message: "User is under 18. Please select a different date"})
+            setDateOfBirthError({
+                error: true,
+                message: "User is under 18. Please select a different date"
+            })
             setDisableSubmit(true)
         }
         else {
@@ -110,7 +118,7 @@ export default function EditForm() {
         else if(new Date(e).getDay() === 0 || new Date(e).getDay() === 6) {
             setJoinedDateError({
                 error: true,
-                message: "Joined date is Saturday or Sunday. Please select a different date" + new Date(e).getDay()
+                message: "Joined date is Saturday or Sunday. Please select a different date"
             })
             setDisableSubmit(true)
         }
