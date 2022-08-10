@@ -36,7 +36,7 @@ const SignIn = () => {
       localStorage.setItem("token", response.data.token);
 
 
-      window.location.href = "/HomePage";
+      window.location.href = "/home";
     } catch (err) {
       console.log(err.response.data.message);
       setMess(err.response.data.message);
