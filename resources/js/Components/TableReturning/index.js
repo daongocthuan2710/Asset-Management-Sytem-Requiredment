@@ -472,7 +472,7 @@ export default function ManageAssignment() {
           />
         </div>
       </div>
-      <Row>
+      <Row id= "table-container">
         <div id="table-manage-user">
           <ReturningTable
             data={data}
@@ -485,7 +485,7 @@ export default function ManageAssignment() {
           />
         </div>
       </Row>
-      <Row>
+      <Row id = "pagination-container">
         <CustomPagination
           total={total}
           page={page}

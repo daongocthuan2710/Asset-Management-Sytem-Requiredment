@@ -479,7 +479,7 @@ export default function ManageAsset() {
           />
         </div>
       </div>
-      <Row>
+      <Row >
         <div id="table-manage-user">
           <AssetTable
             data={data}
@@ -493,7 +493,7 @@ export default function ManageAsset() {
           />
         </div>
       </Row>
-      <Row>
+      <Row id = "pagination-container">
         <CustomPagination
           total={total}
           page={page}

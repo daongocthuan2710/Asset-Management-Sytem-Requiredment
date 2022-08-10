@@ -111,7 +111,8 @@ export default function AssignmentTable({
                                 {
                                     item.state.code === 1 ?
                                         <FaRegTimesCircle color='gray' />
-                                        : <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2}
+                                        : <FaRegTimesCircle  id="deleteIcon"
+                                        className="delete-icon" aria-disabled={item.state.code !== 2}
                                             onClick={(e) => handleDeleteAssignment(e, item.id)} type="button" />
                                 }
                                 {" "}{" "} &nbsp;
@@ -120,7 +121,7 @@ export default function AssignmentTable({
                         </tr>
                     ))
                 ) : (
-                    <img id="img-nodata" src={Nodata}></img>
+                    <img id="img-nodata" style={{marginLeft : 370}} src={Nodata}></img>
                 )}
             </tbody>
         </Table>

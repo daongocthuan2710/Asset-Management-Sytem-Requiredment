@@ -442,7 +442,7 @@ export default function TableHome() {
     <div className="containermanageuser">
       <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}> My Assignment </h5>
-      <Row>
+      <Row >
         <div id="table-manage-user">
           <AssignmentTable
             data={data}
@@ -455,7 +455,7 @@ export default function TableHome() {
           />
         </div>
       </Row>
-      <Row>
+      <Row id = "pagination-container">
         <CustomPagination
           total={total}
           page={page}

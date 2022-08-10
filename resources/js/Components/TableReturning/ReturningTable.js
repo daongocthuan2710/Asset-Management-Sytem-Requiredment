@@ -106,15 +106,15 @@ export default function ReturningTable({
                             
 
                             <td className="td-without_border">
-                            <FaCheck/>
+                            <FaCheck id="fa-check"/>
                             &nbsp;
-                            <FaTimes/>
+                            <FaTimes  id="deleteIcon"/>
 
                              </td>
                         </tr>
                     ))
                 ) : (
-                    <img id="img-nodata" src={Nodata}></img>
+                    <img id="img-nodata" style={{marginLeft : 370}} src={Nodata}></img>
                 )}
             </tbody>
         </Table>
