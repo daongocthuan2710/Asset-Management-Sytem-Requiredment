@@ -115,6 +115,11 @@ export default function ManageAssignment() {
     let array = [];
     console.log(FilterByDate)
 
+    if (sort_at_get_mesage === 'sortByEditReturning') {
+      array.push('sortByEditReturning');
+    }
+
+
     if (FilterByDate) {
       if (FilterByDate.length > 0 ) {
       array.push(`filterByDate=${FilterByDate}`);
