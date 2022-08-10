@@ -18,5 +18,11 @@ class ReturningService {
         const response = await Repository.put(endpoint);
         return response;
     }
+
+    async deleteReturningInfo(id) {
+        const endpoint = `/returning/${id}`;
+        const response = await Repository.delete(endpoint);
+        return response;
+    }
 }
 export default new ReturningService();
