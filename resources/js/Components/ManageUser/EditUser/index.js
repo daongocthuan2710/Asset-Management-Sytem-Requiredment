@@ -275,7 +275,7 @@ export default function EditForm() {
                                     onClick={handleUpdateUserInfo}
                                     disabled={disableSubmit}
                                 >
-                                    Submit
+                                    Save
                                 </Button>
                                 <b>  </b>
                                 <Button

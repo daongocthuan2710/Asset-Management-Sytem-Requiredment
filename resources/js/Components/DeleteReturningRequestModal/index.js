@@ -35,6 +35,7 @@ export default function DeleteReturningRequest(props) {
                     setTimeout(() => {
                         setShowModal(false);
                     }, 2000);
+                    window.location.reload();
                 }
                 break;
 

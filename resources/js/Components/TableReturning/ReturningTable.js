@@ -85,7 +85,7 @@ export default function ReturningTable({
                                                     e.stopPropagation();
                                                     handleShowModalCompleteReturning(item.id);
                                                 }}
-                                                id="fa-check"
+                                                className="btnAccept"
                                             />
                                             &nbsp;
                                             <FaTimes
