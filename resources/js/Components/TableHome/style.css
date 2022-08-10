@@ -1,6 +1,5 @@
 .containermanageuser{
     width: 1200px !important;
-    margin-left: 100px !important;
 }
 table {
     border-collapse: separate !important;
@@ -159,12 +158,13 @@ tbody{
 #table-manage-user{
     width: 1200px;
 }
+
 #img-nodata{
     margin-left: 140px;
     width: 50%;
 }
 #filter-search{
-    width: 1180px;
+    width: 1310px;
 }
 
 #secondFilterAsset{
@@ -172,6 +172,7 @@ tbody{
 }
 #table-assignment{
     font-size: 13px !important;
+    width: 1300px;
 }
 #undo-icon{
     color: rgb(37, 139, 255);
@@ -226,4 +227,9 @@ tbody{
   .react-datepicker-popper{
     transform: translate(0px,7px) !important;
   }
-  
+  #pagination-container{
+    width: 1350px;
+  }
+  #table-container{
+    width: 1300px;
+}

@@ -60,6 +60,7 @@ export default function AssignmentTable({
         }
 
     }
+<<<<<<< HEAD
 
     return (
         <Table id="table-assignment" responsive="md">

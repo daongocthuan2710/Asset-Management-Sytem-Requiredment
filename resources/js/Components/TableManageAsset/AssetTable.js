@@ -56,7 +56,7 @@ export default function AssetTable({
 
     if(data.length === 0) setPage(1)
     return (
-        <Table responsive="md">
+        <Table responsive="md" id= "table-container">
             <thead>
                 <tr>
                     {data.length > 0
@@ -93,7 +93,7 @@ export default function AssetTable({
                                             onClick={(e) => handleOpenEditAssetForm(e, item.id)} aria-disabled={item.state.code !== 2} id='editUserButton'
                                         />{" "}
                                         {"  "}
-                                        <FaRegTimesCircle className="delete-icon" aria-disabled={item.state.code !== 2}
+                                        <FaRegTimesCircle id="deleteIcon" className="delete-icon" aria-disabled={item.state.code !== 2}
                                             onClick={(e) => handleDeleteAsset(e, item.id)} type="button" />
                                     </>
                                     :
@@ -108,7 +108,7 @@ export default function AssetTable({
                         </tr>
                     ))
                 ) : (
-                    <img id="img-nodata" src={Nodata}></img>
+                    <img id="img-nodata" style={{marginLeft : 370}} src={Nodata}></img>
                 )}
             </tbody>
         </Table>

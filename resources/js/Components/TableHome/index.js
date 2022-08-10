@@ -406,9 +406,8 @@ export default function TableHome() {
   const [assignment, setAssignment] = React.useState([]);
 
   const handleGetAssignmentById = async (assignmentId) => {
-    const response = await assignmentService.getAssignmentById(assignmentId);
+    const response = await assignmentService.viewAssignmentById(assignmentId);
     setModal(true);
-    console.log(response.data.data);
     setAssignment(response.data.data);
   }
 
@@ -416,7 +415,7 @@ export default function TableHome() {
     <div className="containermanageuser">
       <ResponseAssignment show={responseAssignment.show} id={responseAssignment.id} res={responseAssignment.res}/>
       <h5 style={{ color: "red", fontWeight: "bold" }}> My Assignment </h5>
-      <Row>
+      <Row >
         <div id="table-manage-user">
           <AssignmentTable
             data={data}
@@ -428,7 +427,7 @@ export default function TableHome() {
           />
         </div>
       </Row>
-      <Row>
+      <Row id = "pagination-container">
         <CustomPagination
           total={total}
           page={page}

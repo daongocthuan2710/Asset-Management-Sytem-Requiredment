@@ -262,7 +262,7 @@ export default function TableReport() {
                 </Button>
 
       </div>
-      <Row>
+      <Row id= "table-container">
         <div id="table-manage-user">
           <ReportTable
             data={data}
@@ -272,7 +272,7 @@ export default function TableReport() {
           />
         </div>
       </Row>
-      <Row>
+      <Row  id = "pagination-container">
         <CustomPagination
           total={total}
           page={page}
