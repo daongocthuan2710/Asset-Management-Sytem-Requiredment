@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ManageReturningController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ViewAssignmentController;
@@ -34,6 +35,7 @@ Route::post('/user/store', [ManageUserController::class, 'store']);
 Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
 Route::get('/can-disable/{id}', [ManageUserController::class, 'canDisable']);
 Route::get('/can-delete-assignment/{id}', [ManageAssignmentController::class, 'canDelete']);
+Route::get('/report', [ReportController::class, 'report']);
 Route::post('/response-assignment/{id}', [ManageAssignmentController::class, 'response']);
 
 // Route::resource('/login', AuthenticationController::class);

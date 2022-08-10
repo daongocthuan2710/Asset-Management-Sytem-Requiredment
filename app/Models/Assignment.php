@@ -22,9 +22,23 @@ class Assignment extends Model
         'assigned_by',
         'state'
     ];
+
+
+    public const DECLINE = -1;
+    public const WAITING_FOR_ACCEPTANCE = 0;
+    public const ACCEPTED = 1;
+    public const WAITING_FOR_RETURNING = 2;
+    public const ALL = 3;
+    public const COMPLETED = 4;
+
     public function asset()
     {
         return $this->belongsTo(Asset::class);
+    }
+
+    public function returning()
+    {
+        return $this->hasMany(Returning::class);
     }
 
     public function assignedBy()
