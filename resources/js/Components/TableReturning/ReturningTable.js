@@ -103,7 +103,7 @@ export default function ReturningTable({
                             </tr>
                         ))
                     ) : (
-                        <img id="img-nodata" src={Nodata}></img>
+                        <img id="img-nodata" style={{marginLeft : 370}} src={Nodata}></img>
                     )}
                 </tbody>
             </Table>

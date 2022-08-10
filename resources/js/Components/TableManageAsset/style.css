@@ -184,3 +184,21 @@ tbody{
     transform: rotate(270deg);
     animation: changeBackgroundColor 7s infinite;
 }
+
+.table-custom.table-responsive {
+    max-height: 250px;
+}
+
+table#asset-history.table-bordered>:not(caption)>*>* {
+    border: none;
+}
+
+table#asset-history.table-bordered thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+table#asset-history.table-bordered tbody {
+    overflow: scroll;
+}
