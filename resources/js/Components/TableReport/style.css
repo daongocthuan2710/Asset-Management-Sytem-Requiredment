@@ -1,6 +1,5 @@
 .containermanageuser{
     width: 1200px !important;
-    margin-left: 100px !important;
 }
 table {
     border-collapse: separate !important;
@@ -164,7 +163,7 @@ tbody{
     width: 50%;
 }
 #filter-search{
-    width: 1180px;
+    width: 1310px;
 }
 
 #secondFilterAsset{
@@ -230,6 +229,7 @@ tbody{
   #div-btn-export{
     display: flex;
     justify-content: end;
+    width: 1300px;
   }
   #btn-export{
     background-color: rgb(220 53 69) !important;
@@ -237,3 +237,6 @@ tbody{
     border: none;
   }
   
+  #table-container{
+    width: 1300px;
+}

@@ -85,7 +85,7 @@ export default function ReturningTable({
                                                     e.stopPropagation();
                                                     handleShowModalCompleteReturning(item.id);
                                                 }}
-                                                id="editUserButton"
+                                                id="fa-check"
                                             />
                                             &nbsp;
                                             <FaTimes
@@ -93,7 +93,7 @@ export default function ReturningTable({
                                                     handleShowModalCancelReturning(item.id);
                                                     e.stopPropagation();
                                                 }}
-                                                id="editUserButton"
+                                                id="deleteIcon"
                                             />
                                         </>
                                     ) : (

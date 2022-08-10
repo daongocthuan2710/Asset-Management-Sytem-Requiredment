@@ -444,7 +444,7 @@ const sort_create_at = useSelector(
       </div>
       <Row>
         <div id="table-manage-user">
-          <Table responsive="md">
+          <Table responsive="md" id= "table-container">
             <thead>
               <tr>
                 {data.length > 0
@@ -478,22 +478,22 @@ const sort_create_at = useSelector(
                     <td>{item.joined_date}</td>
                     <td>{item.admin == true ? "Admin" : "Staff"}</td>
                     <td className="td-without_border">
-                      <FaPencilAlt
+                      <FaPencilAlt 
                         onClick={(e) => handleOpenEditForm(e, item.id)} id='editUserButton'
                       />{" "}
                       {"  "}
-                      <FaRegTimesCircle className="delete-icon"  onClick={(e) => handleDisableUser(e,item.id)} type="button" />
+                      <FaRegTimesCircle id="deleteIcon" className="delete-icon"  onClick={(e) => handleDisableUser(e,item.id)} type="button" />
                     </td>
                   </tr>
                 ))
               ) : (
-                <img id="img-nodata"src={Nodata}></img>
+                <img id="img-nodata" style={{marginLeft : 370}} src={Nodata}></img>
               )}
             </tbody>
           </Table>
         </div>
       </Row>
-      <Row>
+      <Row id = "pagination-container">
       {total > 1 ? (
           <Pagination
             activePage={page}
