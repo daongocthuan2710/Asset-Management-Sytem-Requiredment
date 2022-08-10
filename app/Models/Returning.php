@@ -16,14 +16,12 @@ class Returning extends Model
         'requested_by',
         'accepted_by',
         'returned_date',
-        'state_key',
+        'state',
     ];
 
     public const WAITING_FOR_RETURNING = 0;
     public const COMPLETED = 1;
     public const ALL_STATE = 3;
-
-    protected $fillable = ['state','returned_date'];
 
     public function assignment()
     {

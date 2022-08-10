@@ -437,7 +437,7 @@ export default function TableHome() {
             handleSort={handleSort}
             handleResponse={handleResponse}
             handleGetAssignmentById={handleGetAssignmentById}
-            handleDeleteAssignment={handleDeleteAssignment}
+            // handleDeleteAssignment={handleDeleteAssignment}
             handleCreateReturn={handleCreateReturn}
           />
         </div>

@@ -351,7 +351,7 @@ const CreateNewAsset = () => {
               variant="outline-secondary"
               onClick={() => history.push("/manage-asset")}
             >
-              Cancle
+              Cancel
             </Button>
           </Form.Group>
         </Form>
