@@ -18,7 +18,7 @@ export default function ReturningTable({
     const [showCompleteModal, setShowCompleteModal] = useState(false);
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [returningId, setRreturningId] = useState("");
-
+    // console.log('dataaaa',data);
     function handleShowModalCompleteReturning(returningId) {
         setShowCompleteModal(true);
         setRreturningId(returningId);
@@ -63,18 +63,16 @@ export default function ReturningTable({
                                 onClick={() => {handleGetAssignmentById(item.id);}}
                             >
                                 <td>{item.id}</td>
-                                <td>{item.assignment.asset.asset_code}</td>
-                                <td>{item.assignment.asset.name}</td>
-                                <td>{item.requested_by.username}</td>
+                            <td>{item.assignment.asset.asset_code}</td>
+                            <td >{item.assignment.asset.name}</td>
+                            <td>{item.requested_by.username}</td>
 
-                                <td>
-                                    {moment(item.assignment.assigned_date).format("DD-MM-YYYY")}
-                                </td>
-                                <td>{item.accepted_by.username}</td>
-                                <td>
-                                    {moment(item.return_date).format("DD-MM-YYYY")}
-                                </td>
-                                <td>{item.returning_state}</td>
+                            <td>{moment(item.assignment.assigned_date).format('DD-MM-YYYY')}</td>
+                            {/*<td>{item.accepted_by.username}</td>*/}
+                            <td>{item.accepted_by ? item.accepted_by.username : ''}</td>
+                            {/*<td>{moment(item.return_date).format('DD-MM-YYYY')}</td>*/}
+                            <td>{item.return_date ? moment(item.return_date).format('DD-MM-YYYY') : '' }</td>
+                            <td>{item.returning_state}</td>
 
                                 <td className="td-without_border">
                                     {item.returning_state =="Waiting for returning"

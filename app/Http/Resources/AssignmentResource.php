@@ -27,6 +27,9 @@ class AssignmentResource extends JsonResource
             case 1:
                 $stateName = 'Accepted';
                 break;
+            case 2:
+                $stateName = 'Waiting for returning';
+                break;
         }
         $staff = User::find($this->staff_id);
         $admin = User::find($this->assigned_by);

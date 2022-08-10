@@ -30,7 +30,7 @@ class ReturningResource extends JsonResource
         return [
             'id' => $this->id,
             'assignment' => new AssignmentResource($this->assignment),
-            'accepted_by' => new UserResource(User::findOrFail($this->accepted_by)),
+            'accepted_by' => $this->accepted_by ? new UserResource(User::findOrFail($this->accepted_by)) : null,
             'requested_by' => new UserResource(User::findOrFail($this->requested_by)),
             'return_date' => $this->returned_date,
             'returning_state' => $stateName,

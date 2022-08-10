@@ -19,8 +19,8 @@ import { Redirect , Navigate} from "react-router-dom";
 export default function AssignmentTable({
     data, Nodata, tableHeader,
     // eslint-disable-next-line no-unused-vars
-    handleSort, handleResponse,
-    handleGetAssignmentById
+    handleSort, handleOpenEditForm,handleCreateReturn, handleResponse,
+    handleGetAssignmentById, handleDeleteAssignment
 }) {
     let history = useHistory();
 
@@ -30,8 +30,9 @@ export default function AssignmentTable({
         handleShowMessage(response, assignmentId);
     }
 
+    console.log(data)
     function handleShowMessage(response, assignmentId) {
-        const message = response.data == undefined ? response.message : response.data.message;
+        const message = response.data === undefined ? response.message : response.data.message;
         const code = response.code;
         switch (code) {
             case 200: {
@@ -118,7 +119,9 @@ export default function AssignmentTable({
                             {" "}
                             {" "}
                             &nbsp;
-                            <FaUndo id="undo-icon"/>
+                            {/*<FaUndo id="undo-icon" onClick={(e) => handleCreateReturn(e, item.id)}/>*/}
+                            {item.state.code === 2 ? <FaUndo color='gray' /> : <FaUndo id="undo-icon" onClick={(e) => handleCreateReturn(e, item.id)}/>}
+
                         </td>
                     </tr>
                 ))

@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Returning extends Model
 {
     use HasFactory;
+
     protected $table = 'returning';
+
+    protected $fillable = [
+        'assignment_id',
+        'requested_by',
+        'accepted_by',
+        'returned_date',
+        'state_key',
+    ];
 
     public const WAITING_FOR_RETURNING = 0;
     public const COMPLETED = 1;

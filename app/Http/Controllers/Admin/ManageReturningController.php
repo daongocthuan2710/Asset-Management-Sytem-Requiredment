@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateReturningRequest;
+use App\Models\Assignment;
 use App\Services\ManageReturningService;
 use Illuminate\Http\Request;
 
@@ -24,16 +25,9 @@ class ManageReturningController extends Controller
     {
         return $this->manageReturningService->getAll($request);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Assignment $assignment)
     {
-        //
+        return $this->manageReturningService->store($assignment);
     }
 
     /**
