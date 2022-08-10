@@ -195,10 +195,10 @@ tbody{
     width: 180px;
 }
 #staff-asset-name{
-    white-space: nowrap; 
-    width: 100px; 
+    white-space: nowrap;
+    width: 100px;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
     /* border: 1px solid #000000; */
     /* color: #e73943; */
 }
@@ -227,13 +227,13 @@ tbody{
     transform: translate(0px,7px) !important;
   }
 
-#fa-check{
+.btnAccept{
     color: red;
 
 }
-#fa-check:hover{
+.btnAccept:hover{
     transition: opacity 0.3s, transform 0.3s;
     transform: rotate(360deg);
     animation: changeBackgroundColor 7s infinite;
 }
-  
+

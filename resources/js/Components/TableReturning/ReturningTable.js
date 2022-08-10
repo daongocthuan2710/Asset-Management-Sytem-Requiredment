@@ -75,9 +75,9 @@ export default function ReturningTable({
                                        <FaCheck onClick={(e) => {
                                             e.stopPropagation();
                                             handleShowModalCompleteReturning(item.id);
-                                       }} id='editUserButton' />
+                                       }} id='editUserButton' className='btnAccept'/>
                                         &nbsp;
-                                        <FaTimes/>
+                                        <FaTimes id='deleteIcon'/>
                                     </>
                                 :   <>
                                     <FaCheck color='gray'/>

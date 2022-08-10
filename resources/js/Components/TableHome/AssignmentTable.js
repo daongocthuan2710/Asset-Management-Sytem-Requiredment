@@ -9,11 +9,12 @@ import { useHistory } from "react-router-dom";
 import {
     FaAngleDown,
     FaAngleUp,
-    FaUndo
+    FaUndo,
+    FaCheck,
+    FaTimes,
 } from "react-icons/fa";
 import moment from "moment";
 import { Redirect , Navigate} from "react-router-dom";
-import {BsCheckLg, BsXLg} from "react-icons/all";
 
 export default function AssignmentTable({
     data, Nodata, tableHeader,
@@ -60,7 +61,6 @@ export default function AssignmentTable({
         }
 
     }
-<<<<<<< HEAD
 
     return (
         <Table id="table-assignment" responsive="md">
@@ -102,18 +102,18 @@ export default function AssignmentTable({
                         <td className="td-without_border">
                             {
                                 item.state.code === 0 ?
-                                    <BsCheckLg onClick={(e) => handleResponse(e, item.id, true)}
+                                    <FaCheck onClick={(e) => handleResponse(e, item.id, true)}
                                                aria-disabled={item.state.code !== 2} id='editUserButton'/>
-                                    : <BsCheckLg color='gray'/>
+                                    : <FaCheck color='gray'/>
                             }
                             {" "}
                             {"  "}
                             &nbsp;
                             {
                                 item.state.code === 0 ?
-                                    <BsXLg className="delete-icon" aria-disabled={item.state.code !== 2}
+                                    <FaTimes id='deleteIcon' className="delete-icon" aria-disabled={item.state.code !== 2}
                                              onClick={(e) => handleResponse(e, item.id, false)} type="button"/>
-                                    : <BsXLg color='gray'/>
+                                    : <FaTimes color='gray'/>
                             }
                             {" "}
                             {" "}
