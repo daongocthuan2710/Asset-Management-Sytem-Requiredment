@@ -36,21 +36,19 @@ export default function ReturningTable({
                     <tr>
                         {data.length > 0
                             ? tableHeader.map((item, index) => {
-                                  return (
-                                      <th
-                                          key={index}
-                                          onClick={() => {
-                                              if (item.name !== "Username") {
-                                                  handleSort(item.name,item.isSortASC);
-                                              }
-                                          }}
-                                      >
-                                          {item.name}&nbsp;
-                                          {item.isSortASC && <FaAngleDown />}
-                                          {item.isSortDESC && <FaAngleUp />}
-                                      </th>
-                                  );
-                              })
+                                return (
+                                    <th
+                                        key={index}
+                                        onClick={() => {
+                                            handleSort(item.name, item.isSortASC);
+                                        }}
+                                    >
+                                        {item.name}&nbsp;
+                                        {item.isSortASC && <FaAngleDown />}
+                                        {item.isSortDESC && <FaAngleUp />}
+                                    </th>
+                                );
+                            })
                             : ""}
                     </tr>
                 </thead>
@@ -60,47 +58,47 @@ export default function ReturningTable({
                         data.map((item) => (
                             <tr
                                 key={item.id}
-                                onClick={() => {handleGetAssignmentById(item.id);}}
+                                onClick={() => { handleGetAssignmentById(item.id) }}
                             >
                                 <td>{item.id}</td>
-                            <td>{item.assignment.asset.asset_code}</td>
-                            <td >{item.assignment.asset.name}</td>
-                            <td>{item.requested_by.username}</td>
+                                <td>{item.assignment.asset.asset_code}</td>
+                                <td >{item.assignment.asset.name}</td>
+                                <td>{item.requested_by.username}</td>
 
-                            <td>{moment(item.assignment.assigned_date).format('DD-MM-YYYY')}</td>
-                            {/*<td>{item.accepted_by.username}</td>*/}
-                            <td>{item.accepted_by ? item.accepted_by.username : ''}</td>
-                            {/*<td>{moment(item.return_date).format('DD-MM-YYYY')}</td>*/}
-                            <td>{item.return_date ? moment(item.return_date).format('DD-MM-YYYY') : '' }</td>
-                            <td>{item.returning_state}</td>
+                                <td>{moment(item.assignment.assigned_date).format('DD-MM-YYYY')}</td>
+                                {/*<td>{item.accepted_by.username}</td>*/}
+                                <td>{item.accepted_by ? item.accepted_by.username : ''}</td>
+                                {/*<td>{moment(item.return_date).format('DD-MM-YYYY')}</td>*/}
+                                <td>{item.return_date ? moment(item.return_date).format('DD-MM-YYYY') : ''}</td>
+                                <td>{item.returning_state}</td>
 
                                 <td className="td-without_border">
-                                    {item.returning_state =="Waiting for returning"
-                                    ? (
-                                        <>
-                                            <FaCheck
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleShowModalCompleteReturning(item.id);
-                                                }}
-                                                className="btnAccept"
-                                            />
-                                            &nbsp;
-                                            <FaTimes
-                                                onClick={(e) => {
-                                                    handleShowModalCancelReturning(item.id);
-                                                    e.stopPropagation();
-                                                }}
-                                                id="deleteIcon"
-                                            />
-                                        </>
-                                    ) : (
-                                        <>
-                                            <FaCheck color="gray" />
-                                            &nbsp;
-                                            <FaTimes color="gray" />
-                                        </>
-                                    )}
+                                    {item.returning_state == "Waiting for returning"
+                                        ? (
+                                            <>
+                                                <FaCheck
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleShowModalCompleteReturning(item.id);
+                                                    }}
+                                                    className="btnAccept"
+                                                />
+                                                &nbsp;
+                                                <FaTimes
+                                                    onClick={(e) => {
+                                                        handleShowModalCancelReturning(item.id);
+                                                        e.stopPropagation();
+                                                    }}
+                                                    id="deleteIcon"
+                                                />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FaCheck color="gray" />
+                                                &nbsp;
+                                                <FaTimes color="gray" />
+                                            </>
+                                        )}
                                 </td>
                             </tr>
                         ))

@@ -28,7 +28,7 @@ class ManageReturningService extends BaseService
     public function getAll($request)
     {
         $sanctumUser = auth('sanctum')->user();
-        return $this->manageReturningRepository->getAll($request,$sanctumUser);
+        return $this->manageReturningRepository->getAll($request, $sanctumUser);
     }
     public function store(Assignment $assignment)
     {
@@ -41,15 +41,15 @@ class ManageReturningService extends BaseService
         if ($user->admin && $user->id == $assignment->staff_id) {
             if ($assignment->state == 1) {
                 $return = $this->returning->create([
-                'assignment_id' => $assignment->id,
-                'requested_by' => $user->id,
-                'state' => 0
+                    'assignment_id' => $assignment->id,
+                    'requested_by' => $user->id,
+                    'state' => 0
                 ]);
                 $assignment->update([
                     'state' => 2 //waiting for returning
                 ]);
                 return response()->json([
-                'data' => $return,
+                    'data' => $return,
                 ], 201);
             }
         }
@@ -256,5 +256,16 @@ class ManageReturningService extends BaseService
         }
 
         return $this->manageReturningRepository->delete($id);
+    }
+
+    public function getById($id)
+    {
+        //check admin
+        $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->manageReturningRepository->getById($id);
     }
 }

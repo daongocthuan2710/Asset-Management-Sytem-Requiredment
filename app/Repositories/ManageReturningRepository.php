@@ -49,9 +49,9 @@ class ManageReturningRepository extends BaseRepository
 
         // update state returning = completed
         $returning->update([
-                                'state' => Returning::COMPLETED,
-                                'returned_date' => \Carbon\Carbon::now()->format('Y-m-d')
-                            ]);
+            'state' => Returning::COMPLETED,
+            'returned_date' => \Carbon\Carbon::now()->format('Y-m-d')
+        ]);
 
         // update asset state = available
         $asset->update(['state' => Asset::AVAILABLE_STATE]);
@@ -64,7 +64,8 @@ class ManageReturningRepository extends BaseRepository
         ], 200);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
 
         $returning = Returning::query()->findOrFail($id);
         $assignment = Assignment::query()->findOrFail($returning->assignment_id);
@@ -73,5 +74,11 @@ class ManageReturningRepository extends BaseRepository
         return response()->json([
             'message' => 'Returning delete successfully'
         ], 200);
+    }
+
+    public function getById($id)
+    {
+        $data = $this->query->where('id', $id);
+        return new ReturningResource($data->first());
     }
 }

@@ -18,42 +18,38 @@ export default function AssignmentDetailModal({
             >
                 <Modal.Header className="w-100">
                     <Modal.Title id="contained-modal-title-vcenter" className="d-flex justify-content-betweeen align-items-center w-100 flex-grow-1">
-                        <h4 className="flex-grow-1"> Detailed Asset Information</h4>
+                        <h4 className="flex-grow-1"> Detailed Returning Information</h4>
                         <FaRegWindowClose onClick={() => setModal(false)} style={{ cursor: 'pointer' }} />
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="d-flex">
                         <p className="w-25">Asset Code</p>
-                        <p className="w-75">{assignment.asset && assignment.asset.asset_code}</p>
+                        <p className="w-75">{assignment.assignment && assignment.assignment.asset && assignment.assignment.asset.asset_code}</p>
                     </div>
                     <div className="d-flex">
                         <p className="w-25">Asset Name</p>
-                        <p className="w-75">{assignment.asset && assignment.asset.name}</p>
+                        <p className="w-75">{assignment.assignment && assignment.assignment.asset && assignment.assignment.asset.name}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Specification</p>
-                        <p className="w-75">{assignment.asset && assignment.asset.specification}</p>
+                        <p className="w-25">Requested by</p>
+                        <p className="w-75">{assignment.requested_by && assignment.requested_by.username}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Assigned to</p>
-                        <p className="w-75">{assignment.staff && assignment.staff.username}</p>
+                        <p className="w-25">Assigned date</p>
+                        <p className="w-75">{assignment.assignment && assignment.assignment.assigned_date}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Assigned by</p>
-                        <p className="w-75">{assignment.assigned_by && assignment.assigned_by.username}</p>
+                        <p className="w-25">Accepted by</p>
+                        <p className="w-75">{assignment.accepted_by && assignment.accepted_by.username}</p>
                     </div>
                     <div className="d-flex">
-                        <p className="w-25">Assigned Date</p>
-                        <p className="w-75">{assignment.assigned_date}</p>
+                        <p className="w-25">Returned Date</p>
+                        <p className="w-75">{assignment.return_date}</p>
                     </div>
                     <div className="d-flex">
                         <p className="w-25">State</p>
-                        <p className="w-75">{assignment.state && assignment.state.name}</p>
-                    </div>
-                    <div className="d-flex">
-                        <p className="w-25">Note</p>
-                        <p className="w-75">{assignment.note}</p>
+                        <p className="w-75">{assignment.returning_state}</p>
                     </div>
                 </Modal.Body>
             </Modal>

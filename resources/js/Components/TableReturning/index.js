@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { getUserEdit } from "../../Actions/user.action";
 import { useDispatch, useSelector } from "react-redux";
 import Nodata from "../../../assets/Nodata.png";
-import assignmentService from "../../Services/assignment.service";
+import returningService from "../../Services/returning.service";
 import CustomPagination from "./CustomPagination";
 import ReturningTable from "./ReturningTable";
 import FilterByState from "./FilterByState";
@@ -42,7 +42,6 @@ export default function ManageAssignment() {
     (state) => state.assetGetMessageReducer.sort_at
   );
 
-  console.log('sort_at_get_mesage',sort_at_get_mesage);
   const [tableHeader, setTableHeader] = React.useState([
     {
       name: "No.",
@@ -98,7 +97,6 @@ export default function ManageAssignment() {
 
   const handleDeleteAssignment = (e, id) => {
     e.stopPropagation();
-    console.log("id", id);
     setDeleteAssignment({ show: true, id: id});
     setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
   }
@@ -446,7 +444,7 @@ export default function ManageAssignment() {
   const [assignment, setAssignment] = React.useState([]);
 
   const handleGetAssignmentById = async (assignmentId) => {
-    const response = await assignmentService.getAssignmentById(assignmentId);
+    const response = await returningService.getReturningById(assignmentId);
     setModal(true);
     setAssignment(response.data.data);
   }
@@ -454,7 +452,7 @@ export default function ManageAssignment() {
   return (
     <div className="containermanageuser">
       <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
-      <h5 style={{ color: "red", fontWeight: "bold" }}>Assignment List </h5>
+      <h5 style={{ color: "red", fontWeight: "bold" }}>Returning List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <div className="d-flex ml-2">
           <FilterByState

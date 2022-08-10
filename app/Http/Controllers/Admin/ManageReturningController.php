@@ -38,7 +38,7 @@ class ManageReturningController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->manageReturningService->getById($id);
     }
 
     /**
