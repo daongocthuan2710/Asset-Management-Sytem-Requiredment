@@ -84,6 +84,7 @@ class ManageAssignmentRepository extends BaseRepository
         $assignment = Assignment::query()->findOrFail($id);
         $asset = Asset::query()->findOrFail($assignment->asset_id);
         $asset->update(['state' => 1]);
+        $assignment->returning()->delete();
         $assignment->delete();
         return response()->json([
             'message' => 'Assignment deleted successfully'
