@@ -12,7 +12,7 @@ import Nodata from "../../../assets/Nodata.png";
 import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
 import ReportTable from "./ReportTable";
-
+import Export from "../Export"
 import _ from "lodash";
 import { Button } from "react-bootstrap";
 
@@ -255,14 +255,16 @@ export default function TableReport() {
   return (
     <div className="containermanageuser">
       <h5 style={{ color: "red", fontWeight: "bold" }}>Report</h5>
-      <div id="div-btn-export"> 
-  
-                <Button id="btn-export" >
+
+      <div id="div-btn-export">
+        <Export csvData={data} fileName="Report"/>
+
+        {/* <Button id="btn-export" >
                     Export
-                </Button>
+                </Button> */}
 
       </div>
-      <Row id= "table-container">
+      <Row id="table-container">
         <div id="table-manage-user">
           <ReportTable
             data={data}
@@ -272,7 +274,7 @@ export default function TableReport() {
           />
         </div>
       </Row>
-      <Row  id = "pagination-container">
+      <Row id="pagination-container">
         <CustomPagination
           total={total}
           page={page}
