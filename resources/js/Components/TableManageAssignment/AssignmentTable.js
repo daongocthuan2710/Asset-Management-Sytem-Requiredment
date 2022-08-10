@@ -24,6 +24,7 @@ export default function AssignmentTable({
   // eslint-disable-next-line no-unused-vars
   handleSort,
   handleOpenEditForm,
+  handleCreateReturn,
   handleGetAssignmentById,
   handleDeleteAssignment,
 }) {
@@ -132,7 +133,14 @@ export default function AssignmentTable({
                   />
                 )}{" "}
                 &nbsp;
-                <FaUndo id="undo-icon" style={{ cursor: 'pointer' }} />
+                  {item.state.code === 1 ? (
+                      <FaUndo
+                          id="undo-icon"
+                          style={{ cursor: 'pointer' }}
+                          onClick={(e) => handleCreateReturn(e, item.id)}
+                      />
+                  ) : ( <FaUndo color="gray" /> )}
+
               </td>
             </tr>
           ))

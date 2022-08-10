@@ -5,7 +5,7 @@ import axios from 'axios';
 import {useSelector} from "react-redux";
 
 export default function CreateReturn(props) {
-    console.log(props)
+    // console.log('props',props)
     const [show, setShow] = useState(Boolean(props.show));
     useEffect(() => {
         if (props.show) setShow(Boolean(true));

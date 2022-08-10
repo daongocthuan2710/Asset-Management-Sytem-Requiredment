@@ -19,6 +19,7 @@ import DeleteAsset from "../DeleteAsset";
 import FilterByAssignedDate from "./FilterByAssignedDate";
 import _ from "lodash";
 import DeleteAssignment from "../DeleteAssignment";
+import CreateReturn from "../CreateReturn";
 
 
 export default function ManageAssignment() {
@@ -32,7 +33,8 @@ export default function ManageAssignment() {
   const [filterByDate, setFilterByDate] = React.useState([]);
   const [modal, setModal] = React.useState(false);
   const [arrayState, setArrayState] = React.useState([{ key: 'All', value: '3' }]);
-
+  const [createReturn, setCreateReturn] = React.useState({ show: false, id: 0 });
+    // console.log('createReturn', createReturn)
 
   const sort_create_at = useSelector(
     (state) => state.userEditReducer.sort_update_at
@@ -42,7 +44,12 @@ export default function ManageAssignment() {
     (state) => state.assetGetMessageReducer.sort_at
   );
 
-  console.log('sort_at_get_mesage',sort_at_get_mesage);
+    const handleCreateReturn = (e, id) => {
+        e.stopPropagation();
+        // console.log("handleCreateReturn", id);
+        setCreateReturn({ show: true, id: id});
+        setTimeout(() => setCreateReturn({ show: false, id: id }), 1);
+    }
   const [tableHeader, setTableHeader] = React.useState([
     {
       name: "No.",
@@ -91,7 +98,7 @@ export default function ManageAssignment() {
 
   const handleDeleteAssignment = (e, id) => {
     e.stopPropagation();
-    console.log("id", id);
+    // console.log("id", id);
     setDeleteAssignment({ show: true, id: id});
     setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
   }
@@ -106,7 +113,7 @@ export default function ManageAssignment() {
   } = {}) => {
     let url = "api/assignment";
     let array = [];
-    console.log(FilterByDate)
+    // console.log(FilterByDate)
 
     if (FilterByDate) {
       if (FilterByDate.length > 0 ) {
@@ -257,7 +264,7 @@ export default function ManageAssignment() {
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
-  
+
     getApiAssignment({
       FilterByState: arrayStateTemp,
       search: temp_search,
@@ -282,7 +289,7 @@ export default function ManageAssignment() {
     if (page >= 1) {
       temp_page = page;
     }
-    console.log(filterByDate);
+    // console.log(filterByDate);
     if (filterByDate.length > 0) {
       temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
@@ -437,13 +444,14 @@ export default function ManageAssignment() {
   const handleGetAssignmentById = async (assignmentId) => {
     const response = await assignmentService.getAssignmentById(assignmentId);
     setModal(true);
-    console.log(response.data.data);
+    // console.log(response.data.data);
     setAssignment(response.data.data);
   }
 
   return (
     <div className="containermanageuser">
-      <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
+        <CreateReturn show={createReturn.show} id={createReturn.id} />
+        <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}>Assignment List </h5>
       <div id="filter-search" className="d-flex justify-content-between type-seach-create">
         <div className="d-flex ml-2">
@@ -454,7 +462,6 @@ export default function ManageAssignment() {
           />
           <div id="secondFilterAsset">
             <FilterByAssignedDate handleFilterDate={handleFilterDate} />
-
           </div>
         </div>
 
@@ -467,7 +474,7 @@ export default function ManageAssignment() {
         </div>
       </div>
       <Row >
-        <div id="table-manage-user">
+          <div id="table-manage-user">
           <AssignmentTable
             data={data}
             tableHeader={tableHeader}
@@ -476,6 +483,7 @@ export default function ManageAssignment() {
             handleOpenEditForm={handleOpenEditForm}
             handleGetAssignmentById={handleGetAssignmentById}
             handleDeleteAssignment={handleDeleteAssignment}
+            handleCreateReturn={handleCreateReturn}
           />
         </div>
       </Row>
