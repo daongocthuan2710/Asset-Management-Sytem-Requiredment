@@ -59,4 +59,345 @@ class ManageAssignmentTest extends TestCase
         $response->assertStatus(200);
         return $response->getData();
     }
+
+    public function test_search_assignment()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&search=Fakedata&page=1"
+        );
+        $viewAssignment->assertStatus(500);
+    }
+
+    public function test_filter_by_state()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=1&page=1"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_filter_by_assigned_date()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByDate=2022-05-23&filterByState=3&page=1&sortByAssignedDate=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_no_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByNo=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_no_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByNo=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_asset_code_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssetCode=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_asset_code_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssetCode=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_asset_name_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssetName=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_asset_name_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssetName=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_assigned_to_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssignedTo=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_assigned_to_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssignedTo=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_assigned_by_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssignedBy=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_assigned_by_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssignedBy=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_assigned_date_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssignedDate=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_assigned_date_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByAssignedDate=desc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_state_asc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByState=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_state_desc()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByState=asc"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_sort_by_edit_assigment()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByEditAssignment"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+    public function test_sort_by_create_assigment()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/assignment?filterByState=3&page=1&sortByCreateAssignment"
+        );
+        $viewAssignment->assertStatus(200);
+    }
 }

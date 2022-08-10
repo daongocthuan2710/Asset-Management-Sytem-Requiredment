@@ -182,7 +182,7 @@ class Returning extends Model
         return $query
             ->when($request->has('sortByEditReturning'), function ($query) use ($request) {
                 $sortByEditReturning = $request->query('sortByEditReturning');
-                $query->orderBy("updated_at", $sortByEditReturning);
+                $query->orderBy("updated_at", 'desc');
             });
     }
 
