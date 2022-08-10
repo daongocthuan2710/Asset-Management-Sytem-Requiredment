@@ -23,7 +23,7 @@ export default function ReturningTable({
     handleGetAssignmentById, handleDeleteAssignment
 }) {
     let history = useHistory();
-
+    console.log('dataaaa',data);
     async function handleOpenEditAssetForm(e, assignmentId = "") {
       e.stopPropagation();
         const response = await AssignmentService.getAssignmentEdit(assignmentId);
@@ -97,13 +97,15 @@ export default function ReturningTable({
                             <td>{item.assignment.asset.asset_code}</td>
                             <td >{item.assignment.asset.name}</td>
                             <td>{item.requested_by.username}</td>
-                      
+
                             <td>{moment(item.assignment.assigned_date).format('DD-MM-YYYY')}</td>
-                            <td>{item.accepted_by.username}</td>
-                            <td>{moment(item.return_date).format('DD-MM-YYYY')}</td>
+                            {/*<td>{item.accepted_by.username}</td>*/}
+                            <td>{item.accepted_by ? item.accepted_by.username : ''}</td>
+                            {/*<td>{moment(item.return_date).format('DD-MM-YYYY')}</td>*/}
+                            <td>{item.return_date ? moment(item.return_date).format('DD-MM-YYYY') : '' }</td>
                             <td>{item.returning_state}</td>
 
-                            
+
 
                             <td className="td-without_border">
                             <FaCheck/>

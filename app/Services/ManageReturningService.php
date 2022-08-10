@@ -42,6 +42,9 @@ class ManageReturningService extends BaseService
                 'requested_by' => $user->id,
                 'state' => 0
                 ]);
+                $assignment->update([
+                    'state' => 2 //waiting for returning
+                ]);
                 return response()->json([
                 'data' => $return,
                 ], 201);

@@ -30,6 +30,7 @@ export default function AssignmentTable({
         handleShowMessage(response, assignmentId);
     }
 
+    console.log(data)
     function handleShowMessage(response, assignmentId) {
         const message = response.data === undefined ? response.message : response.data.message;
         const code = response.code;
@@ -115,7 +116,8 @@ export default function AssignmentTable({
                                             onClick={(e) => handleDeleteAssignment(e, item.id)} type="button" />
                                 }
                                 {" "}{" "} &nbsp;
-                                <FaUndo id="undo-icon" onClick={(e) => handleCreateReturn(e, item.id)}/>
+                                {/*<FaUndo id="undo-icon" onClick={(e) => handleCreateReturn(e, item.id)}/>*/}
+                                {item.state.code === 2 ? <FaUndo color='gray' /> : <FaUndo id="undo-icon" onClick={(e) => handleCreateReturn(e, item.id)}/>}
                             </td>
                         </tr>
                     ))
