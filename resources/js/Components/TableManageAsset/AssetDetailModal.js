@@ -54,7 +54,7 @@ export default function AssetDetailModal({
                         <p className="w-25">History</p>
                         <p className="w-75">
                             {
-                                user.history ? (
+                                user.returning ? (
                                     <Table bordered hover id="asset-history">
                                         <thead>
                                             <tr>
@@ -65,18 +65,16 @@ export default function AssetDetailModal({
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            {user.returning.map((element, idx) => {
+                                                return (
+                                                    <tr key={idx}>
+                                                        <td>{element.assignment && element.assignment.assigned_date}</td>
+                                                        <td>{element.assignment && element.assignment.staff && element.assignment.staff.username}</td>
+                                                        <td>{element.assignment && element.assignment.assigned_by && element.assignment.assigned_by.username}</td>
+                                                        <td>{element.return_date}</td>
+                                                    </tr>
+                                                );
+                                            })}
                                         </tbody>
                                     </Table>
                                 ) : (
