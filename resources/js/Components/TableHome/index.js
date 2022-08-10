@@ -41,7 +41,7 @@ export default function TableHome() {
     (state) => state.assetGetMessageReducer.sort_at
   );
 
-  console.log('sort_at_get_mesage',sort_at_get_mesage);
+  // console.log('sort_at_get_mesage',sort_at_get_mesage);
   const [tableHeader, setTableHeader] = React.useState([
     {
       name: "No.",
@@ -96,7 +96,7 @@ export default function TableHome() {
 
   const handleCreateReturn = (e, id) => {
       e.stopPropagation();
-      console.log("handleCreateReturn", id);
+      // console.log("handleCreateReturn", id);
       setCreateReturn({ show: true, id: id});
       setTimeout(() => setCreateReturn({ show: false, id: id }), 1);
   }
@@ -110,7 +110,7 @@ export default function TableHome() {
   } = {}) => {
     let url = "api/view-assignment";
     let array = [];
-    console.log(FilterByDate)
+    // console.log(FilterByDate)
 
     if (FilterByDate) {
       if (FilterByDate.length > 0 ) {
@@ -286,7 +286,7 @@ export default function TableHome() {
     if (page >= 1) {
       temp_page = page;
     }
-    console.log(filterByDate);
+    // console.log(filterByDate);
     if (filterByDate.length > 0) {
       temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }

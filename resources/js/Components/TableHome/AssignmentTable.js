@@ -30,7 +30,7 @@ export default function AssignmentTable({
         handleShowMessage(response, assignmentId);
     }
 
-    console.log(data)
+    // console.log(data)
     function handleShowMessage(response, assignmentId) {
         const message = response.data === undefined ? response.message : response.data.message;
         const code = response.code;

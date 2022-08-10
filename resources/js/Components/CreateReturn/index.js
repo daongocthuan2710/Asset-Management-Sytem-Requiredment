@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Modal } from "react-bootstrap";
 import './style.scss';
 import axios from 'axios';
+import {useSelector} from "react-redux";
 
 export default function CreateReturn(props) {
     console.log(props)
@@ -9,18 +10,24 @@ export default function CreateReturn(props) {
     useEffect(() => {
         if (props.show) setShow(Boolean(true));
     }, [props.show])
-
+    const isAdmin = useSelector(state => state.userReducer.userInfo.admin);
+    // console.log('isAdmin',isAdmin)
     const handleCreateReturn = async (e) => {
-        try {
+        if(isAdmin){
             const token = localStorage.getItem('token')
             const headers = { headers: { Authorization: `Bearer ${token}` } };
-            console.log(headers)
+            console.log('header',headers)
             await axios.post(`/api/assignment/${props.id}/return`, '', headers);
             setShow(false);
             window.location.reload();
-        } catch (e) {
-            const error = new Error("Something went wrong");
-            throw error;
+        }
+        if(!isAdmin){
+            const token = localStorage.getItem('token')
+            const headers = { headers: { Authorization: `Bearer ${token}` } };
+            console.log('header',headers)
+            await axios.post(`/api/assignment/${props.id}/user-return`, '', headers);
+            setShow(false);
+            window.location.reload();
         }
     }
 
