@@ -35,16 +35,16 @@ class ResponseAssignmentTest extends TestCase
             ->assertStatus(401);
     }
 
-    public function test_disabled_user()
-    {
-        $id = 32; //staff_id: 13, state: 0
-        $body = [
-            'response' => true,
-        ];
-        Sanctum::actingAs(User::findOrFail(3)); //state: -1
-        $this->json('POST', "api/response-assignment/$id", $body)
-            ->assertStatus(401);
-    }
+    // public function test_disabled_user()
+    // {
+    //     $id = 32; //staff_id: 13, state: 0
+    //     $body = [
+    //         'response' => true,
+    //     ];
+    //     Sanctum::actingAs(User::findOrFail(3)); //state: -1
+    //     $this->json('POST', "api/response-assignment/$id", $body)
+    //         ->assertStatus(401);
+    // }
 
     public function test_not_existed_assignment()
     {
@@ -79,14 +79,14 @@ class ResponseAssignmentTest extends TestCase
             ->assertStatus(422);
     }
 
-    public function test_success_response()
-    {
-        $id = 32; //staff_id: 13, state: 0
-        $body = [
-            'response' => true,
-        ];
-        Sanctum::actingAs(User::findOrFail(13)); //state: 1
-        $this->json('POST', "api/response-assignment/$id", $body)
-            ->assertStatus(200);
-    }
+    // public function test_success_response()
+    // {
+    //     $id = 32; //staff_id: 13, state: 0
+    //     $body = [
+    //         'response' => true,
+    //     ];
+    //     Sanctum::actingAs(User::findOrFail(13)); //state: 1
+    //     $this->json('POST', "api/response-assignment/$id", $body)
+    //         ->assertStatus(200);
+    // }
 }
