@@ -49,7 +49,7 @@ class AssetResource extends JsonResource
         ];
 
         if (request()->route()->uri() === 'api/asset/{asset}') {
-            $assetArray['returning'] = ReturningResource::collection($this->returning);
+            $assetArray['returning'] = ReturningResource::collection($this->returnings);
         }
 
         return $assetArray;

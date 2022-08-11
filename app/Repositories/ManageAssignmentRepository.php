@@ -51,15 +51,15 @@ class ManageAssignmentRepository extends BaseRepository
     }
     public function edit($request, $id)
     {
-        $assignment = Assignment::query()->findOrFail($id);
+        $assignment = Assignment::findOrFail($id);
         return response()->json(new EditAssignmentResource($assignment), 200);
     }
 
     public function update($request, $id)
     {
-        $assignment = Assignment::query()->findOrFail($id);
+        $assignment = Assignment::findOrFail($id);
         //update old asset state = available
-        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        $asset = Asset::findOrFail($assignment->asset_id);
         $asset->update(['state' => Asset::AVAILABLE_STATE]);
         //update assigned_by
         $sanctumUser = auth('sanctum')->user();
@@ -67,7 +67,7 @@ class ManageAssignmentRepository extends BaseRepository
         $assignment->update($request->all());
         $assignment->update(['assigned_by' => $sanctumUser->id]);
         //update new asset state = assigned
-        $newAsset = Asset::query()->findOrFail($request->asset_id);
+        $newAsset = Asset::findOrFail($request->asset_id);
         $newAsset->update(['state' => Asset::ASSIGNED_STATE]);
         return response()->json([
             'message' => 'Assignment updated successfully'
@@ -81,8 +81,8 @@ class ManageAssignmentRepository extends BaseRepository
 
     public function destroy($id)
     {
-        $assignment = Assignment::query()->findOrFail($id);
-        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        $assignment = Assignment::findOrFail($id);
+        $asset = Asset::findOrFail($assignment->asset_id);
         $asset->update(['state' => 1]);
         $assignment->returning()->delete();
         $assignment->delete();
@@ -97,9 +97,9 @@ class ManageAssignmentRepository extends BaseRepository
     }
     public function response($request, $id)
     {
-        $assignment = Assignment::query()->findOrFail($id);
+        $assignment = Assignment::findOrFail($id);
         $assignment->update(['state' => $request->response ? Assignment::ACCEPT_STATE : Assignment::DECLINE_STATE]);
-        $asset = Asset::query()->findOrFail($assignment->asset_id);
+        $asset = Asset::findOrFail($assignment->asset_id);
         if (!$request->response) {
             $asset->update(['state' => Asset::AVAILABLE_STATE]);
         }

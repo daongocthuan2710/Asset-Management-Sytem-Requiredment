@@ -38,7 +38,7 @@ class Assignment extends Model
 
     public function returning()
     {
-        return $this->hasMany(Returning::class);
+        return $this->hasOne(Returning::class);
     }
 
     public function assignedBy()

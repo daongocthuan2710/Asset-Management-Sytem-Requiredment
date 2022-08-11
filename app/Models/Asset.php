@@ -34,7 +34,7 @@ class Asset extends Model
         return $this->hasMany(Assignment::class);
     }
 
-    public function returning()
+    public function returnings()
     {
         return $this->hasManyThrough(Returning::class, Assignment::class);
     }
