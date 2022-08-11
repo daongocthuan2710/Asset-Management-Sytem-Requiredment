@@ -61,6 +61,7 @@ class ManageReturningService extends BaseService
 
         //if returning is not existed
         $returning = Returning::find($id);
+
         if (!$returning) {
             return response()->json([
                 'message' => 'Returning not found',
@@ -76,9 +77,7 @@ class ManageReturningService extends BaseService
         //if admin is not existed
         $admin = User::query()->find($returning->accepted_by);
         if (!$admin) {
-            return response()->json([
-                'message' => 'Admin not found',
-            ], 404);
+            $admin = $user;
         }
 
         //if assignment is not existed

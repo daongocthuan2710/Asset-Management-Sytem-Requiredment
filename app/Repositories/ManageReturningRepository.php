@@ -6,6 +6,7 @@ use App\Http\Resources\ReturningResource;
 use App\Models\Asset;
 use App\Models\Assignment;
 use App\Models\Returning;
+use App\Models\User;
 use App\Repositories\BaseRepository;
 
 class ManageReturningRepository extends BaseRepository
@@ -44,7 +45,11 @@ class ManageReturningRepository extends BaseRepository
         $returning = Returning::query()->findOrFail($id);
         $assignment = Assignment::query()->findOrFail($returning->assignment_id);
         $asset = Asset::query()->findOrFail($assignment->asset_id);
-
+        $admin = User::query()->find($returning->accepted_by);
+        if (!$admin) {
+            $user = User::query()->find($returning->requested_by);
+            $returning->update(['accepted_by' => $user->id ]);
+        }
         // update state returning = completed
         $returning->update([
             'state' => Returning::COMPLETED,
