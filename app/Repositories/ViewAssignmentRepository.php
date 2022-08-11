@@ -19,9 +19,9 @@ class ViewAssignmentRepository extends BaseRepository
 
         $data = $this->query
             ->where('staff_id', $santumUser->id)
-            // ->where('assigned_date', '<=' , now())
+            ->where('assigned_date', '<=', date("Y-m-d"))
             ->search($request)
-            ->filterByState($request)
+            ->filterByStateHome($request)
             ->filterByDate($request)
             ->sortByNo($request)
             ->sortByAssetCode($request)
@@ -36,7 +36,7 @@ class ViewAssignmentRepository extends BaseRepository
 
     public function getById($id)
     {
-        $data = $this->query->findOrFail($id);
+        $data = $this->query->where('id', $id);
 
         return new AssignmentResource($data->first());
     }

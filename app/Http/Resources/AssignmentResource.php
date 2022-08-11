@@ -27,19 +27,21 @@ class AssignmentResource extends JsonResource
             case 1:
                 $stateName = 'Accepted';
                 break;
+            case 2:
+                $stateName = 'Waiting for returning';
+                break;
         }
         $staff = User::find($this->staff_id);
         $admin = User::find($this->assigned_by);
         $asset = Asset::find($this->asset_id);
-        if($staff->location === $admin->location && $staff->location === $asset->location) {
+        if ($staff->location === $admin->location && $staff->location === $asset->location) {
             $location = $staff->location;
-        }
-        else {
+        } else {
             $location = 'not_match';
         }
-        return [
+
+        $assignmentArray = [
             'id' => $this->id,
-            'asset' => new AssetResource($this->asset),
             'assigned_by' => new UserResource(User::findOrFail($this->assigned_by)),
             'staff' => new UserResource(User::findOrFail($this->staff_id)),
             'assigned_date' => $this->assigned_date,
@@ -50,5 +52,11 @@ class AssignmentResource extends JsonResource
             ],
             'location' => $location,
         ];
+
+        if (request()->route()->uri() !== 'api/asset/{asset}') {
+            $assignmentArray['asset'] = new AssetResource($this->asset);
+        }
+
+        return $assignmentArray;
     }
 }

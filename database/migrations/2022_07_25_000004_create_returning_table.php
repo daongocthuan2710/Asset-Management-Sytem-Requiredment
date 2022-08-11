@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('assignment_id', false, true);
             $table->integer('accepted_by', false, true)->nullable(); //accepted by
             $table->integer('requested_by', false, true); //request by
-            $table->date('returned_date');
+            $table->date('returned_date')->nullable();
             $table->integer('state')->default('0');
             //0 : waiting for returning, 1 : completed
 

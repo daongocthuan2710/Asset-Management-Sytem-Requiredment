@@ -1,5 +1,6 @@
 const initState = {
     sort_at:'',
+    value: false
 };
 
 const assetGetMessageReducer = (state = initState, action) => {

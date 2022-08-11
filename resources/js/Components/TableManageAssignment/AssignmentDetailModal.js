@@ -18,7 +18,7 @@ export default function AssignmentDetailModal({
             >
                 <Modal.Header className="w-100">
                     <Modal.Title id="contained-modal-title-vcenter" className="d-flex justify-content-betweeen align-items-center w-100 flex-grow-1">
-                        <h4 className="flex-grow-1"> Detailed Asset Information</h4>
+                        <h4 className="flex-grow-1"> Detailed Assignment Information</h4>
                         <FaRegWindowClose onClick={() => setModal(false)} style={{ cursor: 'pointer' }} />
                     </Modal.Title>
                 </Modal.Header>

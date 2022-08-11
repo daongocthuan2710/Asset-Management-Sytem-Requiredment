@@ -13,10 +13,10 @@ import assignmentService from "../../Services/assignment.service";
 import CustomPagination from "./CustomPagination";
 import AssignmentTable from "./AssignmentTable";
 import AssignmentDetailModal from "./AssignmentDetailModal";
-import DeleteAsset from "../DeleteAsset";
 
-import _ from "lodash";
 import DeleteAssignment from "../DeleteAssignment";
+import ResponseAssignment from "../ResponseAssignment";
+import CreateReturn from "../CreateReturn";
 
 
 export default function TableHome() {
@@ -25,7 +25,8 @@ export default function TableHome() {
   const [page, setPage] = React.useState(1);
   const [total, setTotal] = React.useState(1);
   const [sortArray, setSortArray] = React.useState([]);
-  const [deleteAssignment, setDeleteAssignment] = React.useState({ show: false, id: 0 });
+  const [responseAssignment, setResponseAssignment] = React.useState({ show: false, id: 0, res: true});
+  const [createReturn, setCreateReturn] = React.useState({ show: false, id: 0 });
   const [filterCategory, setFilterCategory] = React.useState([]);
   const [filterByDate, setFilterByDate] = React.useState([]);
   const [modal, setModal] = React.useState(false);
@@ -40,7 +41,7 @@ export default function TableHome() {
     (state) => state.assetGetMessageReducer.sort_at
   );
 
-  console.log('sort_at_get_mesage',sort_at_get_mesage);
+  // console.log('sort_at_get_mesage',sort_at_get_mesage);
   const [tableHeader, setTableHeader] = React.useState([
     {
       name: "No.",
@@ -87,13 +88,18 @@ export default function TableHome() {
     });
   }, []);
 
-  const handleDeleteAssignment = (e, id) => {
-    e.stopPropagation();
-    console.log("id", id);
-    setDeleteAssignment({ show: true, id: id});
-    setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
-  }
+  // const handleDeleteAssignment = (e, id) => {
+  //   e.stopPropagation();
+  //   setDeleteAssignment({ show: true, id: id});
+  //   setTimeout(() => setDeleteAssignment({ show: false, id: id }), 1);
+  // }
 
+  const handleCreateReturn = (e, id) => {
+      e.stopPropagation();
+      // console.log("handleCreateReturn", id);
+      setCreateReturn({ show: true, id: id});
+      setTimeout(() => setCreateReturn({ show: false, id: id }), 1);
+  }
 
   const getApiAssignment = async ({
     FilterByDate = undefined,
@@ -104,7 +110,7 @@ export default function TableHome() {
   } = {}) => {
     let url = "api/view-assignment";
     let array = [];
-    console.log(FilterByDate)
+    // console.log(FilterByDate)
 
     if (FilterByDate) {
       if (FilterByDate.length > 0 ) {
@@ -131,7 +137,7 @@ export default function TableHome() {
             numberValue.push(item.value);
           })
           const stringFilter = numberValue.toString();
-          array.push(`filterByState=${stringFilter}`);
+          array.push(`filterByStateHome=${stringFilter}`);
         }
       }
     }
@@ -255,7 +261,7 @@ export default function TableHome() {
     if (currentSearch !== "") {
       temp_search = currentSearch;
     }
-  
+
     getApiAssignment({
       FilterByState: arrayStateTemp,
       search: temp_search,
@@ -280,7 +286,7 @@ export default function TableHome() {
     if (page >= 1) {
       temp_page = page;
     }
-    console.log(filterByDate);
+    // console.log(filterByDate);
     if (filterByDate.length > 0) {
       temp_filter_date = JSON.parse(JSON.stringify(filterByDate));
     }
@@ -400,63 +406,43 @@ export default function TableHome() {
   };
 
   const dispatch = useDispatch();
-  async function handleOpenEditForm(e, userId = "") {
+
+  async function handleResponse(e, id, res) {
     e.stopPropagation();
-    const displayValue = true;
-    const response = await dispatch(getUserEdit(displayValue, userId));
-    handleShowMessage(response);
+    setResponseAssignment({show: true, id: id, res: res});
+    setTimeout(() => {
+        setResponseAssignment({show: false})
+    }, 1)
   }
 
-  function handleShowMessage(response) {
-    const message =
-      response.data == undefined ? response.message : response.data.message;
-    const code = response.code;
-    switch (code) {
-      case 200:
-        {
-          //
-        }
-        break;
-      case 401:
-        {
-          Swal.fire({
-            position: "center",
-            icon: "info",
-            title: message,
-            showConfirmButton: false,
-            timer: 2000,
-          });
-        }
-        break;
-    }
-  }
   const [assignment, setAssignment] = React.useState([]);
 
   const handleGetAssignmentById = async (assignmentId) => {
-    const response = await assignmentService.getAssignmentById(assignmentId);
+    const response = await assignmentService.viewAssignmentById(assignmentId);
     setModal(true);
-    console.log(response.data.data);
     setAssignment(response.data.data);
   }
 
   return (
     <div className="containermanageuser">
-      <DeleteAssignment show={deleteAssignment.show} id={deleteAssignment.id} />
+      <ResponseAssignment show={responseAssignment.show} id={responseAssignment.id} res={responseAssignment.res}/>
+      <CreateReturn show={createReturn.show} id={createReturn.id} />
       <h5 style={{ color: "red", fontWeight: "bold" }}> My Assignment </h5>
-      <Row>
+      <Row >
         <div id="table-manage-user">
           <AssignmentTable
             data={data}
             tableHeader={tableHeader}
             Nodata={Nodata}
             handleSort={handleSort}
-            handleOpenEditForm={handleOpenEditForm}
+            handleResponse={handleResponse}
             handleGetAssignmentById={handleGetAssignmentById}
-            handleDeleteAssignment={handleDeleteAssignment}
+            // handleDeleteAssignment={handleDeleteAssignment}
+            handleCreateReturn={handleCreateReturn}
           />
         </div>
       </Row>
-      <Row>
+      <Row id = "pagination-container">
         <CustomPagination
           total={total}
           page={page}

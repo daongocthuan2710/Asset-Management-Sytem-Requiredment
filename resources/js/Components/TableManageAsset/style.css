@@ -1,6 +1,5 @@
 .containermanageuser{
     width: 1200px !important;
-    margin-left: 100px !important;
 }
 table {
     border-collapse: separate !important;
@@ -164,9 +163,42 @@ tbody{
     width: 50%;
 }
 #filter-search{
-    width: 1180px;
+    width: 1310px;
 }
 
 #secondFilterAsset{
     margin-left: 20px;
+}
+#table-container{
+    width: 1300px;
+}
+
+#editUserButton:hover{
+    transition: opacity 0.3s, transform 0.3s;
+    transform: rotate(270deg);
+    animation: changeBackgroundColor 7s infinite;
+}
+
+#deleteIcon:hover{
+    transition: opacity 0.3s, transform 0.3s;
+    transform: rotate(270deg);
+    animation: changeBackgroundColor 7s infinite;
+}
+
+.table-custom.table-responsive {
+    max-height: 250px;
+}
+
+table#asset-history.table-bordered>:not(caption)>*>* {
+    border: none;
+}
+
+table#asset-history.table-bordered thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+}
+
+table#asset-history.table-bordered tbody {
+    overflow: scroll;
 }

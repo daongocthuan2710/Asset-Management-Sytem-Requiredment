@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             AssetSeeder::class,
             UserSeeder::class,
-            AssignmentSeeder::class
+            AssignmentSeeder::class,
+            ReturningSeeder::class
         ]);
     }
 }

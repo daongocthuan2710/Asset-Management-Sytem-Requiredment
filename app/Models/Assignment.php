@@ -9,6 +9,10 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    public const ACCEPT_STATE = 1;
+    public const WAITING_STATE = 0;
+    public const DECLINE_STATE = -1;
+
     protected $table = 'assignment';
     protected $fillable = [
         'asset_id',
@@ -18,9 +22,23 @@ class Assignment extends Model
         'assigned_by',
         'state'
     ];
+
+
+    public const DECLINE = -1;
+    public const WAITING_FOR_ACCEPTANCE = 0;
+    public const ACCEPTED = 1;
+    public const WAITING_FOR_RETURNING = 2;
+    public const ALL = 3;
+    public const COMPLETED = 4;
+
     public function asset()
     {
         return $this->belongsTo(Asset::class);
+    }
+
+    public function returning()
+    {
+        return $this->hasOne(Returning::class);
     }
 
     public function assignedBy()
@@ -45,14 +63,33 @@ class Assignment extends Model
             });
     }
 
-    public function scopeFilterByState($query, $request)
+    public function scopeFilterByStateManage($query, $request)
     {
-        $filterByState = explode(',', $request->query('filterByState'));
+        $filterByState = explode(',', $request->query('filterByStateManage'));
         if (in_array(3, $filterByState)) {
-            return $query;
+            return $query->whereIn("state", [
+                self::DECLINE,
+                self::WAITING_FOR_ACCEPTANCE,
+                self::ACCEPTED
+            ]);
         }
         return $query
-            ->when($request->has('filterByState'), function ($query) use ($filterByState) {
+            ->when($request->has('filterByStateManage'), function ($query) use ($filterByState) {
+                $query->whereIn("state", $filterByState);
+            });
+    }
+
+    public function scopeFilterByStateHome($query, $request)
+    {
+        $filterByState = explode(',', $request->query('filterByStateHome'));
+        if (in_array(3, $filterByState)) {
+            return $query->whereIn("state", [
+                self::WAITING_FOR_ACCEPTANCE,
+                self::ACCEPTED
+            ]);
+        }
+        return $query
+            ->when($request->has('filterByStateHome'), function ($query) use ($filterByState) {
                 $query->whereIn("state", $filterByState);
             });
     }

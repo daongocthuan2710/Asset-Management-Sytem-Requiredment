@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { Button, Modal } from "react-bootstrap";
 import './style.scss';
@@ -31,7 +32,7 @@ export default function DeleteAsset(props) {
         })
     }, [props.show])
 
-    const handleDisableUser = async (e) => {
+    const handleDisableUser = async () => {
         try {
             const token = localStorage.getItem('token')
             const headers = {headers: {Authorization: `Bearer ${token}`}};
@@ -63,7 +64,7 @@ export default function DeleteAsset(props) {
                     <Modal.Body>
                         <div id='modalText'>
                             <p>
-                                Do you want delete this asset?
+                                Do you want to delete this asset?
                             </p>
                             <Button
                                 onClick={handleDisableUser}

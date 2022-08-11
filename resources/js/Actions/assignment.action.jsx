@@ -25,7 +25,6 @@ export const getAssignmentEdit = (data) => {
     return async function (dispatch) {
         const response = await AssignmentService.getAssignmentEdit(data.assignmentInfo);
         const assignmentEdit = response.data
-        console.log('assignmentEdit',assignmentEdit);
         const code = response.code
         if (code === SUCCESS) {
             dispatch({
