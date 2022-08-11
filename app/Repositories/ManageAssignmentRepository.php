@@ -33,6 +33,7 @@ class ManageAssignmentRepository extends BaseRepository
     {
         $sanctumUser = auth('sanctum')->user();
         $data = $this->query
+            ->where('state', '!=', Assignment::COMPLETED)
             ->search($request)
             ->filterByState($request)
             ->filterByDate($request)
