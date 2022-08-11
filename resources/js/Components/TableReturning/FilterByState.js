@@ -25,35 +25,40 @@ export default function FilterByState({
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <Form>
+                        <Dropdown.Item onClick={() => handleFilter("All", "3")}>
                         <Form.Check
                             type="checkbox"
                             id="checkbox-all"
-                            className="mx-4 font-weight-bold"
+                            className="font-weight-bold"
                             label="All"
                             checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "3") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "3")].value === "3"}
                             onChange={() => handleFilter("All", "3")}
                             eventKey="3"
                         />
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleFilter("Completed", "1")}>
                         <Form.Check 
                             type="checkbox"
                             id="checkbox-admin"
-                            className="mx-4 my-2 font-weight-bold"
+                            className="font-weight-bold"
                             label="Completed"
                             checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "1") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "1")].value === "1"}
 
                             onChange={() => handleFilter("Completed", "1")}
                             eventKey="1"
                         />
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleFilter("Wait for returning", "0")}>
                         <Form.Check
                             type="checkbox"
                             id="checkbox-staff"
-                            className="mx-4 font-weight-bold"
+                            className="font-weight-bold"
                             label="Wait for returning"
                             checked={arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "0") !== -1 && arrayState[arrayState.toString().length >0 && arrayState.findIndex(item => item.value === "0")].value === "0"}
                             onChange={() => handleFilter("Wait for acceptance", "0")}
                             eventkey="0"
                         />
-                       
+                        </Dropdown.Item>
                     </Form>
                 </Dropdown.Menu>
             </Dropdown>

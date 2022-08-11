@@ -385,33 +385,40 @@ const sort_create_at = useSelector(
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Form>
+            <Dropdown.Item onClick={() => handleFilter("All")}> 
               <Form.Check
                 type="checkbox"
                 id="checkbox-all"
-                className="mx-4 font-weight-bold"
+                className=" font-weight-bold"
                 label="All"
                 checked={currentButton === "All"}
                 onChange={() => handleFilter("All")}
                 eventKey="All"
               />
+              </Dropdown.Item>
+
+              <Dropdown.Item onClick={() => handleFilter("Admin")}> 
               <Form.Check
                 type="checkbox"
                 id="checkbox-admin"
-                className="mx-4 my-2 font-weight-bold"
+                className="font-weight-bold"
                 label="Admin"
                 checked={currentButton === "Admin"}
                 onChange={() => handleFilter("Admin")}
                 eventKey="Admin"
               />
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleFilter("Staff")}>
               <Form.Check
                 type="checkbox"
                 id="checkbox-staff"
-                className="mx-4 font-weight-bold"
+                className=" font-weight-bold"
                 label="Staff"
                 checked={currentButton === "Staff"}
                 onChange={() => handleFilter("Staff")}
                 eventkey="Staff"
               />
+              </Dropdown.Item>
             </Form>
           </Dropdown.Menu>
         </Dropdown>

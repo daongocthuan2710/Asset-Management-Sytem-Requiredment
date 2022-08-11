@@ -202,3 +202,8 @@ table#asset-history.table-bordered thead {
 table#asset-history.table-bordered tbody {
     overflow: scroll;
 }
+
+
+.dropdown-menu{
+    --bs-dropdown-link-active-bg: rgb(220 53 69) !important;
+  }

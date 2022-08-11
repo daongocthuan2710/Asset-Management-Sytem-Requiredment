@@ -109,7 +109,7 @@ export default function TableReport() {
         if (item.key === "Not available") {
           array.push(`sortByNotAvailable=${item.value}`);
         }
-        if (item.key === "Wating for recycling") {
+        if (item.key === "Waiting for recycling") {
           array.push(`sortByWaitingForRecycling=${item.value}`);
         }
         if (item.key === "Recycled") {
