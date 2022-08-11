@@ -63,14 +63,33 @@ class Assignment extends Model
             });
     }
 
-    public function scopeFilterByState($query, $request)
+    public function scopeFilterByStateManage($query, $request)
     {
-        $filterByState = explode(',', $request->query('filterByState'));
+        $filterByState = explode(',', $request->query('filterByStateManage'));
         if (in_array(3, $filterByState)) {
-            return $query;
+            return $query->whereIn("state", [
+                self::DECLINE,
+                self::WAITING_FOR_ACCEPTANCE,
+                self::ACCEPTED
+            ]);
         }
         return $query
-            ->when($request->has('filterByState'), function ($query) use ($filterByState) {
+            ->when($request->has('filterByStateManage'), function ($query) use ($filterByState) {
+                $query->whereIn("state", $filterByState);
+            });
+    }
+
+    public function scopeFilterByStateHome($query, $request)
+    {
+        $filterByState = explode(',', $request->query('filterByStateHome'));
+        if (in_array(3, $filterByState)) {
+            return $query->whereIn("state", [
+                self::WAITING_FOR_ACCEPTANCE,
+                self::ACCEPTED
+            ]);
+        }
+        return $query
+            ->when($request->has('filterByStateHome'), function ($query) use ($filterByState) {
                 $query->whereIn("state", $filterByState);
             });
     }

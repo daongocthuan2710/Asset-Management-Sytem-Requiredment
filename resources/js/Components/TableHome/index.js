@@ -137,7 +137,7 @@ export default function TableHome() {
             numberValue.push(item.value);
           })
           const stringFilter = numberValue.toString();
-          array.push(`filterByState=${stringFilter}`);
+          array.push(`filterByStateHome=${stringFilter}`);
         }
       }
     }

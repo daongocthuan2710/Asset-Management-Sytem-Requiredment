@@ -140,7 +140,7 @@ export default function ManageAssignment() {
             numberValue.push(item.value);
           })
           const stringFilter = numberValue.toString();
-          array.push(`filterByState=${stringFilter}`);
+          array.push(`filterByStateManage=${stringFilter}`);
         }
       }
     }

@@ -21,7 +21,7 @@ class ViewAssignmentRepository extends BaseRepository
             ->where('staff_id', $santumUser->id)
             ->where('assigned_date', '<=', date("Y-m-d"))
             ->search($request)
-            ->filterByState($request)
+            ->filterByStateHome($request)
             ->filterByDate($request)
             ->sortByNo($request)
             ->sortByAssetCode($request)
