@@ -77,6 +77,7 @@ export default function ReturningTable({
                                         ? (
                                             <>
                                                 <FaCheck
+                                                    style={{ cursor: 'pointer' }}
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         handleShowModalCompleteReturning(item.id);
@@ -85,6 +86,7 @@ export default function ReturningTable({
                                                 />
                                                 &nbsp;
                                                 <FaTimes
+                                                    style={{ cursor: 'pointer' }}
                                                     onClick={(e) => {
                                                         handleShowModalCancelReturning(item.id);
                                                         e.stopPropagation();
