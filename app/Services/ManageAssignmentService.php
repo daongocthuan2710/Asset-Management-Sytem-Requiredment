@@ -209,9 +209,6 @@ class ManageAssignmentService extends BaseService
             return response()->json(['message' => 'Unauthorized'], 401);
         }
         $assignment = Assignment::query()->findOrFail($id);
-        if (!$assignment) {
-            return response()->json(['message' => 'Assignment not found'], 404);
-        }
         if ($assignment->staff_id != $sanctumUser->id) {
             return response()->json(['message' => 'You cannot response to others\' assignment'], 422);
         }
