@@ -208,9 +208,6 @@ class ManageAssignmentService extends BaseService
         if (!$sanctumUser) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        if ($sanctumUser->state === -1) {
-            return response()->json(['message' => 'You are disabled'], 401);
-        }
         $assignment = Assignment::query()->findOrFail($id);
         if (!$assignment) {
             return response()->json(['message' => 'Assignment not found'], 404);
