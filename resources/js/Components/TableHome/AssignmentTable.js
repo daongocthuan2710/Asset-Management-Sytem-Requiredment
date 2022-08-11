@@ -116,6 +116,7 @@ export default function AssignmentTable({
                                         onClick={(e) => handleResponse(e, item.id, true)}
                                         aria-disabled={item.state.code !== 2}
                                         id="editUserButton"
+                                        color = "#e31722"
                                     />
                                 ) : (
                                     <FaCheck color="gray" />
@@ -129,20 +130,23 @@ export default function AssignmentTable({
                                         aria-disabled={item.state.code !== 2}
                                         onClick={(e) => handleResponse(e, item.id, false)}
                                         type="button"
+                                        color = "#000000"
                                     />
                                 ) : (
                                     <FaTimes color="gray" />
                                 )}{" "}
                                 &nbsp;
                                 {/*<FaUndo id="undo-icon" onClick={(e) => handleCreateReturn(e, item.id)}/>*/}
-                                {item.state.code === 2 ? (
-                                    <FaUndo color="gray" />
-                                ) : (
+                                {item.state.code === 1 ? (
                                     <FaUndo
                                         id="undo-icon"
                                         style={{ cursor: 'pointer' }}
                                         onClick={(e) => handleCreateReturn(e, item.id)}
+                                        color = "#586ce3"
                                     />
+                                )
+                                : (
+                                    <FaUndo color="gray" />
                                 )}
                             </td>
                         </tr>
