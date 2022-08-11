@@ -47,6 +47,7 @@ export default function CompleteReturningRequest(props) {
                             sort_at: 'sortByEditReturning',
                         },
                     })
+                    window.location.reload();
                 }
                 break;
 

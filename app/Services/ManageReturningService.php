@@ -43,10 +43,10 @@ class ManageReturningService extends BaseService
                 $return = $this->returning->create([
                     'assignment_id' => $assignment->id,
                     'requested_by' => $user->id,
-                    'state' => 0
+                    'state' => 0,
                 ]);
                 $assignment->update([
-                    'state' => 2 //waiting for returning
+                    'state' => 2, //waiting for returning
                 ]);
                 return response()->json([
                     'data' => $return,
@@ -63,21 +63,21 @@ class ManageReturningService extends BaseService
         $returning = Returning::find($id);
         if (!$returning) {
             return response()->json([
-                'message' => 'Returning not found'
+                'message' => 'Returning not found',
             ], 404);
         }
         //if user is not existed
         $user = User::query()->find($returning->requested_by);
         if (!$user) {
             return response()->json([
-                'message' => 'User not found'
+                'message' => 'User not found',
             ], 404);
         }
         //if admin is not existed
         $admin = User::query()->find($returning->accepted_by);
         if (!$admin) {
             return response()->json([
-                'message' => 'Admin not found'
+                'message' => 'Admin not found',
             ], 404);
         }
 
@@ -85,14 +85,14 @@ class ManageReturningService extends BaseService
         $assignment = Assignment::query()->find($returning->assignment_id);
         if (!$assignment) {
             return response()->json([
-                'message' => 'Assignment not found'
+                'message' => 'Assignment not found',
             ], 404);
         }
         //if asset is not existed
         $asset = Asset::query()->find($assignment->asset_id);
         if (!$asset) {
             return response()->json([
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         }
         //if user is not in the same location
@@ -146,10 +146,15 @@ class ManageReturningService extends BaseService
         //check location
         if (
             ($sanctumUser->location !== $user->location)
-            || ($sanctumUser->location !== $admin->location)
-            || ($sanctumUser->location !== $asset->location)
+            || ($sanctumUser
+                ->location !== $admin
+                ->location)
+            || ($sanctumUser
+                ->location !== $asset
+                ->location)
         ) {
-            return response()->json(['message' => 'You cannot accept the returning having asset in other location!'], 401);
+            return response()->json(['message' =>
+                'You cannot accept the returning having asset in other location!'], 401);
         }
         //check state of returning
         if (!$request->destroy) {
@@ -173,21 +178,21 @@ class ManageReturningService extends BaseService
         $returning = Returning::find($id);
         if (!$returning) {
             return response()->json([
-                'message' => 'Returning not found'
+                'message' => 'Returning not found',
             ], 404);
         }
         //if user is not existed
         $user = User::query()->find($returning->requested_by);
         if (!$user) {
             return response()->json([
-                'message' => 'User not found'
+                'message' => 'User not found',
             ], 404);
         }
         //if admin is not existed
         $admin = User::query()->find($returning->accepted_by);
         if (!$admin) {
             return response()->json([
-                'message' => 'Admin not found'
+                'message' => 'Admin not found',
             ], 404);
         }
 
@@ -195,14 +200,14 @@ class ManageReturningService extends BaseService
         $assignment = Assignment::query()->find($returning->assignment_id);
         if (!$assignment) {
             return response()->json([
-                'message' => 'Assignment not found'
+                'message' => 'Assignment not found',
             ], 404);
         }
         //if asset is not existed
         $asset = Asset::query()->find($assignment->asset_id);
         if (!$asset) {
             return response()->json([
-                'message' => 'Asset not found'
+                'message' => 'Asset not found',
             ], 404);
         }
         //if user is not in the same location
@@ -248,7 +253,8 @@ class ManageReturningService extends BaseService
             || ($sanctumUser->location !== $admin->location)
             || ($sanctumUser->location !== $asset->location)
         ) {
-            return response()->json(['message' => 'You cannot delete the returning having asset in other location!'], 401);
+            return response()->json(['message' =>
+             'You cannot delete the returning having asset in other location!'], 401);
         }
         //check state of returning
         if ($returning->state === 1) {

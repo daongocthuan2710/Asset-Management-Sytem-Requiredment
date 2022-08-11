@@ -9,7 +9,6 @@ use App\Repositories\BaseRepository;
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Builder;
 
-
 class ReportRepository extends BaseRepository
 {
     public function __construct()

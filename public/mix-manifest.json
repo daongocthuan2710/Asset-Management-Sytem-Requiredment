@@ -1,9 +1,9 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/js/manifest.js": "/js/manifest.js",
-    "/css/app.css": "/css/app.css",
-    "/js/vendor.js": "/js/vendor.js",
-    "/assets/nashtech_logo.svg": "/assets/nashtech_logo.svg",
-    "/assets/Nodata.gif": "/assets/Nodata.gif",
-    "/assets/Nodata.png": "/assets/Nodata.png"
+    "/js/app.js": "/js/app.js?id=7853d60edc2357de4a34e64b68343c80",
+    "/js/manifest.js": "/js/manifest.js?id=a3bb3643d33dc93ee518ba173e8b84cf",
+    "/css/app.css": "/css/app.css?id=4fd1985204ff78e08fe8c06bfc6c435a",
+    "/js/vendor.js": "/js/vendor.js?id=1b79e910652a34d5097bbbbb3dadad52",
+    "/assets/nashtech_logo.svg": "/assets/nashtech_logo.svg?id=32737fd2a15ac2c6db9f81c3179fc18b",
+    "/assets/Nodata.gif": "/assets/Nodata.gif?id=70707e0c6682e93997e22453db646be9",
+    "/assets/Nodata.png": "/assets/Nodata.png?id=3b4c20ef37bbef3afe87a43a2db982ea"
 }

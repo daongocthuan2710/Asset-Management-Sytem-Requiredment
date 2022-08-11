@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\ReportService;
 
-
 class ReportController extends Controller
 {
     private ReportService $reportService;

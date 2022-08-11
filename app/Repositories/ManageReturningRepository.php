@@ -8,8 +8,6 @@ use App\Models\Assignment;
 use App\Models\Returning;
 use App\Repositories\BaseRepository;
 
-
-
 class ManageReturningRepository extends BaseRepository
 {
     public function __construct()
