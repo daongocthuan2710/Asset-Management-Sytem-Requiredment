@@ -42,6 +42,7 @@ export default function DeleteReturningRequest(props) {
             case 422:
             case 400:
             case 403:
+            case 404:
             case 500:
                 setModalHeader("Failed!");
                 setModalBody(message);

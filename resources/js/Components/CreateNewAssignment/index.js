@@ -1,11 +1,14 @@
 import React from "react";
-import { Container, Row, Col, Button, Form, } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, InputGroup } from "react-bootstrap";
 import axios from "../../Services/base.service";
 import "./style.css";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import PickUser from "./PickUser"
-import PickAsset from "./PickAsset"
+import PickAsset from "./PickAsset";
+import {
+    FaSearch,
+} from "react-icons/fa";
 const CreateNewAssignment = () => {
     let history = useHistory();
     const [user, setUser] = React.useState({ name: '', id: '' });
@@ -101,13 +104,18 @@ const CreateNewAssignment = () => {
                                 <Form.Label>User</Form.Label>
                             </Col>
                             <Col md={8}>
+                            <div className="d-flex search-create" onClick={() => { handleUser() }}>
                                 <Form.Control
                                     readOnly
                                     required
                                     type="text"
                                     value={user.name}
-                                    onClick={() => { handleUser() }}
-                                />
+                                    
+                                /><InputGroup.Text
+                                    >
+                                        <FaSearch />
+                                    </InputGroup.Text>
+                                </div>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -118,13 +126,19 @@ const CreateNewAssignment = () => {
                                 <Form.Label>Asset</Form.Label>
                             </Col>
                             <Col md={8}>
-                                <Form.Control
-                                    readOnly
-                                    required
-                                    type="text"
-                                    value={asset.name}
-                                    onClick={() => { handleAsset() }}
-                                />
+                                <div className="d-flex search-create" onClick={() => { handleAsset() }}>
+                                    <Form.Control
+                                        readOnly
+                                        required
+                                        type="text"
+                                        value={asset.name}
+                                        className="rounded-left"
+                                        />
+                                    <InputGroup.Text className="rounded-right"
+                                    >
+                                        <FaSearch />
+                                    </InputGroup.Text>
+                                </div>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -136,6 +150,7 @@ const CreateNewAssignment = () => {
                                 <Form.Label>Assigned Date</Form.Label>
                             </Col>
                             <Col md={8}>
+                            
                                 <Form.Control
                                     value={assignedDate}
                                     required

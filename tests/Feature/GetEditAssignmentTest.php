@@ -28,47 +28,93 @@ class GetEditAssignmentTest extends TestCase
         ]);
     }
 
-    public function test_unlogged_user(){
-        $id = 10; //staff_location: DN, state: 0
-        $this->json('GET', "api/assignment/$id/edit")
-            ->assertStatus(401);
+    public function test_unlogged_user()
+    {
+        $id = 10;//state: 0, location: DN
+        $this->json(
+            "GET",
+            "api/assignment/$id/edit",
+            [],
+        )->assertStatus(401);
     }
 
-    public function test_not_an_admin_user(){
-        $id = 10; //staff_location: DN, state: 0
-        Sanctum::actingAs(User::factory()->create([
-            'admin' => false,
-            'location' => 'DN',
-            'staff_code' => 'SD2001',
-            'base_username' => 'user',
-        ])); //admin: false, location: DN, state: 1
-        $this->json('GET', "api/assignment/$id/edit")
-            ->assertStatus(401);
+    public function test_not_an_admin_user()
+    {
+        $id = 10;//state: 0, location: DN
+        $response = $this->postJson('api/login', [
+            'username' => 'tuanpa',
+            'password' => '12345',
+        ]); //admin: 0, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/assignment/$id/edit",
+            [],
+            $header
+        )->assertStatus(401);
     }
 
-    public function test_not_existed_assignment(){
+    public function test_not_existed_assignment()
+    {
         $id = 20000; //un-existed assignment id
-        Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-        $this->json('GET', "api/assignment/$id/edit")
-            ->assertStatus(404);
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/assignment/$id/edit",
+            [],
+            $header
+        )->assertStatus(404);
     }
 
-    public function test_assignment_is_not_available(){
-        $id = 9; //staff_location: DN, state: 1
-        Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-        $this->json('GET', "api/assignment/$id/edit")
-            ->assertStatus(422);
+    public function test_assignment_is_not_available()
+    {
+        $id = 9; //location: DN, state: 1
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/assignment/$id/edit",
+            [],
+            $header
+        )->assertStatus(422);
     }
 
-    // public function test_success_get_edit_assignment(){
-    //     $id = 10; //staff_location: DN, state: 0
-    //     Sanctum::actingAs(User::factory()->create([
-    //            'admin' => true,
-    //            'location' => 'DN',
-    //            'staff_code' => 'SD2001',
-    //            'base_username' => 'user',
-    //        ])); //admin, location: DN, state: 1
-    //     $this->json('GET', "api/assignment/$id/edit")
-    //         ->assertStatus(200);
-    // }
+    public function test_success_get_edit_assignment()
+    {
+        $id = 10;//state: 0, location: DN
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/assignment/$id/edit",
+            [],
+            $header
+        )->assertStatus(200);
+    }
 }

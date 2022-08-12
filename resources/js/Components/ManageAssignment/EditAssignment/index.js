@@ -58,12 +58,11 @@ export default function EditAssignmentForm() {
       };
 
       useEffect(() => {
-        assignedDateCheck(assignedDate);
         setDisableSave(true);
         if ((assignedDate !== '' && assignedDate !== null && assignedDate >= new Date().toISOString().slice(0, 10) )
-        && (note !== "" && note !== null) && select == true)
+        && select == true)
             setDisableSave(false);
-        }, [assignedDate, note, select]);
+        }, [assignedDate, select]);
     // Action
     async function handleUpdateAssignmentInfo(e) {
         e.preventDefault();

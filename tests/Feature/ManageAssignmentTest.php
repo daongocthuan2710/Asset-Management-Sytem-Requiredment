@@ -73,7 +73,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&search=Fakedata&page=1"
+            "/api/assignment?filterByStateManage=3&search=Fakedata&page=1"
         );
         $viewAssignment->assertStatus(500);
     }
@@ -91,7 +91,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=1&page=1"
+            "/api/assignment?filterByStateManage=1&page=1"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -109,7 +109,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByDate=2022-05-23&filterByState=3&page=1&sortByAssignedDate=desc"
+            "/api/assignment?filterByDate=2022-05-23&filterByStateManage=3&page=1&sortByAssignedDate=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -127,7 +127,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByNo=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByNo=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -145,7 +145,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByNo=desc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByNo=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -163,7 +163,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssetCode=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssetCode=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -181,7 +181,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssetCode=desc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssetCode=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -199,7 +199,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssetName=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssetName=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -217,7 +217,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssetName=desc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssetName=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -235,7 +235,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssignedTo=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssignedTo=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -253,7 +253,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssignedTo=desc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssignedTo=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -271,7 +271,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssignedBy=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssignedBy=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -289,7 +289,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssignedBy=desc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssignedBy=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -307,7 +307,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssignedDate=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssignedDate=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -325,7 +325,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByAssignedDate=desc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByAssignedDate=desc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -343,7 +343,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByState=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByState=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -361,7 +361,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByState=asc"
+            "/api/assignment?filterByStateManage=3&page=1&sortByState=asc"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -379,7 +379,7 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByEditAssignment"
+            "/api/assignment?filterByStateManage=3&page=1&sortByEditAssignment"
         );
         $viewAssignment->assertStatus(200);
     }
@@ -396,7 +396,24 @@ class ManageAssignmentTest extends TestCase
         ]);
         $viewAssignment = $this->json(
             "GET",
-            "/api/assignment?filterByState=3&page=1&sortByCreateAssignment"
+            "/api/assignment?filterByStateManage=3&page=1&sortByCreateAssignment"
+        );
+        $viewAssignment->assertStatus(200);
+    }
+
+    public function test_filter_by_state_home(){
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/view-assignment?filterByStateHome=3&page=1"
         );
         $viewAssignment->assertStatus(200);
     }

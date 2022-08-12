@@ -19,7 +19,7 @@ export default function DisableUser(props) {
                     <Modal.Body>
                         <div id='modalText'>
                             <p>
-                                Do you want disable this user?
+                                Do you want to disable this user?
                             </p>
                             <Button
                                 onClick={props.handleDisableUserDialog}
