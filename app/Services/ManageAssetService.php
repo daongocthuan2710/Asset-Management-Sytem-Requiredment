@@ -157,8 +157,4 @@ class ManageAssetService extends BaseService
         }
         return null;
     }
-    public function report($request)
-    {
-        return $this->manageAssetRepository->report($request);
-    }
 }
