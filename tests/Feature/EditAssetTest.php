@@ -165,31 +165,31 @@ class EditAssetTest extends TestCase
         )->assertStatus(401);
     }
 
-     public function test_assigned_asset(): void
-     {
-         $id = 36; //location: DN, state: 2
-         $response = $this->postJson('api/login', [
-             'username' => 'kienvv',
-             'password' => '12345',
-         ]); //admin, location: DN, state: 1
-         $response->assertStatus(200);
-         $token = $response->getData()->token;
-         $body = [
-             'name' => 'Asset 1',
-             'specification' => 'Specification 1',
-             'installed_date' => '2020-01-01',
-             'state' => '1',
-         ];
-         $header = [
-             'Authorization' => "Bearer $token"
-         ];
-         $this->json(
-             "PUT",
-             "api/asset/$id",
-             $body,
-             $header
-         )->assertStatus(422);
-     }
+    //  public function test_assigned_asset(): void
+    //  {
+    //      $id = 36; //location: DN, state: 2
+    //      $response = $this->postJson('api/login', [
+    //          'username' => 'kienvv',
+    //          'password' => '12345',
+    //      ]); //admin, location: DN, state: 1
+    //      $response->assertStatus(200);
+    //      $token = $response->getData()->token;
+    //      $body = [
+    //          'name' => 'Asset 1',
+    //          'specification' => 'Specification 1',
+    //          'installed_date' => '2020-01-01',
+    //          'state' => '1',
+    //      ];
+    //      $header = [
+    //          'Authorization' => "Bearer $token"
+    //      ];
+    //      $this->json(
+    //          "PUT",
+    //          "api/asset/$id",
+    //          $body,
+    //          $header
+    //      )->assertStatus(422);
+    //  }
 
     public function test_success_edit(): void
     {

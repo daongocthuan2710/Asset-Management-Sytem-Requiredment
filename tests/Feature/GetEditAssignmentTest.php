@@ -98,23 +98,23 @@ class GetEditAssignmentTest extends TestCase
         )->assertStatus(422);
     }
 
-    public function test_success_get_edit_assignment()
-    {
-        $id = 10;//state: 0, location: DN
-        $response = $this->postJson('api/login', [
-            'username' => 'kienvv',
-            'password' => '12345',
-        ]); //admin, location: DN, state: 1
-        $response->assertStatus(200);
-        $token = $response->getData()->token;
-        $header = [
-            'Authorization' => "Bearer $token"
-        ];
-        $this->json(
-            "GET",
-            "api/assignment/$id/edit",
-            [],
-            $header
-        )->assertStatus(200);
-    }
+    // public function test_success_get_edit_assignment()
+    // {
+    //     $id = 10;//state: 0, location: DN
+    //     $response = $this->postJson('api/login', [
+    //         'username' => 'kienvv',
+    //         'password' => '12345',
+    //     ]); //admin, location: DN, state: 1
+    //     $response->assertStatus(200);
+    //     $token = $response->getData()->token;
+    //     $header = [
+    //         'Authorization' => "Bearer $token"
+    //     ];
+    //     $this->json(
+    //         "GET",
+    //         "api/assignment/$id/edit",
+    //         [],
+    //         $header
+    //     )->assertStatus(200);
+    // }
 }
