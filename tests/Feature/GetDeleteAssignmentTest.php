@@ -27,33 +27,94 @@ class GetDeleteAssignmentTest extends TestCase
             AssignmentSeeder::class,
         ]);
     }
-    public function test_not_logged_user(){
-        $id = 10; //staff_location: DN, state: 0
-        $this->json('GET', "api/can-delete-assignment/$id")
-            ->assertStatus(401);
+
+    public function test_not_logged_user()
+    {
+        $id = 10; //location: DN, state: 0
+        $this->json(
+            "GET",
+            "api/can-delete-assignment/$id",
+            [],
+        )->assertStatus(401);
     }
-    public function test_not_an_admin(){
-        $id = 10; //staff_location: DN, state: 0
-        Sanctum::actingAs(User::findOrFail(39)); //admin: false, location: DN, state: 1
-        $this->json('GET', "api/can-delete-assignment/$id")
-            ->assertStatus(401);
+
+    public function test_not_an_admin()
+    {
+        $id = 10; //location: DN, state: 0
+        $response = $this->postJson('api/login', [
+            'username' => 'tuanpa',
+            'password' => '12345',
+        ]); //admin: 0, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/can-delete-assignment/$id",
+            [],
+            $header
+        )->assertStatus(401);
     }
-    public function test_not_same_location(){
+
+    public function test_not_same_location()
+    {
         $id = 2; //staff_location: HCM, state: 0
-        Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-        $this->json('GET', "api/can-delete-assignment/$id")
-            ->assertStatus(401);
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/can-delete-assignment/$id",
+            [],
+            $header
+        )->assertStatus(401);
     }
-    // public function test_delete_accepted_assignment(){
-    //     $id = 9; //staff_location: DN, state: 1
-    //     Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-    //     $this->json('GET', "api/can-delete-assignment/$id")
-    //         ->assertStatus(422);
-    // }
-    public function test_success_get_can_delete_assignment(){
-        $id = 10; //staff_location: DN, state: 0
-        Sanctum::actingAs(User::findOrFail(37)); //admin, location: DN, state: 1
-        $this->json('GET', "api/can-delete-assignment/$id")
-            ->assertStatus(200);
+
+    public function test_delete_accepted_assignment()
+    {
+        $id = 9; //staff_location: DN, state: 1
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/can-delete-assignment/$id",
+            [],
+            $header
+        )->assertStatus(422);
+    }
+
+    public function test_success_get_can_delete_assignment()
+    {
+        $id = 10; //location: DN, state: 0
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/can-delete-assignment/$id",
+            [],
+            $header
+        )->assertStatus(200);
     }
 }
