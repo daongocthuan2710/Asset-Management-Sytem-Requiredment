@@ -107,49 +107,49 @@ class ResponseAssignmentTest extends TestCase
         )->assertStatus(422);
     }
 
-    public function test_success_decline_response()
-    {
-        $id = 32; //staff_id: 13, state: 0
-        $response = $this->postJson('api/login', [
-            'username' => 'tuandd',
-            'password' => '12345',
-        ]); //staff id: 13
-        $response->assertStatus(200);
-        $token = $response->getData()->token;
-        $body = [
-            'response' => false,
-        ];
-        $header = [
-            'Authorization' => "Bearer $token"
-        ];
-        $this->json(
-            "POST",
-            "api/response-assignment/$id",
-            $body,
-            $header
-        )->assertStatus(200);
-    }
+    // public function test_success_decline_response()
+    // {
+    //     $id = 32; //staff_id: 13, state: 0
+    //     $response = $this->postJson('api/login', [
+    //         'username' => 'tuandd',
+    //         'password' => '12345',
+    //     ]); //staff id: 13
+    //     $response->assertStatus(200);
+    //     $token = $response->getData()->token;
+    //     $body = [
+    //         'response' => false,
+    //     ];
+    //     $header = [
+    //         'Authorization' => "Bearer $token"
+    //     ];
+    //     $this->json(
+    //         "POST",
+    //         "api/response-assignment/$id",
+    //         $body,
+    //         $header
+    //     )->assertStatus(200);
+    // }
 
-    public function test_success_response()
-    {
-        $id = 32; //staff_id: 13, state: 0
-        $response = $this->postJson('api/login', [
-            'username' => 'tuandd',
-            'password' => '12345',
-        ]); //staff id: 13
-        $response->assertStatus(200);
-        $token = $response->getData()->token;
-        $body = [
-            'response' => true,
-        ];
-        $header = [
-            'Authorization' => "Bearer $token"
-        ];
-        $this->json(
-            "POST",
-            "api/response-assignment/$id",
-            $body,
-            $header
-        )->assertStatus(200);
-    }
+    // public function test_success_response()
+    // {
+    //     $id = 32; //staff_id: 13, state: 0
+    //     $response = $this->postJson('api/login', [
+    //         'username' => 'tuandd',
+    //         'password' => '12345',
+    //     ]); //staff id: 13
+    //     $response->assertStatus(200);
+    //     $token = $response->getData()->token;
+    //     $body = [
+    //         'response' => true,
+    //     ];
+    //     $header = [
+    //         'Authorization' => "Bearer $token"
+    //     ];
+    //     $this->json(
+    //         "POST",
+    //         "api/response-assignment/$id",
+    //         $body,
+    //         $header
+    //     )->assertStatus(200);
+    // }
 }
