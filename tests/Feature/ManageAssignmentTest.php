@@ -400,4 +400,21 @@ class ManageAssignmentTest extends TestCase
         );
         $viewAssignment->assertStatus(200);
     }
+
+    public function test_filter_by_state_home(){
+        $response = $this->postJson('api/login', [
+            "username" => "kienvv",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $viewAssignment = $this->getJson('api/manageUser', [
+            'Authorization' => "Bearer $token"
+        ]);
+        $viewAssignment = $this->json(
+            "GET",
+            "/api/view-assignment?filterByStateHome=3&page=1"
+        );
+        $viewAssignment->assertStatus(200);
+    }
 }

@@ -56,7 +56,7 @@ export default function TableReport() {
       isSortDESC: false,
     },
     {
-      name: "Wating for recycling",
+      name: "Waiting for recycling",
       isSortASC: true,
       isSortDESC: false,
     },
