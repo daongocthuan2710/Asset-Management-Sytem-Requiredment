@@ -42,12 +42,12 @@ class ManageReturningRepository extends BaseRepository
             return response()->json(['message' => 'You can not update this returning!'], 422);
         }
 
-        $returning = Returning::query()->findOrFail($id);
-        $assignment = Assignment::query()->findOrFail($returning->assignment_id);
-        $asset = Asset::query()->findOrFail($assignment->asset_id);
-        $admin = User::query()->find($returning->accepted_by);
+        $returning = Returning::findOrFail($id);
+        $assignment = Assignment::findOrFail($returning->assignment_id);
+        $asset = Asset::findOrFail($assignment->asset_id);
+        $admin = User::find($returning->accepted_by);
         if (!$admin) {
-            $user = User::query()->find($returning->requested_by);
+            $user = User::find($returning->requested_by);
             $returning->update(['accepted_by' => $user->id ]);
         }
         // update state returning = completed
@@ -70,8 +70,8 @@ class ManageReturningRepository extends BaseRepository
     public function delete($id)
     {
 
-        $returning = Returning::query()->findOrFail($id);
-        $assignment = Assignment::query()->findOrFail($returning->assignment_id);
+        $returning = Returning::findOrFail($id);
+        $assignment = Assignment::findOrFail($returning->assignment_id);
         $assignment->update(['state' => Assignment::ACCEPTED]);
         $returning->delete();
         return response()->json([
