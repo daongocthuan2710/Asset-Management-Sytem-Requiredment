@@ -20,10 +20,10 @@ class ManageAssetController extends Controller
     {
         return $this->manageAssetService->getAll($request);
     }
-    public function search($keyword)
-    {
-        return $this->manageAssetService->search($keyword);
-    }
+//    public function search($keyword)
+//    {
+//        return $this->manageAssetService->search($keyword);
+//    }
     public function store(CreateAssetRequest $request)
     {
         $input = $request->all();

@@ -24,26 +24,26 @@ class ManageAssetService extends BaseService
         $this->manageAssetRepository = $ManageAssetRepository;
     }
 
-    public function search($keyword)
-    {
-        $sanctumUser = auth('sanctum')->user();
-        if (!$sanctumUser || !$sanctumUser->admin) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        } else {
-            $assets = $this->assetModel->select('asset.*')->where('asset.state', 1);
-            if ($keyword !== null) {
-                $keyword = strtoupper($keyword);
-                $assets->where(function ($q) use ($keyword) {
-                    return $q
-                        ->whereRaw("UPPER(name) LIKE '%" . $keyword . "%'")
-                        ->orWhere('asset_code', 'like', "%$keyword%");
-                });
-            }
-            return response()->json([
-                'assets' => $assets->get()
-            ]);
-        }
-    }
+//    public function search($keyword)
+//    {
+//        $sanctumUser = auth('sanctum')->user();
+//        if (!$sanctumUser || !$sanctumUser->admin) {
+//            return response()->json(['error' => 'Unauthorized'], 401);
+//        } else {
+//            $assets = $this->assetModel->select('asset.*')->where('asset.state', 1);
+//            if ($keyword !== null) {
+//                $keyword = strtoupper($keyword);
+//                $assets->where(function ($q) use ($keyword) {
+//                    return $q
+//                        ->whereRaw("UPPER(name) LIKE '%" . $keyword . "%'")
+//                        ->orWhere('asset_code', 'like', "%$keyword%");
+//                });
+//            }
+//            return response()->json([
+//                'assets' => $assets->get()
+//            ]);
+//        }
+//    }
 
     public function store($data)
     {

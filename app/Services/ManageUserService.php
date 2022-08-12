@@ -25,27 +25,27 @@ class ManageUserService extends BaseService
     {
         return $this->manageUserRepository->getAll();
     }
-    public function search($keyword)
-    {
-        $sanctumUser = auth('sanctum')->user();
-        if (!$sanctumUser || !$sanctumUser->admin) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        } else {
-            $location = $sanctumUser->location;
-            $users = $this->userModel->select('user.*')->where('user.location', $location);
-            if ($keyword !== null) {
-                $keyword = strtoupper($keyword);
-                $users->where(function ($q) use ($keyword) {
-                    return $q
-                        ->whereRaw("UPPER(concat(first_name, ' ', last_name)) LIKE '%" . $keyword . "%'")
-                        ->orWhere('staff_code', 'like', "%$keyword%");
-                });
-            }
-            return response()->json([
-                'users' => $users->get()
-            ], 200);
-        }
-    }
+//    public function search($keyword)
+//    {
+//        $sanctumUser = auth('sanctum')->user();
+//        if (!$sanctumUser || !$sanctumUser->admin) {
+//            return response()->json(['error' => 'Unauthorized'], 401);
+//        } else {
+//            $location = $sanctumUser->location;
+//            $users = $this->userModel->select('user.*')->where('user.location', $location);
+//            if ($keyword !== null) {
+//                $keyword = strtoupper($keyword);
+//                $users->where(function ($q) use ($keyword) {
+//                    return $q
+//                        ->whereRaw("UPPER(concat(first_name, ' ', last_name)) LIKE '%" . $keyword . "%'")
+//                        ->orWhere('staff_code', 'like', "%$keyword%");
+//                });
+//            }
+//            return response()->json([
+//                'users' => $users->get()
+//            ], 200);
+//        }
+//    }
     public function store($data)
     {
         //check admin
