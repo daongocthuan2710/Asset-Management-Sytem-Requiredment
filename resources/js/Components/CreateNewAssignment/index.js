@@ -33,7 +33,7 @@ const CreateNewAssignment = () => {
         setEnabled(true);
         if (
             user.id !== "" &&
-            asset !== "" &&
+            asset.id !== "" &&
             assignedDate !== ""
 
         )
@@ -48,7 +48,9 @@ const CreateNewAssignment = () => {
     }
 
     const assignedDateCheck = (date) => {
-        if (new Date(date) < new Date()) {
+        const date2 = new Date();
+        date2.setDate(date2.getDate() - 1);
+        if (new Date(date) < date2) {
             setAssignedDateError({
                 error: true,
                 message: "Only current or future date. Please select a different date",
@@ -104,14 +106,14 @@ const CreateNewAssignment = () => {
                                 <Form.Label>User</Form.Label>
                             </Col>
                             <Col md={8}>
-                            <div className="d-flex search-create" onClick={() => { handleUser() }}>
-                                <Form.Control
-                                    readOnly
-                                    required
-                                    type="text"
-                                    value={user.name}
-                                    
-                                /><InputGroup.Text
+                                <div className="d-flex search-create" onClick={() => { handleUser() }}>
+                                    <Form.Control
+                                        readOnly
+                                        required
+                                        type="text"
+                                        value={user.name}
+
+                                    /><InputGroup.Text
                                     >
                                         <FaSearch />
                                     </InputGroup.Text>
@@ -133,7 +135,7 @@ const CreateNewAssignment = () => {
                                         type="text"
                                         value={asset.name}
                                         className="rounded-left"
-                                        />
+                                    />
                                     <InputGroup.Text className="rounded-right"
                                     >
                                         <FaSearch />
@@ -150,7 +152,7 @@ const CreateNewAssignment = () => {
                                 <Form.Label>Assigned Date</Form.Label>
                             </Col>
                             <Col md={8}>
-                            
+
                                 <Form.Control
                                     value={assignedDate}
                                     required
