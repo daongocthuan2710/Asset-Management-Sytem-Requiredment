@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Assignment;
 use App\Models\User;
 use Database\Seeders\UserSeeder;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -156,7 +157,7 @@ class ManageUserTest extends TestCase
         );
         $viewUser->assertStatus(200);
     }
-    
+
     public function test_sort_by_joined_date_asc()
     {
         $response = $this->postJson('api/login', [
@@ -174,7 +175,7 @@ class ManageUserTest extends TestCase
         );
         $viewUser->assertStatus(200);
     }
-    
+
     public function test_sort_by_joined_date_desc()
     {
         $response = $this->postJson('api/login', [
@@ -210,7 +211,7 @@ class ManageUserTest extends TestCase
         );
         $viewUser->assertStatus(200);
     }
-    
+
     public function test_sort_by_type_desc()
     {
         $response = $this->postJson('api/login', [
@@ -263,5 +264,31 @@ class ManageUserTest extends TestCase
             "/api/manageUser?page=1&sortByCreateUser"
         );
         $viewUser->assertStatus(200);
+    }
+    public function test_can_not_disable_user(){
+        $response = $this->getJson('api/can-disable/2');
+        $response->assertStatus(200);
+        $response->assertJson(function (AssertableJson $json) {
+            $json->etc();
+        });
+    }
+    public function test_can_disable_user(){
+        $response = $this->getJson('api/can-disable/5');
+        $response->assertStatus(200);
+        $response->assertJson(function (AssertableJson $json) {
+            $json->etc();
+        });
+    }
+    public function test_disable_user(){
+        $response = $this->postJson('api/login', [
+            "username" => "huymg",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $data = $this->getJson('api/disable/1',[
+            'Authorization' => "Bearer $token"
+         ]);
+        $data->assertStatus(200);
     }
 }
