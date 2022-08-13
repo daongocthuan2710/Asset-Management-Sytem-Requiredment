@@ -111,7 +111,7 @@ class ManageAssignmentService extends BaseService
                 );
             }
             //if asset is not available
-            if ($asset->state !== 1 && $asset->id != $assignment->asset_id) {
+            if ($asset->state != 1 && $asset->id != $assignment->asset_id) {
                 return response()->json(
                     [
                         "message" => "Asset is not available",
@@ -120,7 +120,7 @@ class ManageAssignmentService extends BaseService
                 );
             }
             //if user is disable
-            if ($user->state === -1) {
+            if ($user->state == -1) {
                 return response()->json(
                     [
                         "message" => "User is disabled",
@@ -169,11 +169,11 @@ class ManageAssignmentService extends BaseService
         }
         //check state of assignment
         if (!$request->destroy) {
-            if ($assignment->state !== 0) {
+            if ($assignment->state != 0) {
                 return response()->json(['message' => 'You cannot edit accepted or declined assignment!'], 422);
             }
         } else {
-            if ($assignment->state === 1) {
+            if ($assignment->state == 1) {
                 return response()->json(['message' => 'You cannot delete accepted assignment!'], 422);
             }
         }
@@ -212,7 +212,7 @@ class ManageAssignmentService extends BaseService
         if ($assignment->staff_id != $sanctumUser->id) {
             return response()->json(['message' => 'You cannot response to others\' assignment'], 422);
         }
-        if ($assignment->state !== 0) {
+        if ($assignment->state != 0) {
             return response()->json(['message' => 'You cannot response to accepted or declined assignment'], 422);
         }
         return $this->manageAssignmentRepository->response($request, $id);

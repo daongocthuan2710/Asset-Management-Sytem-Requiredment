@@ -152,7 +152,7 @@ class ManageAssetService extends BaseService
             return response()->json(['message' => 'You do not have permission to access this asset'], 401);
         }
         //check asset state
-        if ($asset->state === 2) {
+        if ($asset->state == 2) {
             return response()->json(['message' => 'Asset is assigned'], 422);
         }
         return null;

@@ -89,25 +89,25 @@ class GetEditAssetTest extends TestCase
         )->assertStatus(401);
     }
 
-    // public function test_assigned_asset(): void
-    // {
-    //     $id = 36; //location: DN, state: 2
-    //     $response = $this->postJson('api/login', [
-    //         'username' => 'kienvv',
-    //         'password' => '12345',
-    //     ]); //admin, location: DN, state: 1
-    //     $response->assertStatus(200);
-    //     $token = $response->getData()->token;
-    //     $header = [
-    //         'Authorization' => "Bearer $token"
-    //     ];
-    //     $this->json(
-    //         "GET",
-    //         "api/asset/$id/edit",
-    //         [],
-    //         $header
-    //     )->assertStatus(422);
-    // }
+    public function test_assigned_asset(): void
+    {
+        $id = 36; //location: DN, state: 2
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/asset/$id/edit",
+            [],
+            $header
+        )->assertStatus(422);
+    }
 
     public function test_success_get_edit(): void
     {
