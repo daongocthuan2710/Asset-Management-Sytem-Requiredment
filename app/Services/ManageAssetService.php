@@ -24,26 +24,26 @@ class ManageAssetService extends BaseService
         $this->manageAssetRepository = $ManageAssetRepository;
     }
 
-    public function search($keyword)
-    {
-        $sanctumUser = auth('sanctum')->user();
-        if (!$sanctumUser || !$sanctumUser->admin) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        } else {
-            $assets = $this->assetModel->select('asset.*')->where('asset.state', 1);
-            if ($keyword !== null) {
-                $keyword = strtoupper($keyword);
-                $assets->where(function ($q) use ($keyword) {
-                    return $q
-                        ->whereRaw("UPPER(name) LIKE '%" . $keyword . "%'")
-                        ->orWhere('asset_code', 'like', "%$keyword%");
-                });
-            }
-            return response()->json([
-                'assets' => $assets->get()
-            ]);
-        }
-    }
+//    public function search($keyword)
+//    {
+//        $sanctumUser = auth('sanctum')->user();
+//        if (!$sanctumUser || !$sanctumUser->admin) {
+//            return response()->json(['error' => 'Unauthorized'], 401);
+//        } else {
+//            $assets = $this->assetModel->select('asset.*')->where('asset.state', 1);
+//            if ($keyword !== null) {
+//                $keyword = strtoupper($keyword);
+//                $assets->where(function ($q) use ($keyword) {
+//                    return $q
+//                        ->whereRaw("UPPER(name) LIKE '%" . $keyword . "%'")
+//                        ->orWhere('asset_code', 'like', "%$keyword%");
+//                });
+//            }
+//            return response()->json([
+//                'assets' => $assets->get()
+//            ]);
+//        }
+//    }
 
     public function store($data)
     {
@@ -152,13 +152,9 @@ class ManageAssetService extends BaseService
             return response()->json(['message' => 'You do not have permission to access this asset'], 401);
         }
         //check asset state
-        if ($asset->state === 2) {
+        if ($asset->state == 2) {
             return response()->json(['message' => 'Asset is assigned'], 422);
         }
         return null;
-    }
-    public function report($request)
-    {
-        return $this->manageAssetRepository->report($request);
     }
 }

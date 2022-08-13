@@ -16,7 +16,15 @@ class CreateUserTest extends TestCase
         parent::setUp();
         $this->seed(UserSeeder::class);
     }
-
+    public function getSanctum($username, $password)
+    {
+        $response = $this->postJson('api/login', [
+            'username' => $username,
+            'password' => $password,
+        ]);
+        $response->assertStatus(200);
+        return $response->getData();
+    }
     public function test_is_not_admin()
     {
         Sanctum::actingAs(User::factory()->create([
@@ -34,23 +42,52 @@ class CreateUserTest extends TestCase
         ];
         $this->json('POST', 'api/user/store', $body)->assertStatus(401);
     }
-    // public function test_create_success()
-    // {
-    //     Sanctum::actingAs(User::factory()->create([
-    //         'admin' => true,
-    //         'location' => 'HN',
-    //         'staff_code' => 'SD2001',
-    //     ]));
-    //     $body = [
-    //         "first_name" => "huynh",
-    //         "last_name" => "nguyen",
-    //         "date_of_birth" => "31-12-2000",
-    //         "joined_date" => "11-06-2001",
-    //         "admin" => 1,
-    //         "gender" => 1
-    //     ];
-    //     $this->json('POST', 'api/user/store', $body)->assertStatus(201);
-    // }
+     public function test_create_success()
+     {
+         $response = $this->postJson('api/login', [
+             "username" => "huymg",
+             "password" => "12345"
+         ]);
+         $response->assertStatus(200);
+         $token = $response->getData()->token;
+         $body = [
+             "first_name" => "huynh",
+             "last_name" => "nguyen",
+             "date_of_birth" => "31-12-2000",
+             "joined_date" => "11-06-2001",
+             "admin" => 1,
+             "gender" => 1,
+             "location" => ""
+         ];
+         $userCreateReturning = $this->postJson('api/user/store', $body, [
+             'Authorization' => "Bearer $token"
+         ]);
+         $userCreateReturning->assertStatus(201);
+     }
+     public function test_duplicate_name(){
+         $response = $this->postJson('api/login', [
+             "username" => "huymg",
+             "password" => "12345"
+         ]);
+         $response->assertStatus(200);
+         $token = $response->getData()->token;
+         $body = [
+             "first_name" => "huynh",
+             "last_name" => "nguyen",
+             "date_of_birth" => "31-12-2000",
+             "joined_date" => "11-06-2001",
+             "admin" => 1,
+             "gender" => 1,
+             "location" => ""
+         ];
+         $this->postJson('api/user/store', $body, [
+             'Authorization' => "Bearer $token"
+         ]);
+         $userCreateReturning = $this->postJson('api/user/store', $body, [
+             'Authorization' => "Bearer $token"
+         ]);
+         $userCreateReturning->assertStatus(201);
+     }
     public function test_without_first_name()
     {
         Sanctum::actingAs(User::factory()->create([

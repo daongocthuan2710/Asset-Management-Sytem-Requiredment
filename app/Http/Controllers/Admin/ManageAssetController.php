@@ -16,75 +16,31 @@ class ManageAssetController extends Controller
     {
         $this->manageAssetService = $manageAssetService;
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
     public function index(Request $request)
     {
         return $this->manageAssetService->getAll($request);
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-
-    public function search($keyword)
-    {
-        return $this->manageAssetService->search($keyword);
-    }
-
+//    public function search($keyword)
+//    {
+//        return $this->manageAssetService->search($keyword);
+//    }
     public function store(CreateAssetRequest $request)
     {
         $input = $request->all();
         return $this->manageAssetService->store($input);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         return $this->manageAssetService->getById($id);
     }
-
-    /**
-     * Edit the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function edit(Request $request, int $id)
     {
         return $this->manageAssetService->edit($request, $id);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function update(UpdateAssetRequest $request, int $id)
     {
         return $this->manageAssetService->update($request, $id);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse|void
-     */
     public function destroy($id)
     {
         return $this->manageAssetService->disable($id);
@@ -92,9 +48,5 @@ class ManageAssetController extends Controller
     public function canDestroy($id)
     {
         return $this->manageAssetService->assignmentValid($id);
-    }
-    public function report(Request $request)
-    {
-        return $this->manageAssetService->report($request);
     }
 }

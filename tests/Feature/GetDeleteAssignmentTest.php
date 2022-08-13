@@ -78,25 +78,25 @@ class GetDeleteAssignmentTest extends TestCase
         )->assertStatus(401);
     }
 
-    // public function test_delete_accepted_assignment()
-    // {
-    //     $id = 9; //staff_location: DN, state: 1
-    //     $response = $this->postJson('api/login', [
-    //         'username' => 'kienvv',
-    //         'password' => '12345',
-    //     ]); //admin, location: DN, state: 1
-    //     $response->assertStatus(200);
-    //     $token = $response->getData()->token;
-    //     $header = [
-    //         'Authorization' => "Bearer $token"
-    //     ];
-    //     $this->json(
-    //         "GET",
-    //         "api/can-delete-assignment/$id",
-    //         [],
-    //         $header
-    //     )->assertStatus(422);
-    // }
+    public function test_delete_accepted_assignment()
+    {
+        $id = 9; //staff_location: DN, state: 1
+        $response = $this->postJson('api/login', [
+            'username' => 'kienvv',
+            'password' => '12345',
+        ]); //admin, location: DN, state: 1
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $header = [
+            'Authorization' => "Bearer $token"
+        ];
+        $this->json(
+            "GET",
+            "api/can-delete-assignment/$id",
+            [],
+            $header
+        )->assertStatus(422);
+    }
 
     public function test_success_get_can_delete_assignment()
     {

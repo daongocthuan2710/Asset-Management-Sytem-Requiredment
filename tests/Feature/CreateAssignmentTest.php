@@ -37,21 +37,42 @@ class CreateAssignmentTest extends TestCase
         );
         $viewUser->assertStatus(400);
     }
-    // public function test_create_success()
-    // {
-    //     Sanctum::actingAs(User::factory()->create([
-    //         'admin' => true,
-    //         'location' => 'HN',
-    //         'staff_code' => 'SD2001',
-    //     ]));
-    //     $body = [
-    //         "staff_id" => 10,
-    //         "asset_id" => 20,
-    //         "assigned_date" => "2022-08-08",
-    //         'note' => "test"
-    //     ];
-    //     $this->json('POST', 'api/assignment', $body)->assertStatus(201);
-    // }
+    public function test_authorize()
+    {
+        $response = $this->postJson('api/login', [
+            "username" => "ducna",
+            "password" => "12345"
+        ]);
+        $response->assertStatus(200);
+        $token = $response->getData()->token;
+        $body = [
+            "staff_id" => 1,
+            "asset_id" => 1,
+            "assigned_date" => "2022-09-09",
+            'note' => "test"
+        ];
+        $this->postJson('api/assignment', $body, [
+            'Authorization' => "Bearer $token"
+        ])->assertStatus(401);
+    }
+     public function test_create_success()
+     {
+         $response = $this->postJson('api/login', [
+             "username" => "huymg",
+             "password" => "12345"
+         ]);
+         $response->assertStatus(200);
+         $token = $response->getData()->token;
+         $body = [
+             "staff_id" => 1,
+             "asset_id" => 1,
+             "assigned_date" => "2022-09-09",
+             'note' => "test"
+         ];
+         $this->postJson('api/assignment', $body, [
+             'Authorization' => "Bearer $token"
+         ])->assertStatus(201);
+     }
     public function test_staff_not_exits()
     {
         Sanctum::actingAs(User::factory()->create([
