@@ -34,7 +34,7 @@ class UpdateAssignmentRequest extends FormRequest
             'staff_id' => ['int', 'required'],
             'asset_id' => ['int', 'required'],
             'assigned_date' => ['date', 'required'],
-            'note' => ['string', 'required'],
+            'note' => ['string'],
         ];
     }
     public function messages()
