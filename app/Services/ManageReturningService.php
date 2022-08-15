@@ -58,7 +58,9 @@ class ManageReturningService extends BaseService
     {
         //check request data
         $sanctumUser = auth('sanctum')->user();
-
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
         //if returning is not existed
         $returning = Returning::find($id);
 
@@ -67,69 +69,16 @@ class ManageReturningService extends BaseService
                 'message' => 'Returning not found',
             ], 404);
         }
-        //if user is not existed
+
+        //if accepted_by is not existed
         $user = User::query()->find($returning->requested_by);
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
-            ], 404);
-        }
-        //if admin is not existed
         $admin = User::query()->find($returning->accepted_by);
+        $assignment = Assignment::query()->find($returning->assignment_id);
+        $asset = Asset::query()->find($assignment->asset_id);
         if (!$admin) {
             $admin = $user;
         }
 
-        //if assignment is not existed
-        $assignment = Assignment::query()->find($returning->assignment_id);
-        if (!$assignment) {
-            return response()->json([
-                'message' => 'Assignment not found',
-            ], 404);
-        }
-        //if asset is not existed
-        $asset = Asset::query()->find($assignment->asset_id);
-        if (!$asset) {
-            return response()->json([
-                'message' => 'Asset not found',
-            ], 404);
-        }
-        //if user is not in the same location
-        if ($user->location != $sanctumUser->location) {
-            return response()->json(
-                [
-                    "message" => "You can't complete returning having asset in other location",
-                ],
-                400
-            );
-        }
-        //if asset is not available
-        if ($asset->state !== 1 && $asset->id != $assignment->asset_id) {
-            return response()->json(
-                [
-                    "message" => "Asset is not available",
-                ],
-                400
-            );
-        }
-        //if user is disable
-        if ($user->state === -1) {
-            return response()->json(
-                [
-                    "message" => "User is disabled",
-                ],
-                400
-            );
-        }
-
-        if ($admin->state === -1) {
-            return response()->json(
-                [
-                    "message" => "User is disabled",
-                ],
-                400
-            );
-        }
         if (
             $this->checkPermission($request, $sanctumUser, $returning, $assignment, $asset, $admin, $user)
             !== null
@@ -156,14 +105,9 @@ class ManageReturningService extends BaseService
                 'You cannot accept the returning having asset in other location!'], 401);
         }
         //check state of returning
-        if (!$request->destroy) {
-            if ($returning->state !== 0) {
-                return response()->json(['message' => 'You cannot accept this returning!'], 422);
-            }
-        } else {
-            if ($returning->state === 1) {
-                return response()->json(['message' => 'You cannot delete accepted this returning!'], 422);
-            }
+
+        if ($returning->state != 0) {
+            return response()->json(['message' => 'You cannot accept this returning!'], 422);
         }
         return null;
     }
@@ -172,78 +116,25 @@ class ManageReturningService extends BaseService
     {
         //check request data
         $sanctumUser = auth('sanctum')->user();
+        if (!$sanctumUser || !$sanctumUser->admin) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $returning = Returning::find($id);
 
         //if returning is not existed
-        $returning = Returning::find($id);
         if (!$returning) {
             return response()->json([
                 'message' => 'Returning not found',
             ], 404);
         }
-        //if user is not existed
-        $user = User::query()->find($returning->requested_by);
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
-            ], 404);
-        }
-        //if admin is not existed
-        $admin = User::query()->find($returning->accepted_by);
-        if (!$admin) {
-            return response()->json([
-                'message' => 'Admin not found',
-            ], 404);
-        }
-
-        //if assignment is not existed
         $assignment = Assignment::query()->find($returning->assignment_id);
-        if (!$assignment) {
-            return response()->json([
-                'message' => 'Assignment not found',
-            ], 404);
-        }
-        //if asset is not existed
         $asset = Asset::query()->find($assignment->asset_id);
-        if (!$asset) {
-            return response()->json([
-                'message' => 'Asset not found',
-            ], 404);
-        }
-        //if user is not in the same location
-        if ($user->location != $sanctumUser->location) {
-            return response()->json(
-                [
-                    "message" => "You can't delete returning having asset in other location",
-                ],
-                400
-            );
-        }
-        //if asset is not available
-        if ($asset->state !== 1 && $asset->id != $assignment->asset_id) {
-            return response()->json(
-                [
-                    "message" => "Asset is not available",
-                ],
-                400
-            );
-        }
-        //if user is disable
-        if ($user->state === -1) {
-            return response()->json(
-                [
-                    "message" => "User is disabled",
-                ],
-                400
-            );
-        }
-
-        if ($admin->state === -1) {
-            return response()->json(
-                [
-                    "message" => "User is disabled",
-                ],
-                400
-            );
+        $user = User::query()->find($returning->requested_by);
+        $admin = User::query()->find($returning->accepted_by);
+        //if admin is not existed
+        if (!$admin) {
+            $admin = $user;
         }
 
         //check location
@@ -256,7 +147,7 @@ class ManageReturningService extends BaseService
              'You cannot delete the returning having asset in other location!'], 401);
         }
         //check state of returning
-        if ($returning->state === 1) {
+        if ($returning->state == 1) {
             return response()->json(['message' => 'You cannot delete this completed returning!'], 422);
         }
 
