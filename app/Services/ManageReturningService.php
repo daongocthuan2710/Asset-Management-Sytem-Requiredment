@@ -147,7 +147,7 @@ class ManageReturningService extends BaseService
              'You cannot delete the returning having asset in other location!'], 401);
         }
         //check state of returning
-        if ($returning->state === 1) {
+        if ($returning->state == 1) {
             return response()->json(['message' => 'You cannot delete this completed returning!'], 422);
         }
 
