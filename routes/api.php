@@ -30,7 +30,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('/user', ManageUserController::class);
-//Route::get('/user/search/{keyword}', [ManageUserController::class, 'search']);
 Route::resource('/assignment', ManageAssignmentController::class);
 Route::post('/user/store', [ManageUserController::class, 'store']);
 Route::get('/disable/{id}', [ManageUserController::class, 'disable']);
@@ -39,10 +38,6 @@ Route::get('/can-delete-assignment/{id}', [ManageAssignmentController::class, 'c
 Route::get('/report', [ReportController::class, 'report']);
 Route::post('/response-assignment/{id}', [ManageAssignmentController::class, 'response']);
 
-// Route::resource('/login', AuthenticationController::class);
-
-//Route::get('/asset/search/{keyword}', [ManageAssetController::class, 'search']);
-//Route::get('/asset/{id}/can-delete', [ManageAssetController::class, 'canDestroy']);
 Route::post('/login', [AuthenticationController::class, 'index']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/asset/{id}/can-delete', [ManageAssetController::class, 'canDestroy']);

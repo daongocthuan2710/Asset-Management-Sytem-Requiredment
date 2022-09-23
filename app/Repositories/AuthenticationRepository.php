@@ -32,9 +32,7 @@ class AuthenticationRepository extends BaseRepository
 
     public function login($request)
     {
-
-        $user = User::where('username', $request->username)->first();
-
+        $user = User::where('username', $request->username)->first(); 
         if ($request->username == '' || $request->password == '') {
             return response()->json(['message' => 'Username or password can not be null '], 404);
         }
