@@ -30,7 +30,7 @@ const SignIn = () => {
         password: password,
       };
 
-      const response = await axios.post("/api/login", data);
+      const response = await axios.post("login", data);
 
       console.log(response.data.message);
       localStorage.setItem("token", response.data.token);
