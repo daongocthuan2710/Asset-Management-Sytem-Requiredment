@@ -82,7 +82,7 @@ export default function Header() {
     return (
         <>
             <header>
-                {userEditReducer ? <h5>Manage User > Edit User</h5> : assetEditReducer ? <h5>Manage Asset > Edit Asset</h5> : <h5>{currentPage}</h5>}
+                {userEditReducer ? <h5>Manage User {'>'} Edit User</h5> : assetEditReducer ? <h5>Manage Asset {'>'} Edit Asset</h5> : <h5>{currentPage}</h5>}
                 <DropdownButton
                     as={ButtonGroup}
                     key={'down'}
